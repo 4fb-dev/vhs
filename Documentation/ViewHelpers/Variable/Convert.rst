@@ -1,11 +1,10 @@
-:navigation-title: variable.convert
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-variable-convert:
 
-====================================================
-variable.convert ViewHelper `<vhs:variable.convert>`
-====================================================
+================
+variable.convert
+================
 
 
 Convert ViewHelper
@@ -15,9 +14,6 @@ Converts $value to $type which can be one of 'string', 'integer',
 'float', 'boolean', 'array' or 'ObjectStorage'. If $value is NULL
 sensible defaults are assigned or $default which obviously has to
 be of $type as well.
-
-
-.. _fluidtypo3-vhs-variable-convert_arguments:
 
 Arguments
 =========
@@ -45,7 +41,7 @@ type
    string
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    Data type to convert the value into. Can be one of "string", "integer", "float", "boolean", "array" or "ObjectStorage".
 

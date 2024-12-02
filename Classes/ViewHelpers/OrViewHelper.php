@@ -32,7 +32,12 @@ class OrViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function initializeArguments(): void
+    /**
+     * Initialize
+     *
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument('content', 'mixed', 'Input to either use, if not empty');
         $this->registerArgument('alternative', 'mixed', 'Alternative if content is empty, can use LLL: shortcut');
@@ -58,10 +63,7 @@ class OrViewHelper extends AbstractViewHelper
     protected static function getAlternativeValue(array $arguments, RenderingContextInterface $renderingContext)
     {
         /** @var RenderingContext $renderingContext */
-        $alternative = $arguments['alternative'] ?? null;
-        if ($alternative === null) {
-            return null;
-        }
+        $alternative = $arguments['alternative'];
         $arguments = (array) $arguments['arguments'];
         if (0 === count($arguments)) {
             $arguments = null;
@@ -71,13 +73,14 @@ class OrViewHelper extends AbstractViewHelper
         } elseif (0 === strpos($alternative, 'LLL:')) {
             $extensionName = $arguments['extensionName'] ?? null;
             if (null === $extensionName) {
-                $extensionName = RequestResolver::resolveControllerExtensionNameFromRenderingContext($renderingContext);
+                $extensionName = RequestResolver::resolveRequestFromRenderingContext($renderingContext)
+                    ->getControllerExtensionName();
             }
             $translated = LocalizationUtility::translate(substr($alternative, 4), $extensionName ?: 'core', $arguments);
             if (null !== $translated) {
                 $alternative = $translated;
             }
         }
-        return null !== $arguments && !empty($alternative) ? vsprintf($alternative, $arguments) : $alternative;
+        return null !== $arguments && false === empty($alternative) ? vsprintf($alternative, $arguments) : $alternative;
     }
 }

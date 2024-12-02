@@ -16,6 +16,7 @@ use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -44,7 +45,11 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
      */
     protected $pageService;
 
-    public function injectPageService(PageService $pageService): void
+    /**
+     * @param PageService $pageService
+     * @return void
+     */
+    public function injectPageService(PageService $pageService)
     {
         $this->pageService = $pageService;
     }
@@ -54,16 +59,22 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'a';
 
-    public function initializeArguments(): void
+    /**
+     * Arguments initialization
+     *
+     * @return void
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
         $this->registerPageRecordArguments();
-        $this->registerTagAttribute('target', 'string', 'Target of link');
+        $this->registerTagAttribute('target', 'string', 'Target of link', false);
         $this->registerTagAttribute(
             'rel',
             'string',
-            'Specifies the relationship between the current document and the linked document'
+            'Specifies the relationship between the current document and the linked document',
+            false
         );
         $this->registerArgument(
             'pageUid',
@@ -96,6 +107,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
             false
         );
         $this->registerArgument('section', 'string', 'The anchor to be added to the URI', false, '');
+        $this->registerArgument('linkAccessRestrictedPages', 'boolean', 'DEPRECATED: Use showAccessProtected instead.');
         $this->registerArgument(
             'absolute',
             'boolean',
@@ -140,11 +152,9 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
     public function render()
     {
         // Check if link wizard link
-        /** @var int $pageUid */
         $pageUid = $this->arguments['pageUid'];
-        /** @var array $additionalParameters */
         $additionalParameters = (array) $this->arguments['additionalParams'];
-        if (!is_numeric($pageUid)) {
+        if (false === is_numeric($pageUid)) {
             /** @var LogManager $logManager */
             $logManager = GeneralUtility::makeInstance(LogManager::class);
             $logManager->getLogger(__CLASS__)->warning("pageUid must be numeric, got " . $pageUid);
@@ -158,6 +168,11 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         }
 
         $showAccessProtected = (boolean) $this->arguments['showAccessProtected'];
+
+        //TODO: Remove handling of deprecated argument
+        if ($this->hasArgument('linkAccessRestrictedPages')) {
+            $showAccessProtected = (boolean) $this->arguments['linkAccessRestrictedPages'];
+        }
 
         $page = $this->pageService->getPage($pageUid, $showAccessProtected);
         if (empty($page)) {
@@ -186,7 +201,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         }
 
         $hidePage = $this->pageService->hidePageForLanguageUid($page, $currentLanguageUid);
-        if ($hidePage) {
+        if (true === $hidePage) {
             return null;
         }
 
@@ -216,30 +231,21 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         }
         $additionalCssClasses = implode(' ', $class);
 
-        /** @var int $pageType */
-        $pageType = $this->arguments['pageType'];
-        /** @var bool $noCache */
-        $noCache = $this->arguments['noCache'];
-        /** @var string $section */
-        $section = $this->arguments['section'];
-        /** @var bool $absolute */
-        $absolute = $this->arguments['absolute'];
-        /** @var bool $addQueryString */
-        $addQueryString = $this->arguments['addQueryString'];
-        /** @var array $excludedArguments */
-        $excludedArguments = (array) $this->arguments['argumentsToBeExcludedFromQueryString'];
+        /** @var RenderingContext $renderingContext */
+        $renderingContext = $this->renderingContext;
 
         /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+
         $uriBuilder->reset()
             ->setTargetPageUid($pageUid)
-            ->setTargetPageType($pageType)
-            ->setNoCache($noCache)
-            ->setSection($section)
+            ->setTargetPageType($this->arguments['pageType'])
+            ->setNoCache($this->arguments['noCache'])
+            ->setSection($this->arguments['section'])
             ->setArguments($additionalParameters)
-            ->setCreateAbsoluteUri($absolute)
-            ->setAddQueryString($addQueryString)
-            ->setArgumentsToBeExcludedFromQueryString($excludedArguments)
+            ->setCreateAbsoluteUri($this->arguments['absolute'])
+            ->setAddQueryString($this->arguments['addQueryString'])
+            ->setArgumentsToBeExcludedFromQueryString((array) $this->arguments['argumentsToBeExcludedFromQueryString'])
             ->setLinkAccessRestrictedPages($showAccessProtected);
 
         if (method_exists($uriBuilder, 'setUseCacheHash')) {
@@ -258,11 +264,13 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         return $this->tag->render();
     }
 
-    private function getTitleValue(array $record): string
+    /**
+     * @param array $record
+     * @return string
+     */
+    private function getTitleValue($record)
     {
-        /** @var string $titleFields */
-        $titleFields = $this->arguments['titleFields'];
-        $titleFieldList = GeneralUtility::trimExplode(',', $titleFields);
+        $titleFieldList = GeneralUtility::trimExplode(',', $this->arguments['titleFields']);
         foreach ($titleFieldList as $titleFieldName) {
             if (!empty($record[$titleFieldName])) {
                 return $record[$titleFieldName];

@@ -1,20 +1,16 @@
-:navigation-title: variable.pregMatch
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-variable-pregmatch:
 
-========================================================
-variable.pregMatch ViewHelper `<vhs:variable.pregMatch>`
-========================================================
+==================
+variable.pregMatch
+==================
 
 
 PregMatch regular expression ViewHelper
 =======================================
 
 Implementation of `preg_match' for Fluid.
-
-
-.. _fluidtypo3-vhs-variable-pregmatch_arguments:
 
 Arguments
 =========
@@ -42,7 +38,7 @@ pattern
    mixed
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    Regex pattern to match against
 

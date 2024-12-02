@@ -19,6 +19,6 @@ class WidthViewHelper extends AbstractImageInfoViewHelper
     public function render()
     {
         $info = $this->getInfo();
-        return $info['width'] ?? 0;
+        return true === isset($info['width']) ? $info['width'] : 0;
     }
 }

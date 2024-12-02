@@ -29,7 +29,12 @@ class IntersectViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function initializeArguments(): void
+    /**
+     * Initialize
+     *
+     * @return void
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
 
@@ -38,6 +43,9 @@ class IntersectViewHelper extends AbstractViewHelper
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return array
      */
     public static function renderStatic(

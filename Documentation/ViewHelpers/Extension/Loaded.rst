@@ -1,11 +1,10 @@
-:navigation-title: extension.loaded
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-extension-loaded:
 
-====================================================
-extension.loaded ViewHelper `<vhs:extension.loaded>`
-====================================================
+================
+extension.loaded
+================
 
 
 Extension: Loaded (Condition) ViewHelper
@@ -25,9 +24,6 @@ Example:
     <v:extension.loaded extensionName="news">
         ...
     </v:extension.loaded>
-
-
-.. _fluidtypo3-vhs-extension-loaded_arguments:
 
 Arguments
 =========
@@ -68,6 +64,6 @@ extensionName
    string
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    Name of extension that must be loaded in order to evaluate as TRUE, UpperCamelCase

@@ -1,11 +1,10 @@
-:navigation-title: condition.context.isProduction
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-condition-context-isproduction:
 
-================================================================================
-condition.context.isProduction ViewHelper `<vhs:condition.context.isProduction>`
-================================================================================
+==============================
+condition.context.isProduction
+==============================
 
 
 Context: IsProduction
@@ -21,9 +20,6 @@ The context TYPO3 CMS runs in is specified through the environment variable TYPO
 It can be set by .htaccess or in the server configuration
 
 See: http://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Bootstrapping/Index.html#bootstrapping-context
-
-
-.. _fluidtypo3-vhs-condition-context-isproduction_arguments:
 
 Arguments
 =========

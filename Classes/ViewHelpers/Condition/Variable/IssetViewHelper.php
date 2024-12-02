@@ -34,7 +34,12 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  */
 class IssetViewHelper extends AbstractConditionViewHelper
 {
-    public function initializeArguments(): void
+    /**
+     * Initialize arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
         $this->registerArgument('name', 'string', 'name of the variable', true);
@@ -42,8 +47,6 @@ class IssetViewHelper extends AbstractConditionViewHelper
 
     public static function verdict(array $arguments, RenderingContextInterface $renderingContext)
     {
-        /** @var string $name */
-        $name = $arguments['name'];
-        return $renderingContext->getVariableProvider()->exists($name);
+        return $renderingContext->getVariableProvider()->exists($arguments['name']);
     }
 }

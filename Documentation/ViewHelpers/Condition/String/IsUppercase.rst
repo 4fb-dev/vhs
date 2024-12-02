@@ -1,11 +1,10 @@
-:navigation-title: condition.string.isUppercase
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-condition-string-isuppercase:
 
-============================================================================
-condition.string.isUppercase ViewHelper `<vhs:condition.string.isUppercase>`
-============================================================================
+============================
+condition.string.isUppercase
+============================
 
 
 Condition: String is lowercase
@@ -14,9 +13,6 @@ Condition: String is lowercase
 Condition ViewHelper which renders the `then` child if provided
 string is uppercase. By default only the first letter is tested.
 To test the full string set $fullString to TRUE.
-
-
-.. _fluidtypo3-vhs-condition-string-isuppercase_arguments:
 
 Arguments
 =========
@@ -57,7 +53,7 @@ string
    string
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    String to check
 

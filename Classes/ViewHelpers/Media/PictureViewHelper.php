@@ -48,7 +48,13 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'picture';
 
-    public function initializeArguments(): void
+    /**
+     * Initialize arguments.
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
         $this->registerArgument('src', 'mixed', 'Path to the image or FileReference.', true);
@@ -78,7 +84,7 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
     {
         $src = $this->arguments['src'];
         $treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
-        if ($src instanceof FileReference) {
+        if (is_object($src) && $src instanceof FileReference) {
             $src = $src->getUid();
             $treatIdAsReference = true;
         }
@@ -95,29 +101,20 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
         }
         $defaultSource = $viewHelperVariableContainer->get(static::SCOPE, static::SCOPE_VARIABLE_DEFAULT_SOURCE);
 
-        /** @var string $alt */
-        $alt = $this->arguments['alt'];
-
         $defaultImage = new TagBuilder('img');
         $defaultImage->addAttribute('src', is_scalar($defaultSource) ? (string) $defaultSource : '');
-        $defaultImage->addAttribute('alt', $alt);
+        $defaultImage->addAttribute('alt', $this->arguments['alt']);
 
-        /** @var string|null $class */
-        $class = $this->arguments['class'];
-        if (!empty($class)) {
-            $defaultImage->addAttribute('class', $class);
+        if (false === empty($this->arguments['class'])) {
+            $defaultImage->addAttribute('class', $this->arguments['class']);
         }
 
-        /** @var string|null $title */
-        $title = $this->arguments['title'];
-        if (!empty($title)) {
-            $defaultImage->addAttribute('title', $title);
+        if (false === empty($this->arguments['title'])) {
+            $defaultImage->addAttribute('title', $this->arguments['title']);
         }
 
-        /** @var string|null $loading */
-        $loading = $this->arguments['loading'];
-        if (in_array($loading ?? '', ['lazy', 'eager', 'auto'], true)) {
-            $defaultImage->addAttribute('loading', $loading);
+        if (in_array($this->arguments['loading'] ?? '', ['lazy', 'eager', 'auto'], true)) {
+            $defaultImage->addAttribute('loading', $this->arguments['loading']);
         }
 
         $content .= $defaultImage->render();

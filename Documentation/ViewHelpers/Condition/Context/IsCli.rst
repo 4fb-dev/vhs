@@ -1,11 +1,10 @@
-:navigation-title: condition.context.isCli
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-condition-context-iscli:
 
-==================================================================
-condition.context.isCli ViewHelper `<vhs:condition.context.isCli>`
-==================================================================
+=======================
+condition.context.isCli
+=======================
 
 
 Condition: Is context CLI?
@@ -32,9 +31,6 @@ Examples
            Maybe BE, maybe FE.
         </f:else>
     </v:condition.context.isCli>
-
-
-.. _fluidtypo3-vhs-condition-context-iscli_arguments:
 
 Arguments
 =========

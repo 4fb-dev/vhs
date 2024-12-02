@@ -47,7 +47,11 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
      */
     protected $configurationManager;
 
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
+    /**
+     * @param ConfigurationManagerInterface $configurationManager
+     * @return void
+     */
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
     {
         $this->configurationManager = $configurationManager;
         /** @var ContentObjectRenderer $contentObject */
@@ -55,7 +59,13 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
         $this->contentObject = $contentObject;
     }
 
-    public function initializeArguments(): void
+    /**
+     * Initialize arguments.
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
@@ -119,12 +129,10 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
             'treatIdAsReference' => $treatIdAsRerefence,
             'params' => '',
         ];
-        /** @var int $quality */
         $quality = $this->arguments['quality'];
-        /** @var string $format */
         $format = $this->arguments['format'];
 
-        if (!empty($format)) {
+        if (false === empty($format)) {
             $setup['ext'] = $format;
         }
         if (0 < intval($quality)) {
@@ -139,20 +147,12 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
 
         FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);
 
-        if ($result['processedFile'] ?? false) {
-            $imageUrl = $result['processedFile']->getPublicUrl();
-        } else {
-            $imageUrl = $result[3] ?? '';
-        }
-        $src = $this->preprocessSourceUri(rawurldecode($imageUrl));
+        $src = $this->preprocessSourceUri(rawurldecode($result[3] ?? ''));
 
-        /** @var string|null $media */
-        $media = $this->arguments['media'];
-
-        if (null === $media) {
+        if (null === $this->arguments['media']) {
             $viewHelperVariableContainer->addOrUpdate(static::SCOPE, static::SCOPE_VARIABLE_DEFAULT_SOURCE, $src);
         } else {
-            $this->tag->addAttribute('media', $media);
+            $this->tag->addAttribute('media', $this->arguments['media']);
         }
 
         $this->tag->addAttribute('srcset', $src);
@@ -161,13 +161,16 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
 
     /**
      * Turns a relative source URI into an absolute URL
-     * if required.
+     * if required
+     *
+     * @param string $src
+     * @return string
      */
-    public function preprocessSourceUri(string $src): string
+    public function preprocessSourceUri($src)
     {
-        if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
+        if (false === empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
             $src = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'] . $src;
-        } elseif (ContextUtility::isBackend() || !$this->arguments['relative']) {
+        } elseif (ContextUtility::isBackend() || false === (boolean) $this->arguments['relative']) {
             if (GeneralUtility::isValidUrl($src)) {
                 $src = ltrim($src, '/');
             } elseif (ContextUtility::isFrontend()) {

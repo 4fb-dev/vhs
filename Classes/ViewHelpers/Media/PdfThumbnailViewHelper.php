@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
  * Converts the provided PDF file into a PNG thumbnail and renders
@@ -19,7 +20,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class PdfThumbnailViewHelper extends ImageViewHelper
 {
-    public function initializeArguments(): void
+    /**
+     * @return void
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
         $this->registerArgument('path', 'string', 'DEPRECATED: Use src instead');
@@ -67,19 +71,13 @@ class PdfThumbnailViewHelper extends ImageViewHelper
      */
     public function render()
     {
-        /** @var string $srcArgument */
-        $srcArgument = $this->arguments['src'];
-        $src = GeneralUtility::getFileAbsFileName($srcArgument);
-        if (!file_exists($src)) {
+        $src = GeneralUtility::getFileAbsFileName($this->arguments['src']);
+        if (false === file_exists($src)) {
             return '';
         }
-        /** @var int $density */
         $density = $this->arguments['density'];
-        /** @var int $rotate */
         $rotate = $this->arguments['rotate'];
-        /** @var int $page */
-        $page = $this->arguments['page'];
-        /** @var string|null $background */
+        $page = (integer) $this->arguments['page'];
         $background = $this->arguments['background'];
         $forceOverwrite = (boolean) $this->arguments['forceOverwrite'];
         $filename = basename($src);
@@ -91,7 +89,9 @@ class PdfThumbnailViewHelper extends ImageViewHelper
         } else {
             $colorspace = 'RGB';
         }
-        $tempPath = 'typo3temp/assets/';
+        $tempPath = (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '8.0', '>='))
+            ? 'typo3temp/assets/'
+            : 'typo3temp/';
         $path = GeneralUtility::getFileAbsFileName(
             $tempPath
             . 'vhs-pdf-'
@@ -102,7 +102,7 @@ class PdfThumbnailViewHelper extends ImageViewHelper
             . filemtime($src)
             . '.png'
         );
-        if (!file_exists($path) || $forceOverwrite) {
+        if (false === file_exists($path) || true === $forceOverwrite) {
             $arguments = '-colorspace ' . $colorspace;
             if (0 < (integer) $density) {
                 $arguments .= ' -density ' . $density;

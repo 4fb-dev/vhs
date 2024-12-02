@@ -1,11 +1,10 @@
-:navigation-title: variable.register.set
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-variable-register-set:
 
-==============================================================
-variable.register.set ViewHelper `<vhs:variable.register.set>`
-==============================================================
+=====================
+variable.register.set
+=====================
 
 
 Variable\Register: Set
@@ -15,9 +14,6 @@ Sets a single register in the TSFE-register.
 
 Using as `{value -> v:variable.register.set(name: 'myVar')}` makes $GLOBALS["TSFE"]->register['myVar']
 contain `{value}`.
-
-
-.. _fluidtypo3-vhs-variable-register-set_arguments:
 
 Arguments
 =========
@@ -45,6 +41,6 @@ name
    string
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    Name of register

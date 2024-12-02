@@ -12,7 +12,7 @@ use FluidTYPO3\Vhs\Tests\Fixtures\Classes\AccessibleExtensionManagementUtility;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use TYPO3\CMS\Core\Package\PackageManager;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
@@ -48,9 +48,10 @@ class LipsumViewHelperTest extends AbstractViewHelperTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $mockContentObject->method('parseFunc')->willReturn('foobar');
-        $this->singletonInstances[ConfigurationManagerInterface::class] = $this->getMockBuilder(ConfigurationManagerInterface::class)
-            ->getMockForAbstractClass();
-        $this->singletonInstances[ConfigurationManagerInterface::class]->method('getContentObject')
+        $this->singletonInstances[ConfigurationManager::class] = $this->getMockBuilder(ConfigurationManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->singletonInstances[ConfigurationManager::class]->method('getContentObject')
             ->willReturn($mockContentObject);
 
         $GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'] = [];

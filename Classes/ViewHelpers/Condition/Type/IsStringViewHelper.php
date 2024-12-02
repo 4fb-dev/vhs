@@ -18,7 +18,12 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  */
 class IsStringViewHelper extends AbstractConditionViewHelper
 {
-    public function initializeArguments(): void
+    /**
+     * Initialize arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
         $this->registerArgument('value', 'mixed', 'value to check', true);

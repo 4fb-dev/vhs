@@ -21,9 +21,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 trait PageRendererTrait
 {
     /**
-     * Provides a shared (singleton) instance of PageRenderer.
+     * Provides a shared (singleton) instance of PageRenderer
+     *
+     * @return PageRenderer
      */
-    protected static function getPageRenderer(): PageRenderer
+    protected static function getPageRenderer()
     {
         /** @var PageRenderer $pageRenderer */
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);

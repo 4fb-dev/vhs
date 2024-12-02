@@ -1,17 +1,13 @@
-:navigation-title: iterator.merge
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-iterator-merge:
 
-================================================
-iterator.merge ViewHelper `<vhs:iterator.merge>`
-================================================
+==============
+iterator.merge
+==============
 
 
 Merges arrays/Traversables $a and $b into an array.
-
-
-.. _fluidtypo3-vhs-iterator-merge_arguments:
 
 Arguments
 =========

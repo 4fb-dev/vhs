@@ -29,12 +29,20 @@ class LastViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function initializeArguments(): void
+    /**
+     * Initialize arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument('haystack', 'mixed', 'Haystack in which to look for needle');
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(

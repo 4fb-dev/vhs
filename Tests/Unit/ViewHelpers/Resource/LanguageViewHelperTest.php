@@ -14,7 +14,6 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Class LanguageViewHelperTest
@@ -47,10 +46,6 @@ class LanguageViewHelperTest extends AbstractViewHelperTestCase
      */
     public function testRenderFailsWhenUnableToResolveExtensionName()
     {
-        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $output = $this->executeViewHelper();
         self::assertSame([], $output);
     }

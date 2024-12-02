@@ -1,11 +1,10 @@
-:navigation-title: variable.extensionConfiguration
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-variable-extensionconfiguration:
 
-==================================================================================
-variable.extensionConfiguration ViewHelper `<vhs:variable.extensionConfiguration>`
-==================================================================================
+===============================
+variable.extensionConfiguration
+===============================
 
 
 ExtConf ViewHelper
@@ -21,9 +20,6 @@ Examples
     {v:variable.extensionConfiguration(extensionKey:'foo',path:'bar.baz')}
 
 Returns setting `bar.baz` from extension 'foo' located in `ext_conf_template.txt`.
-
-
-.. _fluidtypo3-vhs-variable-extensionconfiguration_arguments:
 
 Arguments
 =========

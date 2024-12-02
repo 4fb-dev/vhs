@@ -1,11 +1,10 @@
-:navigation-title: asset.prefetch
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-asset-prefetch:
 
-================================================
-asset.prefetch ViewHelper `<vhs:asset.prefetch>`
-================================================
+==============
+asset.prefetch
+==============
 
 
 Asset DNS Prefetching ViewHelper
@@ -39,9 +38,6 @@ Example usage:
     <v:asset.prefetch domains="fedext.net,ajax.google.com" />
 
 See: https://developer.mozilla.org/en-US/docs/Controlling_DNS_prefetching
-
-
-.. _fluidtypo3-vhs-asset-prefetch_arguments:
 
 Arguments
 =========
@@ -263,7 +259,7 @@ domains
    mixed
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    Domain DNS names to prefetch. By default will add all sys_domain record DNS names
 

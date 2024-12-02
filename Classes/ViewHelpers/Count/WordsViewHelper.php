@@ -47,13 +47,19 @@ class WordsViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function initializeArguments(): void
+    /**
+     * @return void
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
         $this->registerArgument('string', 'string', 'String to count, if not provided as tag content');
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return integer
      */
     public static function renderStatic(

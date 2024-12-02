@@ -1,19 +1,15 @@
-:navigation-title: media.source
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-media-source:
 
-============================================
-media.source ViewHelper `<vhs:media.source>`
-============================================
+============
+media.source
+============
 
 
 Used in conjuntion with the `v:media.PictureViewHelper`.
 Please take a look at the `v:media.PictureViewHelper` documentation for more
 information.
-
-
-.. _fluidtypo3-vhs-media-source_arguments:
 
 Arguments
 =========

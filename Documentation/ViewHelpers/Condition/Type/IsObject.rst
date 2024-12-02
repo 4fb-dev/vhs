@@ -1,11 +1,10 @@
-:navigation-title: condition.type.isObject
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-condition-type-isobject:
 
-==================================================================
-condition.type.isObject ViewHelper `<vhs:condition.type.isObject>`
-==================================================================
+=======================
+condition.type.isObject
+=======================
 
 
 Condition: Value is an object
@@ -13,9 +12,6 @@ Condition: Value is an object
 
 Condition ViewHelper which renders the `then` child if provided
 value is an object.
-
-
-.. _fluidtypo3-vhs-condition-type-isobject_arguments:
 
 Arguments
 =========
@@ -56,6 +52,6 @@ value
    mixed
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    Value to check

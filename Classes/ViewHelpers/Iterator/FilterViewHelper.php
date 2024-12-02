@@ -34,7 +34,10 @@ class FilterViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function initializeArguments(): void
+    /**
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument('subject', 'mixed', 'The subject iterator/array to be filtered');
         $this->registerArgument('filter', 'mixed', 'The comparison value');
@@ -62,6 +65,9 @@ class FilterViewHelper extends AbstractViewHelper
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -69,22 +75,20 @@ class FilterViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        /** @var array|iterable $subject */
         $subject = $arguments['subject'] ?? $renderChildrenClosure();
         $filter = $arguments['filter'];
-        /** @var string $propertyName */
         $propertyName = $arguments['propertyName'];
         $preserveKeys = (boolean) $arguments['preserveKeys'];
         $invert = (boolean) $arguments['invert'];
         $nullFilter = (boolean) $arguments['nullFilter'];
 
-        if (!is_array($subject) && !$subject instanceof \Traversable) {
+        if (null === $subject || (false === is_array($subject) && false === $subject instanceof \Traversable)) {
             return [];
         }
-        if ((!$nullFilter && null === $filter) || '' === $filter) {
+        if ((false === (boolean) $nullFilter && null === $filter) || '' === $filter) {
             return $subject;
         }
-        if ($subject instanceof \Traversable) {
+        if (true === $subject instanceof \Traversable) {
             $subject = iterator_to_array($subject);
         }
         $items = [];
@@ -94,7 +98,7 @@ class FilterViewHelper extends AbstractViewHelper
                 $items[$key] = $item;
             }
         }
-        return $preserveKeys ? $items : array_values($items);
+        return true === $preserveKeys ? $items : array_values($items);
     }
 
     /**
@@ -105,10 +109,12 @@ class FilterViewHelper extends AbstractViewHelper
      * @param mixed $item
      * @param mixed $filter Could be a single value or an Array. If so the function returns TRUE when
      *                      $item matches with any value in it.
+     * @param string $propertyName
+     * @return boolean
      */
-    protected static function filter($item, $filter, ?string $propertyName): bool
+    protected static function filter($item, $filter, $propertyName)
     {
-        if (!empty($propertyName) && (is_object($item) || is_array($item))) {
+        if (false === empty($propertyName) && (true === is_object($item) || true === is_array($item))) {
             $value = ObjectAccess::getPropertyPath($item, $propertyName);
         } else {
             $value = $item;

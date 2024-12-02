@@ -1,11 +1,10 @@
-:navigation-title: math.sum
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-math-sum:
 
-====================================
-math.sum ViewHelper `<vhs:math.sum>`
-====================================
+========
+math.sum
+========
 
 
 Math: Sum
@@ -16,9 +15,6 @@ If $a is an array and $b is not provided then array_sum is
 used to return a single numeric value. If both $a and $b are
 arrays, each member of $a is summed against the corresponding
 member in $b compared using index.
-
-
-.. _fluidtypo3-vhs-math-sum_arguments:
 
 Arguments
 =========

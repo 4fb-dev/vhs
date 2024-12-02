@@ -1,17 +1,13 @@
-:navigation-title: page.resources
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-page-resources:
 
-================================================
-page.resources ViewHelper `<vhs:page.resources>`
-================================================
+==============
+page.resources
+==============
 
 
 Page FAL resources ViewHelper.
-
-
-.. _fluidtypo3-vhs-page-resources_arguments:
 
 Arguments
 =========

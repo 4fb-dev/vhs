@@ -1,11 +1,10 @@
-:navigation-title: condition.type.isDomainObject
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-condition-type-isdomainobject:
 
-==============================================================================
-condition.type.isDomainObject ViewHelper `<vhs:condition.type.isDomainObject>`
-==============================================================================
+=============================
+condition.type.isDomainObject
+=============================
 
 
 Condition: Value is a domain object
@@ -14,9 +13,6 @@ Condition: Value is a domain object
 Condition ViewHelper which renders the `then` child if provided
 value is a domain object, i.e. it inherits from extbase's base
 class.
-
-
-.. _fluidtypo3-vhs-condition-type-isdomainobject_arguments:
 
 Arguments
 =========
@@ -57,7 +53,7 @@ value
    mixed
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    Value to check
 

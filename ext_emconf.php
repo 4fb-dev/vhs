@@ -18,13 +18,13 @@ $EM_CONF['vhs'] = array (
   'modify_tables' => '',
   'clearCacheOnLoad' => 0,
   'lockType' => '',
-  'version' => '7.0.6',
+  'version' => '6.1.3',
   'constraints' =>
   array (
     'depends' =>
     array (
-      'php' => '7.4.0-8.3.99',
-      'typo3' => '10.4.0-12.4.99',
+      'php' => '7.4.0-8.2.99',
+      'typo3' => '10.4.0-11.5.99',
     ),
     'conflicts' =>
     array (

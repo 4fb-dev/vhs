@@ -12,6 +12,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
+use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
@@ -23,7 +24,22 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  */
 class HasValidatorViewHelper extends AbstractConditionViewHelper
 {
-    public function initializeArguments(): void
+    /**
+     * @var string
+     */
+    const ALTERNATE_FORM_VIEWHELPER_CLASSNAME = FormViewHelper::class;
+
+    /**
+     * @var ReflectionService
+     */
+    protected static $staticReflectionService;
+
+    /**
+     * Initialize
+     *
+     * @return void
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
         $this->registerArgument(

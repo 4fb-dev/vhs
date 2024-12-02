@@ -19,7 +19,12 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  */
 class IsNullViewHelper extends AbstractConditionViewHelper
 {
-    public function initializeArguments(): void
+    /**
+     * Initialize arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
         $this->registerArgument('value', 'string', 'value to check', true);

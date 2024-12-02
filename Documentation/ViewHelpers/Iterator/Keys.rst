@@ -1,17 +1,13 @@
-:navigation-title: iterator.keys
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-iterator-keys:
 
-==============================================
-iterator.keys ViewHelper `<vhs:iterator.keys>`
-==============================================
+=============
+iterator.keys
+=============
 
 
 Gets keys from an iterator.
-
-
-.. _fluidtypo3-vhs-iterator-keys_arguments:
 
 Arguments
 =========

@@ -1,11 +1,10 @@
-:navigation-title: try
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-try:
 
-==========================
-try ViewHelper `<vhs:try>`
-==========================
+===
+try
+===
 
 
 Try ViewHelper
@@ -86,9 +85,6 @@ from this and imagine that a plain Exception happens on errors.
     {v:try(then: '{badObject -> v:format.json.encode()}', else: '{"validJson": "validValue"')}
     <!-- Note: be VERY careful about the inline JSON syntax! It's very close to Fluids. Always
          double quote your object variables' names, that prevents almost all issues! -->
-
-
-.. _fluidtypo3-vhs-try_arguments:
 
 Arguments
 =========

@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\RequestResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -58,12 +57,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class TemplateViewHelper extends AbstractRenderViewHelper
 {
-    public function initializeArguments(): void
+    public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerArgument('file', 'string', 'Path to template file, EXT:myext/... paths supported');
-        $this->registerArgument('variables', 'array', 'Optional array of template variables for rendering');
-        $this->registerArgument('format', 'string', 'Optional format of the template(s) being rendered');
+        $this->registerArgument('file', 'string', 'Path to template file, EXT:myext/... paths supported', false);
+        $this->registerArgument('variables', 'array', 'Optional array of template variables for rendering', false);
+        $this->registerArgument('format', 'string', 'Optional format of the template(s) being rendered', false);
         $this->registerArgument(
             'paths',
             'array',
@@ -76,23 +75,16 @@ class TemplateViewHelper extends AbstractRenderViewHelper
      */
     public function render()
     {
-        /** @var string|null $file */
         $file = $this->arguments['file'];
         if (null === $file) {
-            /** @var string|null $file */
             $file = $this->renderChildren();
         }
-
-        $file = GeneralUtility::getFileAbsFileName((string) $file);
+        $file = GeneralUtility::getFileAbsFileName($file);
         $view = static::getPreparedView();
-        if (method_exists($view, 'setRequest')) {
-            $view->setRequest(RequestResolver::resolveRequestFromRenderingContext($this->renderingContext));
-        }
         $view->setTemplatePathAndFilename($file);
         if (is_array($this->arguments['variables'])) {
             $view->assignMultiple($this->arguments['variables']);
         }
-        /** @var string|null $format */
         $format = $this->arguments['format'];
         if (null !== $format) {
             $view->setFormat($format);

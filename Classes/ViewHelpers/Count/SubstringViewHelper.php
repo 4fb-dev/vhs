@@ -47,7 +47,10 @@ class SubstringViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function initializeArguments(): void
+    /**
+     * @return void
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
         $this->registerArgument('haystack', 'string', 'String to count substring in, if not provided as tag content');
@@ -55,6 +58,9 @@ class SubstringViewHelper extends AbstractViewHelper
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return integer
      */
     public static function renderStatic(
@@ -62,11 +68,9 @@ class SubstringViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        /** @var string $string */
-        $string = $arguments['string'];
         return mb_substr_count(
             $renderChildrenClosure(),
-            $string
+            $arguments['string']
         );
     }
 }

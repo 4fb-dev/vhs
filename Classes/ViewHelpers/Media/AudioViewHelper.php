@@ -26,6 +26,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  */
 class AudioViewHelper extends AbstractMediaViewHelper
 {
+
     use TagViewHelperTrait;
 
     /**
@@ -33,16 +34,33 @@ class AudioViewHelper extends AbstractMediaViewHelper
      */
     protected $tagName = 'audio';
 
-    protected array $validTypes = ['mp3', 'ogg', 'oga', 'wav'];
-    protected array $mimeTypesMap = [
+    /**
+     * @var array
+     */
+    protected $validTypes = ['mp3', 'ogg', 'oga', 'wav'];
+
+    /**
+     * @var array
+     */
+    protected $mimeTypesMap = [
         'mp3' => 'audio/mpeg',
         'ogg' => 'audio/ogg',
         'oga' => 'audio/ogg',
         'wav' => 'audio/wav'
     ];
-    protected array $validPreloadModes = ['auto', 'metadata', 'none'];
 
-    public function initializeArguments(): void
+    /**
+     * @var array
+     */
+    protected $validPreloadModes = ['auto', 'metadata', 'none'];
+
+    /**
+     * Initialize arguments.
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
@@ -97,7 +115,8 @@ class AudioViewHelper extends AbstractMediaViewHelper
         $this->registerArgument(
             'unsupported',
             'string',
-            'Add a message for old browsers like Internet Explorer 9 without audio support.'
+            'Add a message for old browsers like Internet Explorer 9 without audio support.',
+            false
         );
     }
 
@@ -152,19 +171,19 @@ class AudioViewHelper extends AbstractMediaViewHelper
             'height'  => $this->arguments['height'],
             'preload' => 'auto',
         ];
-        if ($this->arguments['autoplay']) {
+        if (true === (boolean) $this->arguments['autoplay']) {
             $tagAttributes['autoplay'] = 'autoplay';
         }
-        if ($this->arguments['controls']) {
+        if (true === (boolean) $this->arguments['controls']) {
             $tagAttributes['controls'] = 'controls';
         }
-        if ($this->arguments['loop']) {
+        if (true === (boolean) $this->arguments['loop']) {
             $tagAttributes['loop'] = 'loop';
         }
-        if ($this->arguments['muted']) {
+        if (true === (boolean) $this->arguments['muted']) {
             $tagAttributes['muted'] = 'muted';
         }
-        if (in_array($this->arguments['preload'], $this->validPreloadModes)) {
+        if (true === in_array($this->arguments['preload'], $this->validPreloadModes)) {
             $tagAttributes['preload'] = $this->arguments['preload'];
         }
         if (null !== $this->arguments['poster']) {

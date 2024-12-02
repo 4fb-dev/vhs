@@ -40,6 +40,13 @@ class IsChildPageViewHelperTest extends AbstractViewHelperTestCase
         parent::setUp();
     }
 
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        unset($GLOBALS['TSFE']);
+    }
+
     public function testRendersThenIfChildPageAndIsSiteRootNotRespected(): void
     {
         $arguments = ['pageUid' => 0, 'then' => 'then', 'else' => 'else', 'respectSiteRoot' => false];

@@ -19,7 +19,12 @@ class HashViewHelper extends AbstractViewHelper
 {
     use CompileWithContentArgumentAndRenderStatic;
 
-    public function initializeArguments(): void
+    /**
+     * Initialize
+     *
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument('content', 'mixed', 'Content to hash');
         $this->registerArgument(
@@ -32,6 +37,9 @@ class HashViewHelper extends AbstractViewHelper
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -39,10 +47,8 @@ class HashViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        /** @var string $algorithm */
-        $algorithm = $arguments['algorithm'];
         $content = $renderChildrenClosure();
-        $content = hash($algorithm, $content);
+        $content = hash($arguments['algorithm'], $content, false);
         return $content;
     }
 }

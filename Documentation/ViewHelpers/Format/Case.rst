@@ -1,19 +1,15 @@
-:navigation-title: format.case
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-format-case:
 
-==========================================
-format.case ViewHelper `<vhs:format.case>`
-==========================================
+===========
+format.case
+===========
 
 
 Case Formatting ViewHelper
 
 Formats string case according to provided arguments.
-
-
-.. _fluidtypo3-vhs-format-case_arguments:
 
 Arguments
 =========

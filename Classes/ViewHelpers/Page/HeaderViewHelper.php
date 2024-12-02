@@ -13,9 +13,13 @@ use FluidTYPO3\Vhs\ViewHelpers\Asset\AbstractAssetViewHelper;
 
 /**
  * ViewHelper used to place header blocks in document header
+ *
+ * @package Vhs
+ * @subpackage ViewHelpers\Page
  */
 class HeaderViewHelper extends AbstractAssetViewHelper
 {
+
     /**
      * Render method
      *
@@ -29,7 +33,7 @@ class HeaderViewHelper extends AbstractAssetViewHelper
         $content = $this->getContent();
         $name = $this->getName();
         $overwrite = $this->getOverwrite();
-        if (isset($GLOBALS['TSFE']->additionalHeaderData[$name]) && !$overwrite) {
+        if (true === isset($GLOBALS['TSFE']->additionalHeaderData[$name]) && false === $overwrite) {
             return;
         }
         $GLOBALS['TSFE']->additionalHeaderData[$name] = $content;

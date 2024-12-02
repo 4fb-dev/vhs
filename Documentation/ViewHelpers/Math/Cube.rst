@@ -1,19 +1,15 @@
-:navigation-title: math.cube
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-math-cube:
 
-======================================
-math.cube ViewHelper `<vhs:math.cube>`
-======================================
+=========
+math.cube
+=========
 
 
 Math: Square
 
 Performs $a ^ 3.
-
-
-.. _fluidtypo3-vhs-math-cube_arguments:
 
 Arguments
 =========

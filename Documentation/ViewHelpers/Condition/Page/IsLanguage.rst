@@ -1,11 +1,10 @@
-:navigation-title: condition.page.isLanguage
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-condition-page-islanguage:
 
-======================================================================
-condition.page.isLanguage ViewHelper `<vhs:condition.page.isLanguage>`
-======================================================================
+=========================
+condition.page.isLanguage
+=========================
 
 
 Condition: Is current language
@@ -16,9 +15,6 @@ current language matches the provided language uid or language
 title. When using language titles like 'de' it is required to
 provide a default title to distinguish between the standard
 and a non existing language.
-
-
-.. _fluidtypo3-vhs-condition-page-islanguage_arguments:
 
 Arguments
 =========
@@ -59,7 +55,7 @@ language
    string
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    Language to check
 

@@ -1,21 +1,13 @@
-:navigation-title: resource.record
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-resource-record:
 
-==================================================
-resource.record ViewHelper `<vhs:resource.record>`
-==================================================
+===============
+resource.record
+===============
 
 
-Generic FAL resource ViewHelper.
-
-.. warning::
-   This view helper must only be used with FAL resources.
-   It is **not** meant to be used as generic data loading view helper.
-
-
-.. _fluidtypo3-vhs-resource-record_arguments:
+Generic FAL resource ViewHelper
 
 Arguments
 =========
@@ -30,7 +22,7 @@ table
    string
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    The table to lookup records.
 
@@ -43,7 +35,7 @@ field
    string
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    The field of the table associated to resources.
 

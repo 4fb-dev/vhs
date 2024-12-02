@@ -33,7 +33,12 @@ class ImplodeViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function initializeArguments(): void
+    /**
+     * Initialize
+     *
+     * @return void
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
 
@@ -49,6 +54,9 @@ class ImplodeViewHelper extends AbstractViewHelper
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -56,18 +64,14 @@ class ImplodeViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        /** @var string|null $as */
-        $as = $arguments['as'];
-        /** @var array $content */
-        $content = !empty($as)
+        $content = !empty($arguments['as'])
             ? $arguments['content']
             : ($arguments['content'] ?? $renderChildrenClosure());
-        /** @var string $glue */
         $glue = $arguments['glue'];
         $output = implode($glue, $content);
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $output,
-            $as,
+            $arguments['as'],
             $renderingContext,
             $renderChildrenClosure
         );

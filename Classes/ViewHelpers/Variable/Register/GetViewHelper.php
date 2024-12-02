@@ -38,12 +38,18 @@ class GetViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function initializeArguments(): void
+    /**
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument('name', 'string', 'Name of register');
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -52,9 +58,13 @@ class GetViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         $name = $renderChildrenClosure();
-        if (!($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController) {
+        if (false === ($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController) {
             return null;
         }
-        return $GLOBALS['TSFE']->register[$name] ?? null;
+        $value = null;
+        if (true === isset($GLOBALS['TSFE']->register[$name])) {
+            $value = $GLOBALS['TSFE']->register[$name];
+        }
+        return $value;
     }
 }

@@ -15,10 +15,18 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  *
  * Condition ViewHelper which renders the `then` child if type of
  * provided value is a boolean.
+ *
+ * @package Vhs
+ * @subpackage ViewHelpers\Condition\Type
  */
 class IsBooleanViewHelper extends AbstractConditionViewHelper
 {
-    public function initializeArguments(): void
+    /**
+     * Initialize arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
         $this->registerArgument('value', 'mixed', 'value to check', true);

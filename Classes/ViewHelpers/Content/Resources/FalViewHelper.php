@@ -42,10 +42,23 @@ class FalViewHelper extends \FluidTYPO3\Vhs\ViewHelpers\Resource\Record\FalViewH
     const DEFAULT_TABLE = 'tt_content';
     const DEFAULT_FIELD = 'image';
 
-    protected string $table = self::DEFAULT_TABLE;
-    protected string $field = self::DEFAULT_FIELD;
+    /**
+     * @var string
+     */
+    protected $table = self::DEFAULT_TABLE;
 
-    public function initializeArguments(): void
+    /**
+     * @var string
+     */
+    protected $field = self::DEFAULT_FIELD;
+
+    /**
+     * Initialize arguments.
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
 

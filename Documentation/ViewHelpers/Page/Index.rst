@@ -5,8 +5,8 @@ page
 ====
 
 
-* 11 ViewHelpers documented
-* 2 Sub namespaces
+* 12 ViewHelpers documented
+* 3 Sub namespaces
 
 .. toctree::
    :titlesonly:
@@ -21,6 +21,7 @@ page
    LanguageMenu
    Language
    Link
+   Menu
    Resources
    Rootline
    StaticPrefix

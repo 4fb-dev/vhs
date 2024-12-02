@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format\Placeholder;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -24,7 +25,12 @@ class LipsumViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
-    public function initializeArguments(): void
+    /**
+     * Initialize arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument('lipsum', 'string', 'Optional, custom lipsum source');
         $this->registerArgument('paragraphs', 'integer', 'Number of paragraphs to output');
@@ -47,6 +53,9 @@ class LipsumViewHelper extends AbstractViewHelper
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed|string
      */
     public static function renderStatic(
@@ -54,7 +63,6 @@ class LipsumViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        /** @var string $lipsum */
         $lipsum = $arguments['lipsum'];
         if (mb_strlen($lipsum) === 0) {
             $lipsum = static::getDefaultLoremIpsum();
@@ -65,23 +73,18 @@ class LipsumViewHelper extends AbstractViewHelper
             // argument is most likely a file reference.
             $sourceFile = GeneralUtility::getFileAbsFileName($lipsum);
             if (file_exists($sourceFile)) {
-                /** @var string $lipsum */
                 $lipsum = file_get_contents($sourceFile);
             } else {
                 return 'Vhs LipsumViewHelper was asked to load Lorem Ipsum from a file which does not exist. ' .
                     'The file was: ' . $sourceFile;
             }
         }
-        $lipsum = (string) preg_replace('/[\\r\\n]{1,}/i', "\n", $lipsum);
-        /** @var int $skew */
-        $skew = $arguments['skew'];
-        /** @var int $paragraphsCount */
-        $paragraphsCount = $arguments['paragraphs'];
+        $lipsum = preg_replace('/[\\r\\n]{1,}/i', "\n", $lipsum);
         $paragraphs = explode("\n", $lipsum);
-        $paragraphs = array_slice($paragraphs, 0, $paragraphsCount);
+        $paragraphs = array_slice($paragraphs, 0, intval($arguments['paragraphs']));
         foreach ($paragraphs as $index => $paragraph) {
             $length = $arguments['wordsPerParagraph']
-                + rand(0 - $skew, $skew);
+                + rand(0 - intval($arguments['skew']), intval($arguments['skew']));
             $words = explode(' ', $paragraph);
             $paragraphs[$index] = implode(' ', array_slice($words, 0, $length));
         }
@@ -99,8 +102,10 @@ class LipsumViewHelper extends AbstractViewHelper
      * of course cleaned thoroughly to avoid any injection) contains
      * 20 full paragraphs of Lorem Ipsum in standard latin. No bells
      * and whistles there.
+     *
+     * @return string
      */
-    protected static function getDefaultLoremIpsum(): string
+    protected static function getDefaultLoremIpsum()
     {
         static $safeLipsum;
 
@@ -162,10 +167,13 @@ fKlBugvORmsyOJaRIQ8yH3I1EG2Y/+/6jqtrg4/xnazRv4v3i04aA==';
         return $safeLipsum;
     }
 
-    protected static function getContentObject(): ContentObjectRenderer
+    /**
+     * @return ContentObjectRenderer
+     */
+    protected static function getContentObject()
     {
         /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
+        $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
         /** @var ContentObjectRenderer $contentObject */
         $contentObject = $configurationManager->getContentObject();
         return $contentObject;

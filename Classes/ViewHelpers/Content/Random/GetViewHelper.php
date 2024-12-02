@@ -13,7 +13,13 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content\Random;
  */
 class GetViewHelper extends RenderViewHelper
 {
-    public function initializeArguments(): void
+
+    /**
+     * Initialize ViewHelper arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
         $this->overrideArgument('render', 'boolean', 'Returning variable as original table rows', false, false);

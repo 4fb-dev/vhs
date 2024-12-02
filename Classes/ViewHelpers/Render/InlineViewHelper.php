@@ -32,7 +32,12 @@ class InlineViewHelper extends AbstractRenderViewHelper
      */
     protected $escapeChildren = false;
 
-    public function initializeArguments(): void
+    /**
+     * Initialize arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument('content', 'string', 'Template code to render as Fluid (usually from a variable)');
         $this->registerArgument(

@@ -31,12 +31,21 @@ class SizeViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function initializeArguments(): void
+    /**
+     * Initialize arguments.
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
     {
         $this->registerArgument('path', 'string', 'Path to the file to determine size for.');
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return integer
      */
     public static function renderStatic(
@@ -52,7 +61,7 @@ class SizeViewHelper extends AbstractViewHelper
 
         $file = GeneralUtility::getFileAbsFileName($path);
 
-        if (!file_exists($file) || is_dir($file)) {
+        if (false === file_exists($file) || true === is_dir($file)) {
             throw new Exception(
                 'Cannot determine size of "' . $file . '". File does not exist or is a directory.',
                 1356953963

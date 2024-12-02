@@ -1,18 +1,14 @@
-:navigation-title: format.trim
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-format-trim:
 
-==========================================
-format.trim ViewHelper `<vhs:format.trim>`
-==========================================
+===========
+format.trim
+===========
 
 
 Trims $content by stripping off $characters (string list
 of individual chars to strip off, default is all whitespaces).
-
-
-.. _fluidtypo3-vhs-format-trim_arguments:
 
 Arguments
 =========

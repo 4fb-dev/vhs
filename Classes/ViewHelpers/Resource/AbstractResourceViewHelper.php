@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\DoctrineQueryProxy;
+use Doctrine\DBAL\Driver\Result;
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -23,18 +23,28 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
 {
-    public function initializeArguments(): void
+    /**
+     * Initialize arguments.
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
         $this->registerArgument(
             'identifier',
             'mixed',
-            'The FAL combined identifiers (either CSV, array or implementing Traversable).'
+            'The FAL combined identifiers (either CSV, array or implementing Traversable).',
+            false,
+            null
         );
         $this->registerArgument(
             'categories',
             'mixed',
-            'The sys_category records to select the resources from (either CSV, array or implementing Traversable).'
+            'The sys_category records to select the resources from (either CSV, array or implementing Traversable).',
+            false,
+            null
         );
         $this->registerArgument(
             'treatIdAsUid',
@@ -54,23 +64,29 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
     }
 
     /**
+     * Returns the files
+     *
+     * @param boolean $onlyProperties
+     * @param mixed $identifier
      * @param mixed $categories
+     * @return array|null
+     * @throws \RuntimeException
      */
-    public function getFiles(bool $onlyProperties = false, ?string $identifier = null, $categories = null): ?array
+    public function getFiles($onlyProperties = false, $identifier = null, $categories = null)
     {
         $identifier = $this->arrayForMixedArgument($identifier, 'identifier');
         $categories = $this->arrayForMixedArgument($categories, 'categories');
         $treatIdAsUid = (boolean) $this->arguments['treatIdAsUid'];
         $treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
 
-        if ($treatIdAsUid && $treatIdAsReference) {
+        if (true === $treatIdAsUid && true === $treatIdAsReference) {
             throw new \RuntimeException(
                 'The arguments "treatIdAsUid" and "treatIdAsReference" may not both be TRUE.',
                 1384604695
             );
         }
 
-        if (empty($identifier) && empty($categories)) {
+        if (true === empty($identifier) && true === empty($categories)) {
              return null;
         }
 
@@ -79,11 +95,11 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
                 continue;
             }
             $parts = parse_url($maybeUrl);
-            if (!isset($parts['host']) || $parts['host'] !== 'file' || !isset($parts['query'])) {
+            if (false === isset($parts['host']) || $parts['host'] !== 'file' || false === isset($parts['query'])) {
                 continue;
             }
             parse_str($parts['query'], $queryParts);
-            if (isset($queryParts['uid'])) {
+            if (true === isset($queryParts['uid'])) {
                 $identifier[$key] = $queryParts['uid'];
                 $treatIdAsUid = true;
             }
@@ -93,7 +109,7 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
         /** @var ResourceFactory $resourceFactory */
         $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
 
-        if (!empty($categories)) {
+        if (false === empty($categories)) {
             /** @var ConnectionPool $connectionPool */
             $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
             $queryBuilder = $connectionPool->getQueryBuilderForTable($this->getTablenameForSystemConfiguration());
@@ -104,7 +120,8 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
             );
             $queryBuilder->createNamedParameter($categories, Connection::PARAM_STR_ARRAY, ':categories');
 
-            $queryBuilder
+            /** @var Result $statement */
+            $statement = $queryBuilder
                 ->select('uid_foreign')
                 ->from('sys_category_record_mm')
                 ->where(
@@ -112,19 +129,19 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
                 )
                 ->andWhere(
                     $queryBuilder->expr()->in('uid_local', ':categories')
-                );
-            $statement = DoctrineQueryProxy::executeQueryOnQueryBuilder($queryBuilder);
-            $rows = DoctrineQueryProxy::fetchAllAssociative($statement);
+                )
+                ->execute();
+            $rows = $statement->fetchAllAssociative();
 
             /** @var int[] $fileUids */
             $fileUids = array_unique(array_column($rows, 'uid_foreign'));
 
-            if (empty($identifier)) {
+            if (true === empty($identifier)) {
                 foreach ($fileUids as $fileUid) {
                     try {
                         $file = $resourceFactory->getFileObject($fileUid);
 
-                        if ($onlyProperties) {
+                        if (true === $onlyProperties) {
                             $file = ResourceUtility::getFileArray($file);
                         }
 
@@ -140,9 +157,9 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
 
         foreach ($identifier as $i) {
             try {
-                if ($treatIdAsUid) {
+                if (true === $treatIdAsUid) {
                     $file = $resourceFactory->getFileObject(intval($i));
-                } elseif ($treatIdAsReference) {
+                } elseif (true === $treatIdAsReference) {
                     $fileReference = $resourceFactory->getFileReferenceObject(intval($i));
                     $file = $fileReference->getOriginalFile();
                 } else {
@@ -154,11 +171,11 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
                     continue;
                 }
 
-                if (isset($fileUids) && !in_array($file->getUid(), $fileUids)) {
+                if (true === isset($fileUids) && false === in_array($file->getUid(), $fileUids)) {
                     continue;
                 }
 
-                if ($onlyProperties) {
+                if (true === $onlyProperties) {
                     if ($file instanceof ProcessedFile) {
                         $file = $file->toArray();
                     } else {
@@ -179,16 +196,18 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
      * Mixed argument with CSV, array, Traversable
      *
      * @param mixed $argument
+     * @param string $name
+     * @return array
      */
-    public function arrayForMixedArgument($argument, string $name): array
+    public function arrayForMixedArgument($argument, $name)
     {
         if (null === $argument) {
             $argument = $this->arguments[$name];
         }
 
-        if ($argument instanceof \Traversable) {
+        if (true === $argument instanceof \Traversable) {
             $argument = iterator_to_array($argument);
-        } elseif (is_string($argument)) {
+        } elseif (true === is_string($argument)) {
             $argument = GeneralUtility::trimExplode(',', $argument, true);
         } else {
             $argument = (array) $argument;
@@ -200,9 +219,11 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
     /**
      * This fuction decides if sys_file or sys_file_metadata is used for a query on sys_category_record_mm
      * This is neccessary because it depends on the TYPO3 version and the state of the extension filemetadata if
-     * 'sys_file' should be used or 'sys_file_metadata'.
+     * 'sys_file' should be used or 'sys_file_metadata'
+     *
+     * @return string
      */
-    private function getTablenameForSystemConfiguration(): string
+    private function getTablenameForSystemConfiguration()
     {
         return 'sys_file_metadata';
     }

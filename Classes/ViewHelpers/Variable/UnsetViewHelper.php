@@ -42,7 +42,10 @@ class UnsetViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
-    public function initializeArguments(): void
+    /**
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument('name', 'string', 'Name of variable in variable container', true);
     }

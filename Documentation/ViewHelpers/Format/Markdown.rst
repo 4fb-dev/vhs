@@ -1,11 +1,10 @@
-:navigation-title: format.markdown
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-format-markdown:
 
-==================================================
-format.markdown ViewHelper `<vhs:format.markdown>`
-==================================================
+===============
+format.markdown
+===============
 
 
 Markdown Transformation ViewHelper
@@ -24,9 +23,6 @@ scipt must:
 In other words, *NIX standard behavior must be used.
 
 See: http://daringfireball.net/projects/markdown
-
-
-.. _fluidtypo3-vhs-format-markdown_arguments:
 
 Arguments
 =========

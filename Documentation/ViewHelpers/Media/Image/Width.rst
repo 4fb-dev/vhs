@@ -1,17 +1,13 @@
-:navigation-title: media.image.width
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-media-image-width:
 
-======================================================
-media.image.width ViewHelper `<vhs:media.image.width>`
-======================================================
+=================
+media.image.width
+=================
 
 
 Returns the width of the provided image file in pixels.
-
-
-.. _fluidtypo3-vhs-media-image-width_arguments:
 
 Arguments
 =========
@@ -26,7 +22,7 @@ src
    mixed
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    Path to or id of the image file to determine info for. In case a FileReference is supplied, treatIdAsUid and treatIdAsReference will automatically be activated.
 

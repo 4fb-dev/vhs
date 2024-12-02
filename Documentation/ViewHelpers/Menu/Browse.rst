@@ -1,11 +1,10 @@
-:navigation-title: menu.browse
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-menu-browse:
 
-==========================================
-menu.browse ViewHelper `<vhs:menu.browse>`
-==========================================
+===========
+menu.browse
+===========
 
 
 Page: Browse Menu ViewHelper
@@ -20,9 +19,6 @@ defaults to `ul > li` with options to set both the
 parent and child tag names. When using manual rendering
 a range of support CSS classes are available along
 with each page record.
-
-
-.. _fluidtypo3-vhs-menu-browse_arguments:
 
 Arguments
 =========
@@ -516,6 +512,22 @@ classCurrent
    false
 :aspect:`Description`
    Optional class name to add to current link
+
+.. _menu.browse_classhassubpages:
+
+classHasSubpages
+----------------
+
+:aspect:`DataType`
+   string
+
+:aspect:`Default`
+   'sub'
+
+:aspect:`Required`
+   false
+:aspect:`Description`
+   Optional class name to add to links which have subpages
 
 .. _menu.browse_substelementuid:
 

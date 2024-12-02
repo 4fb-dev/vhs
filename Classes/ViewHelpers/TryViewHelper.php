@@ -9,7 +9,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  */
 
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
@@ -92,30 +91,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 class TryViewHelper extends AbstractConditionViewHelper
 {
     use TemplateVariableViewHelperTrait;
-
-    /**
-     * @param callable[] $arguments
-     * @return mixed
-     */
-    public static function renderStatic(
-        array $arguments,
-        \Closure $renderChildrenClosure,
-        RenderingContextInterface $renderingContext
-    ) {
-        try {
-            $content = $arguments['__then']();
-        } catch (\Exception $error) {
-            $variableProvider = $renderingContext->getVariableProvider();
-            if (isset($arguments['__else'])) {
-                $variableProvider->add('exception', $error);
-                $content = $arguments['__else']();
-                $variableProvider->remove('exception');
-            } else {
-                $content = $arguments['else'] ?? null;
-            }
-        }
-        return $content;
-    }
 
     /**
      * @return mixed

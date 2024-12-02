@@ -1,17 +1,13 @@
-:navigation-title: page.breadCrumb
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-page-breadcrumb:
 
-==================================================
-page.breadCrumb ViewHelper `<vhs:page.breadCrumb>`
-==================================================
+===============
+page.breadCrumb
+===============
 
 
 ViewHelper to make a breadcrumb link set from a pageUid, automatic or manual.
-
-
-.. _fluidtypo3-vhs-page-breadcrumb_arguments:
 
 Arguments
 =========
@@ -505,6 +501,22 @@ classCurrent
    false
 :aspect:`Description`
    Optional class name to add to current link
+
+.. _page.breadcrumb_classhassubpages:
+
+classHasSubpages
+----------------
+
+:aspect:`DataType`
+   string
+
+:aspect:`Default`
+   'sub'
+
+:aspect:`Required`
+   false
+:aspect:`Description`
+   Optional class name to add to links which have subpages
 
 .. _page.breadcrumb_substelementuid:
 

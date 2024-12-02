@@ -18,7 +18,12 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  */
 class IsArrayViewHelper extends AbstractConditionViewHelper
 {
-    public function initializeArguments(): void
+    /**
+     * Initialize arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
         $this->registerArgument('value', 'mixed', 'value to check', true);
@@ -30,6 +35,6 @@ class IsArrayViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
-        return is_array($arguments['value'] ?? null);
+        return (isset($arguments['value']) && (true === is_array($arguments['value'])));
     }
 }

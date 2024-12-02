@@ -27,7 +27,12 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  */
 class ContainsViewHelper extends AbstractConditionViewHelper
 {
-    public function initializeArguments(): void
+    /**
+     * Initialize arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
         $this->registerArgument('needle', 'mixed', 'Needle to search for in haystack', true);
@@ -52,9 +57,11 @@ class ContainsViewHelper extends AbstractConditionViewHelper
     }
 
     /**
+     * @param integer $index
+     * @param array $arguments
      * @return mixed
      */
-    protected static function getNeedleAtIndex(int $index, array $arguments)
+    protected static function getNeedleAtIndex($index, $arguments)
     {
         if (0 > $index) {
             return null;
@@ -70,15 +77,16 @@ class ContainsViewHelper extends AbstractConditionViewHelper
         } elseif (is_string($haystack)) {
             $asArray = str_split($haystack);
         }
-        return $asArray[$index] ?? false;
+        return (true === isset($asArray[$index]) ? $asArray[$index] : false);
     }
 
     /**
      * @param array|DomainObjectInterface[]|QueryResult|ObjectStorage $haystack
      * @param integer|DomainObjectInterface $needle
+     * @param array $arguments
      * @return boolean|integer
      */
-    protected static function assertHaystackHasNeedle($haystack, $needle, array $arguments)
+    protected static function assertHaystackHasNeedle($haystack, $needle, $arguments)
     {
         if (is_array($haystack)) {
             return static::assertHaystackIsArrayAndHasNeedle($haystack, $needle, $arguments);
@@ -118,19 +126,18 @@ class ContainsViewHelper extends AbstractConditionViewHelper
 
     /**
      * @param array|DomainObjectInterface[]|QueryResult|ObjectStorage $haystack
-     * @param string|int|DomainObjectInterface $needle
+     * @param integer|DomainObjectInterface $needle
      * @return boolean|integer
      */
     protected static function assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle)
     {
         $index = 0;
-        if ($needle instanceof DomainObjectInterface) {
-            $needle = (integer) $needle->getUid();
+        if ($needle instanceof AbstractDomainObject) {
+            $needle = $needle->getUid();
         }
-
         /** @var DomainObjectInterface $candidate */
         foreach ($haystack as $candidate) {
-            if ($candidate->getUid() === (integer) $needle) {
+            if ($candidate->getUid() === $needle) {
                 return $index;
             }
             $index++;
@@ -148,7 +155,7 @@ class ContainsViewHelper extends AbstractConditionViewHelper
     {
         if (!$needle instanceof DomainObjectInterface) {
             if ($arguments['considerKeys']) {
-                $result = false !== array_search($needle, $haystack) || isset($haystack[$needle]);
+                $result = false !== array_search($needle, $haystack) || true === isset($haystack[$needle]);
             } else {
                 /** @var integer|false $result */
                 $result = array_search($needle, $haystack);
@@ -156,7 +163,7 @@ class ContainsViewHelper extends AbstractConditionViewHelper
             return $result;
         } else {
             foreach ($haystack as $index => $straw) {
-                if ((integer) $straw->getUid() === (integer) $needle->getUid()) {
+                if ((integer) $straw->getUid() === $needle->getUid()) {
                     return $index;
                 }
             }

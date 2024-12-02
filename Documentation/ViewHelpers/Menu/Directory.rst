@@ -1,11 +1,10 @@
-:navigation-title: menu.directory
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-menu-directory:
 
-================================================
-menu.directory ViewHelper `<vhs:menu.directory>`
-================================================
+==============
+menu.directory
+==============
 
 
 Page: Directory Menu ViewHelper
@@ -18,9 +17,6 @@ defaults to `ul > li` with options to set both the
 parent and child tag names. When using manual rendering
 a range of support CSS classes are available along
 with each page record.
-
-
-.. _fluidtypo3-vhs-menu-directory_arguments:
 
 Arguments
 =========
@@ -515,6 +511,22 @@ classCurrent
 :aspect:`Description`
    Optional class name to add to current link
 
+.. _menu.directory_classhassubpages:
+
+classHasSubpages
+----------------
+
+:aspect:`DataType`
+   string
+
+:aspect:`Default`
+   'sub'
+
+:aspect:`Required`
+   false
+:aspect:`Description`
+   Optional class name to add to links which have subpages
+
 .. _menu.directory_substelementuid:
 
 substElementUid
@@ -740,6 +752,6 @@ pages
    mixed
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    Parent page UIDs of subpages to include in the menu. Can be CSV, array or an object implementing Traversable.

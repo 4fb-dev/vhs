@@ -1,11 +1,10 @@
-:navigation-title: condition.context.isTesting
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-condition-context-istesting:
 
-==========================================================================
-condition.context.isTesting ViewHelper `<vhs:condition.context.isTesting>`
-==========================================================================
+===========================
+condition.context.isTesting
+===========================
 
 
 Context: IsProduction
@@ -21,9 +20,6 @@ The context TYPO3 CMS runs in is specified through the environment variable TYPO
 It can be set by .htaccess or in the server configuration
 
 See: http://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Bootstrapping/Index.html#bootstrapping-context
-
-
-.. _fluidtypo3-vhs-condition-context-istesting_arguments:
 
 Arguments
 =========

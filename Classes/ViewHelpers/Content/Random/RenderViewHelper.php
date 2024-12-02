@@ -16,7 +16,13 @@ use FluidTYPO3\Vhs\ViewHelpers\Content\AbstractContentViewHelper;
  */
 class RenderViewHelper extends AbstractContentViewHelper
 {
-    public function initializeArguments(): void
+
+    /**
+     * Initialize ViewHelper arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
         $this->overrideArgument('limit', 'integer', 'Optional limit number of content elements to render', false, 1);
@@ -33,7 +39,6 @@ class RenderViewHelper extends AbstractContentViewHelper
             return '';
         }
         // Remove limit for getContentRecords()
-        /** @var int $limit */
         $limit = $this->arguments['limit'];
         $this->arguments['limit'] = null;
         // Just using getContentRecords with a limit of 1 would not support
@@ -41,10 +46,10 @@ class RenderViewHelper extends AbstractContentViewHelper
         // was found. As a potential optimization, $render could be overrided
         // so all the content records that end up unused do not get rendered.
         $contentRecords = $this->getContentRecords();
-        if (!empty($contentRecords)) {
+        if (false === empty($contentRecords)) {
             shuffle($contentRecords);
             $contentRecords = array_slice($contentRecords, 0, $limit);
-            if ($this->arguments['render']) {
+            if (true === (boolean) $this->arguments['render']) {
                 $contentRecords = implode(LF, $contentRecords);
             }
         }

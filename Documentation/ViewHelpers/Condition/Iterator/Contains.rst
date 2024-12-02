@@ -1,11 +1,10 @@
-:navigation-title: condition.iterator.contains
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-condition-iterator-contains:
 
-==========================================================================
-condition.iterator.contains ViewHelper `<vhs:condition.iterator.contains>`
-==========================================================================
+===========================
+condition.iterator.contains
+===========================
 
 
 Condition ViewHelper. Renders the then-child if Iterator/array
@@ -17,9 +16,6 @@ Example:
 ::
 
     {v:condition.iterator.contains(needle: 'foo', haystack: {0: 'foo'}, then: 'yes', else: 'no')}
-
-
-.. _fluidtypo3-vhs-condition-iterator-contains_arguments:
 
 Arguments
 =========
@@ -60,7 +56,7 @@ needle
    mixed
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    Needle to search for in haystack
 
@@ -73,7 +69,7 @@ haystack
    mixed
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    Haystack in which to look for needle
 

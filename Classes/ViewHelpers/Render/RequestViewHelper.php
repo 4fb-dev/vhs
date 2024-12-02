@@ -12,6 +12,7 @@ use FluidTYPO3\Vhs\Utility\DispatcherProxy;
 use FluidTYPO3\Vhs\Utility\RequestResolver;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
@@ -40,14 +41,17 @@ class RequestViewHelper extends AbstractRenderViewHelper
     /**
      * @var class-string
      */
-    protected static string $requestType = Request::class;
+    protected static $requestType = Request::class;
 
     /**
      * @var class-string
      */
-    protected static string $responseType = Response::class;
+    protected static $responseType = Response::class;
 
-    public function initializeArguments(): void
+    /**
+     * @return void
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
         $this->registerArgument('action', 'string', 'Controller action to call in request');
@@ -64,6 +68,7 @@ class RequestViewHelper extends AbstractRenderViewHelper
 
     /**
      * @return string|ResponseInterface
+     * @throws \Exception
      */
     public static function renderStatic(
         array $arguments,
@@ -71,14 +76,11 @@ class RequestViewHelper extends AbstractRenderViewHelper
         RenderingContextInterface $renderingContext
     ) {
         /** @var RenderingContext $renderingContext */
-        /** @var string|null $action */
         $action = $arguments['action'];
-        /** @var string|null $controller */
         $controller = $arguments['controller'];
-        /** @var string|null $extensionName */
         $extensionName = $arguments['extensionName'];
-        /** @var string|null $pluginName */
         $pluginName = $arguments['pluginName'];
+        $vendorName = $arguments['vendorName'];
         $requestArguments = is_array($arguments['arguments']) ? $arguments['arguments'] : [];
         $configurationManager = static::getConfigurationManager();
         /** @var ContentObjectRenderer $contentObjectBackup */
@@ -133,13 +135,11 @@ class RequestViewHelper extends AbstractRenderViewHelper
             }
             return '';
         } catch (\Exception $error) {
-            if (!$arguments['graceful']) {
+            if (false === (boolean) $arguments['graceful']) {
                 throw $error;
             }
-            /** @var string|null $onError */
-            $onError = $arguments['onError'];
-            if ($onError !== null) {
-                return sprintf($onError, $error->getMessage(), $error->getCode());
+            if (false === empty($arguments['onError'])) {
+                return sprintf((string) $arguments['onError'], $error->getMessage(), $error->getCode());
             }
             return $error->getMessage() . ' (' . $error->getCode() . ')';
         }
@@ -152,24 +152,33 @@ class RequestViewHelper extends AbstractRenderViewHelper
         return $dispatcher;
     }
 
-    protected static function getConfigurationManager(): ConfigurationManagerInterface
+    /**
+     * @return ConfigurationManagerInterface
+     */
+    protected static function getConfigurationManager()
     {
         /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
+        $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
         return $configurationManager;
     }
 
     /**
+     * @param RenderingContextInterface $renderingContext
+     * @param string $extensionName
+     * @param string $pluginName
+     * @param string|null $controllerName
+     * @param string|null $actionName
+     * @param array $arguments
      * @return RequestInterface|ServerRequestInterface
      * @see \TYPO3\CMS\Extbase\Core\Bootstrap::initializeConfiguration
      */
     protected static function loadDefaultValues(
-        RenderingContextInterface $renderingContext,
-        ?string $extensionName,
-        ?string $pluginName,
-        ?string $controllerName,
-        ?string $actionName,
-        array $arguments
+        $renderingContext,
+        $extensionName,
+        $pluginName,
+        $controllerName,
+        $actionName,
+        $arguments
     ) {
         $configurationManager = static::getConfigurationManager();
         $configuration = $configurationManager->getConfiguration(
@@ -194,12 +203,8 @@ class RequestViewHelper extends AbstractRenderViewHelper
             $parameters = GeneralUtility::makeInstance(ExtbaseRequestParameters::class);
 
             $parameters->setControllerAliasToClassNameMapping($controllerAliasToClassMapping);
-            if ($pluginName !== null) {
-                $parameters->setPluginName($pluginName);
-            }
-            if ($extensionName !== null) {
-                $parameters->setControllerExtensionName($extensionName);
-            }
+            $parameters->setPluginName($pluginName);
+            $parameters->setControllerExtensionName($extensionName);
             $parameters->setControllerName($controllerName ?? $controllerClassToAliasMapping[$firstControllerName]);
             $parameters->setControllerActionName($actionName ?? $defaultActionName);
 
@@ -220,11 +225,11 @@ class RequestViewHelper extends AbstractRenderViewHelper
             $request->setControllerAliasToClassNameMapping($controllerAliasToClassMapping);
         }
 
-        if ($pluginName !== null && method_exists($request, 'setPluginName')) {
+        if (method_exists($request, 'setPluginName')) {
             $request->setPluginName($pluginName);
         }
 
-        if ($extensionName !== null && method_exists($request, 'setControllerExtensionName')) {
+        if (method_exists($request, 'setControllerExtensionName')) {
             $request->setControllerExtensionName($extensionName);
         }
 

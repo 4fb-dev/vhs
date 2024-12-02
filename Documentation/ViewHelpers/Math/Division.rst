@@ -1,11 +1,10 @@
-:navigation-title: math.division
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-math-division:
 
-==============================================
-math.division ViewHelper `<vhs:math.division>`
-==============================================
+=============
+math.division
+=============
 
 
 Math: Division
@@ -14,9 +13,6 @@ Performs division of $a using $b. A can be an array and $b a
 number, in which case each member of $a gets divided by $b.
 If both $a and $b are arrays, each member of $a is summed
 against the corresponding member in $b compared using index.
-
-
-.. _fluidtypo3-vhs-math-division_arguments:
 
 Arguments
 =========
@@ -44,7 +40,7 @@ b
    mixed
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    Second number or Iterator/Traversable/Array for calculation
 

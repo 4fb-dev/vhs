@@ -34,7 +34,12 @@ class LanguageViewHelper extends AbstractViewHelper
      */
     protected static $pageService;
 
-    public function initializeArguments(): void
+    /**
+     * Initialize
+     *
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument('languages', 'mixed', 'The languages (either CSV, array or implementing Traversable)');
         $this->registerArgument('pageUid', 'integer', 'The page uid to check', false, 0);
@@ -48,6 +53,9 @@ class LanguageViewHelper extends AbstractViewHelper
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -59,20 +67,16 @@ class LanguageViewHelper extends AbstractViewHelper
             return '';
         }
 
-        /** @var array|string|\Traversable $languages */
         $languages = $arguments['languages'];
-        if ($languages instanceof \Traversable) {
+        if (true === $languages instanceof \Traversable) {
             $languages = iterator_to_array($languages);
-        } elseif (is_string($languages)) {
+        } elseif (true === is_string($languages)) {
             $languages = GeneralUtility::trimExplode(',', $languages, true);
         } else {
             $languages = (array) $languages;
         }
 
-        /** @var int $pageUid */
-        $pageUid = $arguments['pageUid'];
-        $pageUid = (integer) $pageUid;
-        /** @var bool $normalWhenNoLanguage */
+        $pageUid = intval($arguments['pageUid']);
         $normalWhenNoLanguage = $arguments['normalWhenNoLanguage'];
 
         if (0 === $pageUid) {
@@ -90,22 +94,25 @@ class LanguageViewHelper extends AbstractViewHelper
             $currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
         }
         $languageUid = 0;
-        if (!$pageService->hidePageForLanguageUid($pageUid, $currentLanguageUid, $normalWhenNoLanguage)) {
+        if (false === $pageService->hidePageForLanguageUid($pageUid, $currentLanguageUid, $normalWhenNoLanguage)) {
             $languageUid = $currentLanguageUid;
         } elseif (0 !== $currentLanguageUid) {
-            if ($pageService->hidePageForLanguageUid($pageUid, 0, $normalWhenNoLanguage)) {
+            if (true === $pageService->hidePageForLanguageUid($pageUid, 0, $normalWhenNoLanguage)) {
                 return '';
             }
         }
 
-        if (!empty($languages[$languageUid])) {
+        if (false === empty($languages[$languageUid])) {
             return $languages[$languageUid];
         }
 
         return $languageUid;
     }
 
-    protected static function getPageService(): PageService
+    /**
+     * @return PageService
+     */
+    protected static function getPageService()
     {
         /** @var PageService $pageService */
         $pageService = GeneralUtility::makeInstance(PageService::class);

@@ -1,11 +1,10 @@
-:navigation-title: security.allow
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-security-allow:
 
-================================================
-security.allow ViewHelper `<vhs:security.allow>`
-================================================
+==============
+security.allow
+==============
 
 
 Security: Allow
@@ -26,9 +25,6 @@ from authenticated users):
     </v:security.allow>
 
 Is the mirror opposite of `v:security.deny`.
-
-
-.. _fluidtypo3-vhs-security-allow_arguments:
 
 Arguments
 =========

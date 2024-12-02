@@ -34,7 +34,13 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'iframe';
 
-    public function initializeArguments(): void
+    /**
+     * Initialize arguments.
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
@@ -86,7 +92,8 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper
             'windowMode',
             'string',
             'Set the Window-Mode of the YouTube player (transparent,opaque). This is necessary for ' .
-            'z-index handling in IE10/11.'
+            'z-index handling in IE10/11.',
+            false
         );
     }
 
@@ -97,19 +104,16 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper
      */
     public function render()
     {
-        /** @var string $videoId */
         $videoId = $this->arguments['videoId'];
-        /** @var int $width */
         $width = $this->arguments['width'];
-        /** @var int height */
         $height = $this->arguments['height'];
 
-        $this->tag->addAttribute('width', (string) $width);
-        $this->tag->addAttribute('height', (string) $height);
+        $this->tag->addAttribute('width', $width);
+        $this->tag->addAttribute('height', $height);
 
         $src = $this->getSourceUrl($videoId);
 
-        if (!$this->arguments['legacyCode']) {
+        if (false === (boolean) $this->arguments['legacyCode']) {
             $this->tag->addAttribute('src', $src);
             $this->tag->addAttribute('frameborder', '0');
             $this->tag->addAttribute('allowFullScreen', 'allowFullScreen');
@@ -145,52 +149,55 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper
     }
 
     /**
-     * Returns video source url according to provided arguments.
+     * Returns video source url according to provided arguments
+     *
+     * @param string $videoId
+     * @return string
      */
-    private function getSourceUrl(string $videoId): string
+    private function getSourceUrl($videoId)
     {
         $src = $this->arguments['extendedPrivacy'] ? static::YOUTUBE_PRIVACY_BASEURL : static::YOUTUBE_BASEURL;
 
         $params = [];
 
-        if (!$this->arguments['showRelated']) {
+        if (false === (boolean) $this->arguments['showRelated']) {
             $params[] = 'rel=0';
         }
-        if ($this->arguments['autoplay']) {
+        if (true === (boolean) $this->arguments['autoplay']) {
             $params[] = 'autoplay=1';
         }
-        if ($this->arguments['hideControl']) {
+        if (true === (boolean) $this->arguments['hideControl']) {
             $params[] = 'controls=0';
         }
-        if ($this->arguments['hideInfo']) {
+        if (true === (boolean) $this->arguments['hideInfo']) {
             $params[] = 'showinfo=0';
         }
-        if ($this->arguments['enableJsApi']) {
+        if (true === (boolean) $this->arguments['enableJsApi']) {
             $params[] = 'enablejsapi=1';
         }
-        if (!empty($this->arguments['playlist'])) {
+        if (false === empty($this->arguments['playlist'])) {
             $params[] = 'playlist=' . $this->arguments['playlist'];
         }
-        if ($this->arguments['loop']) {
+        if (true === (boolean) $this->arguments['loop']) {
             $params[] = 'loop=1';
         }
-        if (!empty($this->arguments['start'])) {
+        if (false === empty($this->arguments['start'])) {
             $params[] = 'start=' . $this->arguments['start'];
         }
-        if (!empty($this->arguments['end'])) {
+        if (false === empty($this->arguments['end'])) {
             $params[] = 'end=' . $this->arguments['end'];
         }
-        if ($this->arguments['lightTheme']) {
+        if (true === (boolean) $this->arguments['lightTheme']) {
             $params[] = 'theme=light';
         }
-        if (!empty($this->arguments['videoQuality'])) {
+        if (false === empty($this->arguments['videoQuality'])) {
             $params[] = 'vq=' . $this->arguments['videoQuality'];
         }
-        if (!empty($this->arguments['windowMode'])) {
+        if (false === empty($this->arguments['windowMode'])) {
             $params[] = 'wmode=' . $this->arguments['windowMode'];
         }
 
-        if (!$this->arguments['legacyCode']) {
+        if (false === $this->arguments['legacyCode']) {
             $src .= '/embed/'. $videoId;
             $seperator = '?';
         } else {
@@ -198,14 +205,22 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper
             $seperator = '&';
         }
 
-        if (!empty($params)) {
+        if (false === empty($params)) {
             $src .= $seperator . implode('&', $params);
         }
 
         return $src;
     }
 
-    private function renderChildTag(string $tagName, array $attributes = [], bool $forceClosingTag = false): string
+    /**
+     * Renders the provided tag and its attributes
+     *
+     * @param string $tagName
+     * @param array $attributes
+     * @param boolean $forceClosingTag
+     * @return string
+     */
+    private function renderChildTag($tagName, $attributes = [], $forceClosingTag = false)
     {
         $tagBuilder = clone $this->tag;
         $tagBuilder->reset();

@@ -31,7 +31,10 @@ class ConstViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function initializeArguments(): void
+    /**
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument('name', 'string', 'Name of constant to retrieve');
     }

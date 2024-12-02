@@ -1,11 +1,10 @@
-:navigation-title: math.floor
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-math-floor:
 
-========================================
-math.floor ViewHelper `<vhs:math.floor>`
-========================================
+==========
+math.floor
+==========
 
 
 Math: Floor
@@ -13,9 +12,6 @@ Math: Floor
 Floors $a which can be either an array-accessible
 value (Iterator+ArrayAccess || array) or a raw numeric
 value.
-
-
-.. _fluidtypo3-vhs-math-floor_arguments:
 
 Arguments
 =========

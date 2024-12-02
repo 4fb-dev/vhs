@@ -1,11 +1,10 @@
-:navigation-title: math.subtract
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-math-subtract:
 
-==============================================
-math.subtract ViewHelper `<vhs:math.subtract>`
-==============================================
+=============
+math.subtract
+=============
 
 
 Math: Subtract
@@ -16,9 +15,6 @@ If $a is an array and $b is not provided then neg. array_sum is
 used to return a single numeric value. If both $a and $b are
 arrays, each member of $a is summed against the corresponding
 member in $b compared using index.
-
-
-.. _fluidtypo3-vhs-math-subtract_arguments:
 
 Arguments
 =========

@@ -1,17 +1,13 @@
-:navigation-title: iterator.loop
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-iterator-loop:
 
-==============================================
-iterator.loop ViewHelper `<vhs:iterator.loop>`
-==============================================
+=============
+iterator.loop
+=============
 
 
 Repeats rendering of children $count times while updating $iteration.
-
-
-.. _fluidtypo3-vhs-iterator-loop_arguments:
 
 Arguments
 =========
@@ -39,7 +35,7 @@ count
    integer
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    Number of times to render child content
 

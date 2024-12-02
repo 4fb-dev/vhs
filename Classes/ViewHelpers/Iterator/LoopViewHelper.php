@@ -15,7 +15,12 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class LoopViewHelper extends AbstractLoopViewHelper
 {
-    public function initializeArguments(): void
+    /**
+     * Initialize
+     *
+     * @return void
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
 
@@ -29,13 +34,9 @@ class LoopViewHelper extends AbstractLoopViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        /** @var int $count */
-        $count = $arguments['count'];
-        /** @var int $minimum */
-        $minimum = $arguments['minimum'];
-        /** @var int $maximum */
-        $maximum = $arguments['maximum'];
-        /** @var string|null $iteration */
+        $count = (integer) $arguments['count'];
+        $minimum = (integer) $arguments['minimum'];
+        $maximum = (integer) $arguments['maximum'];
         $iteration = $arguments['iteration'];
         $content = '';
         $variableProvider = $renderingContext->getVariableProvider();
@@ -46,7 +47,7 @@ class LoopViewHelper extends AbstractLoopViewHelper
             $count = $maximum;
         }
 
-        if ($iteration !== null && $variableProvider->exists($iteration)) {
+        if (true === $variableProvider->exists($iteration)) {
             $backupVariable = $variableProvider->get($iteration);
             $variableProvider->remove($iteration);
         }
@@ -63,14 +64,21 @@ class LoopViewHelper extends AbstractLoopViewHelper
             );
         }
 
-        if ($iteration !== null && isset($backupVariable)) {
+        if (true === isset($backupVariable)) {
             $variableProvider->add($iteration, $backupVariable);
         }
 
         return $content;
     }
 
-    protected static function isLast(int $i, int $from, int $to, int $step): bool
+    /**
+     * @param integer $i
+     * @param integer $from
+     * @param integer $to
+     * @param integer $step
+     * @return boolean
+     */
+    protected static function isLast($i, $from, $to, $step)
     {
         return ($i + $step >= $to);
     }

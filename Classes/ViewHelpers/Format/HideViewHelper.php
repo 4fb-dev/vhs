@@ -21,7 +21,12 @@ class HideViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
-    public function initializeArguments(): void
+    /**
+     * Initialize
+     *
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument(
             'disabled',
@@ -33,6 +38,9 @@ class HideViewHelper extends AbstractViewHelper
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(

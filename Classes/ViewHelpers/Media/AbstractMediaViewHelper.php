@@ -10,7 +10,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 
 use FluidTYPO3\Vhs\Utility\ContextUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -18,9 +17,19 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 abstract class AbstractMediaViewHelper extends AbstractTagBasedViewHelper
 {
-    protected string $mediaSource = '';
+    /**
+     *
+     * @var string
+     */
+    protected $mediaSource;
 
-    public function initializeArguments(): void
+    /**
+     * Initialize arguments.
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
         $this->registerArgument(
@@ -41,9 +50,13 @@ abstract class AbstractMediaViewHelper extends AbstractTagBasedViewHelper
 
     /**
      * Turns a relative source URI into an absolute URL
-     * if required.
+     * if required
+     *
+     * @param string $src
+     * @param array $arguments
+     * @return string
      */
-    public static function preprocessSourceUri(string $src, array $arguments): string
+    public static function preprocessSourceUri($src, array $arguments)
     {
         $src = str_replace('%2F', '/', rawurlencode($src));
         if (substr($src, 0, 1) !== '/' && substr($src, 0, 4) !== 'http') {
@@ -51,24 +64,23 @@ abstract class AbstractMediaViewHelper extends AbstractTagBasedViewHelper
         }
         if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
             $src = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'] . $src;
-        } elseif (ContextUtility::isBackend() || !$arguments['relative']) {
+        } elseif (ContextUtility::isBackend() || false === (boolean) $arguments['relative']) {
             /** @var string $siteUrl */
             $siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
             $src = $siteUrl . ltrim($src, '/');
         }
-        if (empty($src)) {
-            // Do not pass an empty $src to PathUtility, it requires non-empty strings on 10.4.
-            return '';
-        }
-        return PathUtility::getAbsoluteWebPath($src);
+        return $src;
     }
 
     /**
      * Returns an array of sources resolved from src argument
      * which can be either an array, CSV or implement Traversable
      * to be consumed by ViewHelpers handling multiple sources.
+     *
+     * @param array $arguments
+     * @return array
      */
-    public static function getSourcesFromArgument(array $arguments): array
+    public static function getSourcesFromArgument(array $arguments)
     {
         $src = $arguments['src'];
         if ($src instanceof \Traversable) {

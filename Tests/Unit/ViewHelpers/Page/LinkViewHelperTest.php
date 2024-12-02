@@ -15,6 +15,10 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 
+/**
+ * @protection on
+ * @package Vhs
+ */
 class LinkViewHelperTest extends AbstractViewHelperTestCase
 {
     /**
@@ -48,7 +52,17 @@ class LinkViewHelperTest extends AbstractViewHelperTestCase
         GeneralUtility::addInstance(UriBuilder::class, $uriBuilder);
     }
 
-    protected function createInstance(): LinkViewHelper
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        unset($GLOBALS['TSFE']);
+    }
+
+    /**
+     * @return AbstractViewHelper
+     */
+    protected function createInstance()
     {
         $instance = parent::createInstance();
         $instance->injectPageService($this->pageService);
@@ -72,7 +86,7 @@ class LinkViewHelperTest extends AbstractViewHelperTestCase
     public function generatesNullLinkOnZeroPageUid()
     {
         $arguments = ['pageUid' => 0];
-        $this->pageService->expects($this->once())->method('getPage')->willReturn([]);
+        $this->pageService->expects($this->once())->method('getPage')->willReturn(null);
         $result = $this->executeViewHelper($arguments, [], null, 'Vhs');
         $this->assertNull($result);
     }

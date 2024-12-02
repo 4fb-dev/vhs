@@ -23,7 +23,10 @@ class PregReplaceViewHelper extends AbstractViewHelper
     use CompileWithRenderStatic;
     use TemplateVariableViewHelperTrait;
 
-    public function initializeArguments(): void
+    /**
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument('subject', 'string', 'String to match with the regex pattern or patterns');
         $this->registerArgument('pattern', 'string', 'Regex pattern to match against', true);
@@ -32,6 +35,9 @@ class PregReplaceViewHelper extends AbstractViewHelper
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -39,21 +45,13 @@ class PregReplaceViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        /** @var string|null $as */
-        $as = $arguments['as'];
-        /** @var string $pattern */
-        $pattern = $arguments['pattern'];
-        /** @var string $replacement */
-        $replacement = $arguments['replacement'];
-
-        $subject = isset($as)
+        $subject = isset($arguments['as'])
             ? $arguments['subject']
             : ($arguments['subject'] ?? $renderChildrenClosure());
-
-        $value = preg_replace($pattern, $replacement, $subject);
+        $value = preg_replace($arguments['pattern'], $arguments['replacement'], $subject);
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $value,
-            $as,
+            $arguments['as'],
             $renderingContext,
             $renderChildrenClosure
         );

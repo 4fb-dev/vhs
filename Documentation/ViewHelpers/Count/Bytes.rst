@@ -1,11 +1,10 @@
-:navigation-title: count.bytes
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-count-bytes:
 
-==========================================
-count.bytes ViewHelper `<vhs:count.bytes>`
-==========================================
+===========
+count.bytes
+===========
 
 
 Counts bytes (multibyte-safe) in a string.
@@ -28,9 +27,6 @@ Usage examples
 ::
 
     {v:count.bytes(string: myString)}
-
-
-.. _fluidtypo3-vhs-count-bytes_arguments:
 
 Arguments
 =========

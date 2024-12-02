@@ -1,17 +1,13 @@
-:navigation-title: iterator.slice
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-iterator-slice:
 
-================================================
-iterator.slice ViewHelper `<vhs:iterator.slice>`
-================================================
+==============
+iterator.slice
+==============
 
 
 Slice an Iterator by $start and $length.
-
-
-.. _fluidtypo3-vhs-iterator-slice_arguments:
 
 Arguments
 =========

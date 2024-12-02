@@ -31,7 +31,7 @@ class MedianViewHelper extends AbstractSingleMathViewHelper
     protected static function calculateAction($a, array $arguments = [])
     {
         $aIsIterable = static::assertIsArrayOrIterator($a);
-        if ($aIsIterable) {
+        if (true === $aIsIterable) {
             $a = static::arrayFromArrayOrTraversableOrCSVStatic($a);
             sort($a, SORT_NUMERIC);
             $size = count($a);

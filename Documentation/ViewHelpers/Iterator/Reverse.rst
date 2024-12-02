@@ -1,11 +1,10 @@
-:navigation-title: iterator.reverse
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-iterator-reverse:
 
-====================================================
-iterator.reverse ViewHelper `<vhs:iterator.reverse>`
-====================================================
+================
+iterator.reverse
+================
 
 
 Iterator Reversal ViewHelper
@@ -13,9 +12,6 @@ Iterator Reversal ViewHelper
 
 Reverses the order of every member of an Iterator/Array,
 preserving the original keys.
-
-
-.. _fluidtypo3-vhs-iterator-reverse_arguments:
 
 Arguments
 =========

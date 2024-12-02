@@ -28,22 +28,32 @@ use FluidTYPO3\Vhs\Utility\RequestResolver;
  */
 class InstanceViewHelper extends AbstractOnceViewHelper
 {
-    protected static function getIdentifier(array $arguments): string
+    /**
+     * @param array $arguments
+     * @return string
+     */
+    protected static function getIdentifier(array $arguments)
     {
         if (isset($arguments['identifier']) && $arguments['identifier']) {
             return $arguments['identifier'];
         }
 
+        $request = RequestResolver::resolveRequestFromRenderingContext(static::$currentRenderingContext);
+
         $identifier = implode('_', [
-            RequestResolver::resolveControllerActionNameFromRenderingContext(static::$currentRenderingContext),
-            RequestResolver::resolveControllerNameFromRenderingContext(static::$currentRenderingContext),
-            RequestResolver::resolvePluginNameFromRenderingContext(static::$currentRenderingContext),
-            RequestResolver::resolveControllerExtensionNameFromRenderingContext(static::$currentRenderingContext),
+            $request->getControllerActionName(),
+            $request->getControllerName(),
+            $request->getPluginName(),
+            $request->getControllerExtensionName()
         ]);
         return $identifier;
     }
 
-    protected static function storeIdentifier(array $arguments): void
+    /**
+     * @param array $arguments
+     * @return void
+     */
+    protected static function storeIdentifier(array $arguments)
     {
         $identifier = static::getIdentifier($arguments);
         if (!isset($GLOBALS[static::class])) {
@@ -52,7 +62,11 @@ class InstanceViewHelper extends AbstractOnceViewHelper
         $GLOBALS[static::class][$identifier] = true;
     }
 
-    protected static function assertShouldSkip(array $arguments): bool
+    /**
+     * @param array $arguments
+     * @return boolean
+     */
+    protected static function assertShouldSkip(array $arguments)
     {
         $identifier = static::getIdentifier($arguments);
         return isset($GLOBALS[static::class][$identifier]);

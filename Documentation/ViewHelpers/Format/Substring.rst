@@ -1,19 +1,15 @@
-:navigation-title: format.substring
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-format-substring:
 
-====================================================
-format.substring ViewHelper `<vhs:format.substring>`
-====================================================
+================
+format.substring
+================
 
 
 Gets a substring from a string or string-compatible value.
 
 Also see the `<f:format.crop>` view helper.
-
-
-.. _fluidtypo3-vhs-format-substring_arguments:
 
 Arguments
 =========

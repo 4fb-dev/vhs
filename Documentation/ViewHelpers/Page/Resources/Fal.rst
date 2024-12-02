@@ -1,11 +1,10 @@
-:navigation-title: page.resources.fal
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-page-resources-fal:
 
-========================================================
-page.resources.fal ViewHelper `<vhs:page.resources.fal>`
-========================================================
+==================
+page.resources.fal
+==================
 
 
 Page FAL resource ViewHelper.
@@ -15,9 +14,6 @@ Instead, use the "record" argument and pass the entire record.
 This bypasses visibility restrictions that normally apply when you attempt
 to load a record by UID through TYPO3's PageRepository, which is what the
 resource ViewHelpers do if you only pass uid.
-
-
-.. _fluidtypo3-vhs-page-resources-fal_arguments:
 
 Arguments
 =========
@@ -100,7 +96,7 @@ asObjects
 ---------
 
 :aspect:`DataType`
-   boolean
+   mixed
 
 :aspect:`Required`
    false
@@ -131,7 +127,7 @@ slide
 :aspect:`Required`
    false
 :aspect:`Description`
-   Enables Record Sliding - amount of levels which shall get walked up the rootline, including the current page. For infinite sliding (till the rootpage) set to -1. Only the first PID which has at minimum one record is used.
+   Enables Record Sliding - amount of levels which shall get walked up the rootline, including the current page. For infinite sliding (till the rootpage) set to -1. Only the first PID which has at minimum one record is used
 
 .. _page.resources.fal_slidecollect:
 
@@ -157,4 +153,4 @@ slideCollectReverse
 :aspect:`Required`
    false
 :aspect:`Description`
-   Normally when collecting records the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag.
+   Normally when collecting records the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag))

@@ -1,17 +1,13 @@
-:navigation-title: iterator.pop
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-iterator-pop:
 
-============================================
-iterator.pop ViewHelper `<vhs:iterator.pop>`
-============================================
+============
+iterator.pop
+============
 
 
 Pops the last value off $subject (but does not change $subject itself as array_pop would).
-
-
-.. _fluidtypo3-vhs-iterator-pop_arguments:
 
 Arguments
 =========

@@ -174,21 +174,6 @@ class ExtractViewHelperTest extends AbstractViewHelperTestCase
     }
 
     /**
-     * @test
-     * @dataProvider simpleStructures
-     */
-    public function extractByKeyExtractsKeyByPathWithSingle($structure, $key, $expected)
-    {
-        if (is_array($expected)) {
-            $expected = reset($expected);
-        }
-        $this->assertEquals(
-            $expected,
-            $this->executeViewHelper(['content' => $structure, 'key' => $key, 'recursive' => false, 'single' => true])
-        );
-    }
-
-    /**
      * @return array
      */
     public function simpleStructures()
@@ -199,11 +184,6 @@ class ExtractViewHelperTest extends AbstractViewHelperTestCase
                 ['myKey' => 'myValue'],
                 'myKey',
                 'myValue'
-            ],
-            'flat associative array with array as value' => [
-                ['myKey' => ['foo' => 'myValue']],
-                'myKey',
-                ['foo' => 'myValue'],
             ],
             'deeper associative array' => [
                 [

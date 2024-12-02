@@ -1,17 +1,13 @@
-:navigation-title: media.gravatar
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-media-gravatar:
 
-================================================
-media.gravatar ViewHelper `<vhs:media.gravatar>`
-================================================
+==============
+media.gravatar
+==============
 
 
 Renders Gravatar <img/> tag.
-
-
-.. _fluidtypo3-vhs-media-gravatar_arguments:
 
 Arguments
 =========
@@ -182,7 +178,7 @@ email
    string
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    Email address
 

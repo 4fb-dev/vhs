@@ -31,7 +31,12 @@ class SliceViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function initializeArguments(): void
+    /**
+     * Initialize arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument('haystack', 'mixed', 'The input array/Traversable to reverse');
         $this->registerArgument('start', 'integer', 'Starting offset', false, 0);
@@ -41,6 +46,9 @@ class SliceViewHelper extends AbstractViewHelper
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -48,19 +56,18 @@ class SliceViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        /** @var int $start */
-        $start = $arguments['start'];
-        /** @var int $length */
-        $length = $arguments['length'];
-        /** @var string|null $as */
-        $as = $arguments['as'];
         $haystack = static::arrayFromArrayOrTraversableOrCSVStatic(
-            empty($as) ? ($arguments['haystack'] ?? $renderChildrenClosure()) : $arguments['haystack']
+            empty($arguments['as']) ? ($arguments['haystack'] ?? $renderChildrenClosure()) : $arguments['haystack']
         );
-        $output = array_slice($haystack, $start, $length, (boolean) $arguments['preserveKeys']);
+        $output = array_slice(
+            $haystack,
+            $arguments['start'],
+            $arguments['length'],
+            (boolean) $arguments['preserveKeys']
+        );
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $output,
-            $as,
+            $arguments['as'],
             $renderingContext,
             $renderChildrenClosure
         );

@@ -1,11 +1,10 @@
-:navigation-title: condition.type.isArray
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-condition-type-isarray:
 
-================================================================
-condition.type.isArray ViewHelper `<vhs:condition.type.isArray>`
-================================================================
+======================
+condition.type.isArray
+======================
 
 
 Condition: Type of value is array
@@ -13,9 +12,6 @@ Condition: Type of value is array
 
 Condition ViewHelper which renders the `then` child if type of
 provided value is array.
-
-
-.. _fluidtypo3-vhs-condition-type-isarray_arguments:
 
 Arguments
 =========
@@ -56,6 +52,6 @@ value
    mixed
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    Value to check

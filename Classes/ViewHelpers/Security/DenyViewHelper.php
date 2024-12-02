@@ -19,6 +19,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Security;
  */
 class DenyViewHelper extends AbstractSecurityViewHelper
 {
+
     /**
      * Overridden condition evaluation - full negation of verdict
      *

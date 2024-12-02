@@ -1,17 +1,13 @@
-:navigation-title: media.size
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-media-size:
 
-========================================
-media.size ViewHelper `<vhs:media.size>`
-========================================
+==========
+media.size
+==========
 
 
 Returns the size of the provided file in bytes.
-
-
-.. _fluidtypo3-vhs-media-size_arguments:
 
 Arguments
 =========

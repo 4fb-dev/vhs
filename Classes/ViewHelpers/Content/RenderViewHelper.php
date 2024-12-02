@@ -26,9 +26,13 @@ use FluidTYPO3\Vhs\Utility\ContextUtility;
  */
 class RenderViewHelper extends AbstractContentViewHelper
 {
+
     use TemplateVariableViewHelperTrait;
 
-    public function initializeArguments(): void
+    /**
+     * @return void
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
         $this->registerAsArgument();
@@ -46,7 +50,7 @@ class RenderViewHelper extends AbstractContentViewHelper
         }
 
         $content = $this->getContentRecords();
-        if (!$this->hasArgument('as')) {
+        if (false === $this->hasArgument('as')) {
             return implode(LF, $content);
         }
 

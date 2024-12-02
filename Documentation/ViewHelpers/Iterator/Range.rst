@@ -1,11 +1,10 @@
-:navigation-title: iterator.range
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-iterator-range:
 
-================================================
-iterator.range ViewHelper `<vhs:iterator.range>`
-================================================
+==============
+iterator.range
+==============
 
 
 Iterator Range ViewHelper
@@ -23,9 +22,6 @@ Usage examples
 
     Numbers 1-10: {v:iterator.implode(glue: ',') -> v:iterator.range(low: 1, high: 10)}
     Even numbers 0-10: {v:iterator.implode(glue: ',') -> v:iterator.range(low: 0, high: 10, step: 2)}
-
-
-.. _fluidtypo3-vhs-iterator-range_arguments:
 
 Arguments
 =========
@@ -56,7 +52,7 @@ high
    integer
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    The high number of the range to be generated
 

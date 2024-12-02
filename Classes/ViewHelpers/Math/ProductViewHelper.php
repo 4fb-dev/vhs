@@ -36,10 +36,10 @@ class ProductViewHelper extends AbstractMultipleMathViewHelper
     protected static function calculateAction($a, $b, array $arguments)
     {
         $aIsIterable = static::assertIsArrayOrIterator($a);
-        if (!$aIsIterable && $b === null && $arguments['fail']) {
+        if (false === $aIsIterable && $b === null && (boolean) $arguments['fail']) {
             ErrorUtility::throwViewHelperException('Required argument "b" was not supplied', 1237823699);
         }
-        if ($aIsIterable && null === $b) {
+        if (true === $aIsIterable && null === $b) {
             $a = static::arrayFromArrayOrTraversableOrCSVStatic($a);
             return array_product($a);
         }

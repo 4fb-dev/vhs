@@ -1,11 +1,10 @@
-:navigation-title: system.uniqId
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-system-uniqid:
 
-==============================================
-system.uniqId ViewHelper `<vhs:system.uniqId>`
-==============================================
+=============
+system.uniqId
+=============
 
 
 System: Unique ID
@@ -15,9 +14,6 @@ Returns a unique ID based on PHP's uniqid-function.
 
 Comes in useful when handling/generating html-element-IDs
 for usage with JavaScript.
-
-
-.. _fluidtypo3-vhs-system-uniqid_arguments:
 
 Arguments
 =========

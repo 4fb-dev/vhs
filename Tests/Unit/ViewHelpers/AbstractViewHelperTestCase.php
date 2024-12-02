@@ -52,10 +52,17 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
     protected ?TemplateParser $templateParser;
     protected array $templateProcessors = [];
     protected array $expressionTypes = [];
-    protected array $defaultArguments = [
-        'name' => 'test',
-    ];
 
+    /**
+     * @var array
+     */
+    protected $defaultArguments = array(
+        'name' => 'test'
+    );
+
+    /**
+     * @return void
+     */
     protected function setUp(): void
     {
         $extbaseParameters = null;
@@ -176,7 +183,10 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
         $this->assertIsArray($arguments);
     }
 
-    protected function getViewHelperClassName(): string
+    /**
+     * @return string
+     */
+    protected function getViewHelperClassName()
     {
         $class = get_class($this);
         $class = str_replace('Tests\\Unit\\', '', $class);
@@ -184,9 +194,11 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
     }
 
     /**
+     * @param string $type
      * @param mixed $value
+     * @return NodeInterface
      */
-    protected function createNode(string $type, $value): NodeInterface
+    protected function createNode($type, $value)
     {
         /** @var NodeInterface $node */
         $className = 'TYPO3Fluid\\Fluid\\Core\\Parser\\SyntaxTree\\' . $type . 'Node';
@@ -194,7 +206,10 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
         return $node;
     }
 
-    protected function createInstance(): ViewHelperInterface
+    /**
+     * @return AbstractViewHelper
+     */
+    protected function createInstance()
     {
         $className = $this->getViewHelperClassName();
         /** @var AbstractViewHelper $instance */
@@ -211,13 +226,16 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
         return $instance;
     }
 
-    protected function buildViewHelperInstance(
-        array $arguments = [],
-        array $variables = [],
-        ?NodeInterface $childNode = null,
-        ?string $extensionName = null,
-        ?string $pluginName = null
-    ): ViewHelperInterface {
+    /**
+     * @param array $arguments
+     * @param array $variables
+     * @param NodeInterface|null $childNode
+     * @param string|null $extensionName
+     * @param string|null $pluginName
+     * @return AbstractViewHelper
+     */
+    protected function buildViewHelperInstance($arguments = [], $variables = [], $childNode = null, $extensionName = null, $pluginName = null)
+    {
         $instance = $this->createInstance();
         $arguments = $this->buildViewHelperArguments($instance, $arguments);
         $node = $this->createViewHelperNode($instance, $arguments, $childNode instanceof NodeInterface ? [$childNode] : []);
@@ -247,39 +265,30 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
     }
 
     /**
+     * @param array $arguments
+     * @param array $variables
+     * @param NodeInterface $childNode
+     * @param string $extensionName
+     * @param string $pluginName
      * @return mixed
      */
-    protected function executeViewHelper(
-        array $arguments = [],
-        array $variables = [],
-        ?NodeInterface $childNode = null,
-        ?string $extensionName = null,
-        ?string $pluginName = null
-    ) {
+    protected function executeViewHelper($arguments = [], $variables = [], $childNode = null, $extensionName = null, $pluginName = null)
+    {
         $instance = $this->buildViewHelperInstance($arguments, $variables, $childNode, $extensionName, $pluginName);
         $this->renderingContext->getVariableProvider()->setSource($variables);
-        return $this->executeInstance($instance, $arguments);
-    }
-
-    /**
-     * @return mixed
-     */
-    protected function executeInstance(ViewHelperInterface $instance, array $arguments = [])
-    {
         return $this->renderingContext->getViewHelperInvoker()->invoke($instance, $arguments, $this->renderingContext);
     }
 
     /**
      * @param mixed $nodeValue
+     * @param array $arguments
+     * @param array $variables
+     * @param string $extensionName
+     * @param string $pluginName
      * @return mixed
      */
-    protected function executeViewHelperUsingTagContent(
-        $nodeValue,
-        array $arguments = [],
-        array $variables = [],
-        ?string $extensionName = null,
-        ?string $pluginName = null
-    ) {
+    protected function executeViewHelperUsingTagContent($nodeValue, $arguments = [], $variables = [], $extensionName = null, $pluginName = null)
+    {
         $node = $this->getMockBuilder(NodeInterface::class)->getMockForAbstractClass();
         $node->method('evaluate')->willReturn($nodeValue);
         $instance = $this->buildViewHelperInstance($arguments, $variables, $node, $extensionName, $pluginName);
@@ -287,14 +296,13 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
     }
 
     /**
+     * @param ViewHelperInterface $instance
+     * @param array $arguments
      * @param NodeInterface[] $childNNodes
      * @return MockObject|ViewHelperNode
      */
-    protected function createViewHelperNode(
-        ViewHelperInterface $instance,
-        array $arguments,
-        array $childNNodes = []
-    ): ViewHelperNode {
+    protected function createViewHelperNode($instance, array $arguments, array $childNNodes = [])
+    {
         $node = new DummyViewHelperNode($instance);
 
         foreach ($childNNodes as $childNNode) {
@@ -306,12 +314,19 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
         return $node;
     }
 
-    protected function createObjectAccessorNode(string $accessor): ObjectAccessorNode
+    /**
+     * @param string $accessor
+     * @return ObjectAccessorNode
+     */
+    protected function createObjectAccessorNode($accessor)
     {
         return new ObjectAccessorNode($accessor);
     }
 
-    protected function expectViewHelperException(): void
+    /**
+     * @return void
+     */
+    protected function expectViewHelperException()
     {
         $this->expectException(Exception::class);
     }

@@ -31,7 +31,10 @@ class ChunkViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function initializeArguments(): void
+    /**
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument('subject', 'mixed', 'The subject Traversable/Array instance to shift');
         $this->registerArgument('count', 'integer', 'Number of items/chunk or if fixed then number of chunks', true);
@@ -53,6 +56,9 @@ class ChunkViewHelper extends AbstractViewHelper
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return array|mixed
      */
     public static function renderStatic(
@@ -60,21 +66,18 @@ class ChunkViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        /** @var string|null $as */
-        $as = $arguments['as'];
-        /** @var int $count */
-        $count = $arguments['count'];
+        $count = (integer) $arguments['count'];
         $fixed = (boolean) $arguments['fixed'];
         $preserveKeys = (boolean) $arguments['preserveKeys'];
         $subject = static::arrayFromArrayOrTraversableOrCSVStatic(
-            empty($as) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject'],
+            empty($arguments['as']) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject'],
             $preserveKeys
         );
         $output = [];
         if (0 >= $count) {
             return $output;
         }
-        if ($fixed) {
+        if (true === (boolean) $fixed) {
             $subjectSize = count($subject);
             if (0 < $subjectSize) {
                 /** @var int<1, max> $chunkSize */
@@ -92,7 +95,7 @@ class ChunkViewHelper extends AbstractViewHelper
 
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $output,
-            $as,
+            $arguments['as'],
             $renderingContext,
             $renderChildrenClosure
         );

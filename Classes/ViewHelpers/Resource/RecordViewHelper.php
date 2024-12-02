@@ -11,12 +11,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
 use FluidTYPO3\Vhs\ViewHelpers\Resource\Record\AbstractRecordResourceViewHelper;
 
 /**
- * Generic FAL resource ViewHelper.
- *
- * .. warning::
- *    This view helper must only be used with FAL resources.
- *    It is **not** meant to be used as generic data loading view helper.
+ * Generic FAL resource ViewHelper
  */
 class RecordViewHelper extends AbstractRecordResourceViewHelper
 {
+
 }

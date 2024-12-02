@@ -1,17 +1,13 @@
-:navigation-title: or
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-or:
 
-========================
-or ViewHelper `<vhs:or>`
-========================
+==
+or
+==
 
 
 If content is empty use alternative text (can also be LLL:labelname shortcut or LLL:EXT: file paths).
-
-
-.. _fluidtypo3-vhs-or_arguments:
 
 Arguments
 =========

@@ -1,17 +1,13 @@
-:navigation-title: resource.image
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-resource-image:
 
-================================================
-resource.image ViewHelper `<vhs:resource.image>`
-================================================
+==============
+resource.image
+==============
 
 
 ViewHelper to output or assign a image from FAL.
-
-
-.. _fluidtypo3-vhs-resource-image_arguments:
 
 Arguments
 =========
@@ -201,19 +197,6 @@ maxHeight
    false
 :aspect:`Description`
    Maximum height of the image. Numeric value in pixels or simple calculations. See imgResource.width for possible options.
-
-.. _resource.image_graceful:
-
-graceful
---------
-
-:aspect:`DataType`
-   boolean
-
-:aspect:`Required`
-   false
-:aspect:`Description`
-   Set to TRUE to ignore files that cannot be loaded. Default behavior is to throw an Exception.
 
 .. _resource.image_class:
 

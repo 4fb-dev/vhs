@@ -27,6 +27,7 @@ class ImageViewHelperTest extends AbstractViewHelperTestCase
         $arguments = $this->buildViewHelperArguments($mock, ['src' => 'foobar']);
         $mock->setArguments($arguments);
         $output = $mock->render();
+        unset($GLOBALS['TSFE']);
         $this->assertSame('', $output);
     }
 }

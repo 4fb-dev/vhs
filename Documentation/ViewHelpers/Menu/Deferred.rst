@@ -1,11 +1,10 @@
-:navigation-title: menu.deferred
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-menu-deferred:
 
-==============================================
-menu.deferred ViewHelper `<vhs:menu.deferred>`
-==============================================
+=============
+menu.deferred
+=============
 
 
 Page: Deferred menu rendering ViewHelper
@@ -15,9 +14,6 @@ Place this ViewHelper inside any other ViewHelper which
 has been configured with the `deferred` attribute set to
 TRUE - this will cause the output of the parent to only
 contain the content of this ViewHelper.
-
-
-.. _fluidtypo3-vhs-menu-deferred_arguments:
 
 Arguments
 =========
@@ -511,6 +507,22 @@ classCurrent
    false
 :aspect:`Description`
    Optional class name to add to current link
+
+.. _menu.deferred_classhassubpages:
+
+classHasSubpages
+----------------
+
+:aspect:`DataType`
+   string
+
+:aspect:`Default`
+   'sub'
+
+:aspect:`Required`
+   false
+:aspect:`Description`
+   Optional class name to add to links which have subpages
 
 .. _menu.deferred_substelementuid:
 

@@ -43,7 +43,10 @@ class CallViewHelper extends AbstractViewHelper
      */
     protected $escapeChildren = false;
 
-    public function initializeArguments(): void
+    /**
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument('object', 'object', 'Instance to call method on');
         $this->registerArgument('method', 'string', 'Name of method to call on instance', true);
@@ -58,19 +61,16 @@ class CallViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        /** @var object $object */
         $object = $renderChildrenClosure();
-        /** @var string $method */
         $method = $arguments['method'];
-        /** @var array $methodArguments */
         $methodArguments = $arguments['arguments'];
-        if (!is_object($object)) {
+        if (false === is_object($object)) {
             throw new \RuntimeException(
                 'Using v:call requires an object either as "object" attribute, tag content or inline argument',
                 1356849652
             );
         }
-        if (!method_exists($object, $method)) {
+        if (false === method_exists($object, $method)) {
             throw new \RuntimeException(
                 'Method "' . $method . '" does not exist on object of type ' . get_class($object),
                 1356834755

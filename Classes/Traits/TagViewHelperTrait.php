@@ -25,8 +25,10 @@ trait TagViewHelperTrait
     /**
      * Default implementation to register only the tag
      * arguments along with universal attributes.
+     *
+     * @return void
      */
-    public function registerArguments(): void
+    public function registerArguments()
     {
         $this->registerUniversalTagAttributes();
     }
@@ -34,8 +36,11 @@ trait TagViewHelperTrait
     /**
      * Registers all standard and HTML5 universal attributes.
      * Should be used inside registerArguments();
+     *
+     * @return void
+     * @api
      */
-    protected function registerUniversalTagAttributes(): void
+    protected function registerUniversalTagAttributes()
     {
         parent::registerUniversalTagAttributes();
         $this->registerArgument(
@@ -95,19 +100,25 @@ trait TagViewHelperTrait
     /**
      * Renders the provided tag with the given name and any
      * (additional) attributes not already provided as arguments.
+     *
+     * @param string $tagName
+     * @param scalar|null $content
+     * @param array $attributes
+     * @param array $nonEmptyAttributes
+     * @return string
      */
     protected function renderTag(
-        string $tagName,
-        ?string $content = null,
+        $tagName,
+        $content = null,
         array $attributes = [],
         array $nonEmptyAttributes = ['id', 'class']
-    ): string {
+    ) {
         $trimmedContent = trim((string) $content);
-        $forceClosingTag = (boolean) ($this->arguments['forceClosingTag'] ?? false);
-        if (empty($trimmedContent) && ($this->arguments['hideIfEmpty'] ?? false)) {
+        $forceClosingTag = (boolean) $this->arguments['forceClosingTag'];
+        if (true === empty($trimmedContent) && true === (boolean) $this->arguments['hideIfEmpty']) {
             return '';
         }
-        if ('none' === $tagName || empty($tagName)) {
+        if ('none' === $tagName || true === empty($tagName)) {
             // skip building a tag if special keyword "none" is used, or tag name is empty
             return $trimmedContent;
         }
@@ -119,9 +130,8 @@ trait TagViewHelperTrait
         }
         // process some attributes differently - if empty, remove the property:
         foreach ($nonEmptyAttributes as $propertyName) {
-            /** @var string|null $value */
-            $value = $this->arguments[$propertyName] ?? null;
-            if (empty($value)) {
+            $value = $this->arguments[$propertyName];
+            if (true === empty($value)) {
                 $this->tag->removeAttribute($propertyName);
             } else {
                 $this->tag->addAttribute($propertyName, $value);
@@ -133,16 +143,16 @@ trait TagViewHelperTrait
     /**
      * Renders the provided tag and optionally appends or prepends
      * it to the main tag's content depending on 'mode' which can
-     * be one of 'none', 'append' or 'prepend'.
+     * be one of 'none', 'append' or 'prepend'
+     *
+     * @param string $tagName
+     * @param array $attributes
+     * @param boolean $forceClosingTag
+     * @param string $mode
+     * @return string
      */
-    protected function renderChildTag(
-        string $tagName,
-        array $attributes = [],
-        bool $forceClosingTag = false,
-        string $mode = 'none'
-    ): string {
-        $content = $this->tag->getContent();
-
+    protected function renderChildTag($tagName, $attributes = [], $forceClosingTag = false, $mode = 'none')
+    {
         $tagBuilder = clone $this->tag;
         $tagBuilder->reset();
         $tagBuilder->setTagName($tagName);
@@ -150,6 +160,7 @@ trait TagViewHelperTrait
         $tagBuilder->forceClosingTag($forceClosingTag);
         $childTag = $tagBuilder->render();
         if ('append' === $mode || 'prepend' === $mode) {
+            $content = $this->tag->getContent();
             if ('append' === $mode) {
                 $content = $content . $childTag;
             } else {

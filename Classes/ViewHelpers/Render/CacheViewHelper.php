@@ -52,6 +52,7 @@ class CacheViewHelper extends AbstractRenderViewHelper
     use CompileWithContentArgumentAndRenderStatic;
 
     const ID_PREFIX = 'vhs-render-cache-viewhelper';
+
     const ID_SEPARATOR = '-';
 
     /**
@@ -59,7 +60,10 @@ class CacheViewHelper extends AbstractRenderViewHelper
      */
     protected $escapeChildren = false;
 
-    public function initializeArguments(): void
+    /**
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument('content', 'string', 'Content to be cached');
         $this->registerArgument('identity', 'string', 'Identity for cached entry', true);
@@ -67,6 +71,9 @@ class CacheViewHelper extends AbstractRenderViewHelper
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -74,12 +81,11 @@ class CacheViewHelper extends AbstractRenderViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        /** @var string $identity */
         $identity = $arguments['identity'];
-        if (!ctype_alnum(preg_replace('/[\-_]/i', '', $identity))) {
-            if ($identity instanceof DomainObjectInterface) {
+        if (false === ctype_alnum(preg_replace('/[\-_]/i', '', $identity))) {
+            if (true === $identity instanceof DomainObjectInterface) {
                 $identity = get_class($identity) . static::ID_SEPARATOR . $identity->getUid();
-            } elseif (method_exists($identity, '__toString')) {
+            } elseif (true === method_exists($identity, '__toString')) {
                 $identity = (string) $identity;
             } else {
                 throw new \RuntimeException(
@@ -92,7 +98,7 @@ class CacheViewHelper extends AbstractRenderViewHelper
         // Hash the cache-key to circumvent disallowed chars
         $identity = sha1($identity);
 
-        if (static::has($identity)) {
+        if (true === static::has($identity)) {
             return static::retrieve($identity);
         }
         $content = $renderChildrenClosure();
@@ -100,23 +106,30 @@ class CacheViewHelper extends AbstractRenderViewHelper
         return $content;
     }
 
-    protected static function has(string $id): bool
+    /**
+     * @param string $id
+     * @return boolean
+     */
+    protected static function has($id)
     {
-        return static::getCache()->has(static::ID_PREFIX . static::ID_SEPARATOR . $id);
+        return (boolean) static::getCache()->has(static::ID_PREFIX . static::ID_SEPARATOR . $id);
     }
 
     /**
      * @param mixed $value
+     * @param string $id
+     * @return void
      */
-    protected static function store($value, string $id): void
+    protected static function store($value, $id)
     {
         static::getCache()->set(static::ID_PREFIX . static::ID_SEPARATOR . $id, $value);
     }
 
     /**
+     * @param string $id
      * @return mixed
      */
-    protected static function retrieve(string $id)
+    protected static function retrieve($id)
     {
         $cache = static::getCache();
         if ($cache->has(static::ID_PREFIX . static::ID_SEPARATOR . $id)) {
@@ -125,7 +138,10 @@ class CacheViewHelper extends AbstractRenderViewHelper
         return null;
     }
 
-    protected static function getCache(): FrontendInterface
+    /**
+     * @return FrontendInterface
+     */
+    protected static function getCache()
     {
         /** @var CacheManager $cacheManager */
         $cacheManager = GeneralUtility::makeInstance(CacheManager::class);

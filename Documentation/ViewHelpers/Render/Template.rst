@@ -1,11 +1,10 @@
-:navigation-title: render.template
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-render-template:
 
-==================================================
-render.template ViewHelper `<vhs:render.template>`
-==================================================
+===============
+render.template
+===============
 
 
 Render: Template
@@ -52,9 +51,6 @@ templates from the same plugin.
 Consider using Render/RequestViewHelper if you require a
 completely isolated rendering identical to that which takes
 place when rendering an Extbase plugin's content object.
-
-
-.. _fluidtypo3-vhs-render-template_arguments:
 
 Arguments
 =========

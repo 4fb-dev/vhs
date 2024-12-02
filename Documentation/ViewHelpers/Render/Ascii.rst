@@ -1,11 +1,10 @@
-:navigation-title: render.ascii
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-render-ascii:
 
-============================================
-render.ascii ViewHelper `<vhs:render.ascii>`
-============================================
+============
+render.ascii
+============
 
 
 Render: ASCII Character
@@ -36,9 +35,6 @@ from each number in the array:
     {v:render.ascii(ascii: {0: 13, 1: 10})}
 
 Will produce a Windows line break, \r\n.
-
-
-.. _fluidtypo3-vhs-render-ascii_arguments:
 
 Arguments
 =========

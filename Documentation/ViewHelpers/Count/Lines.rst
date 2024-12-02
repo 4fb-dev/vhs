@@ -1,11 +1,10 @@
-:navigation-title: count.lines
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-count-lines:
 
-==========================================
-count.lines ViewHelper `<vhs:count.lines>`
-==========================================
+===========
+count.lines
+===========
 
 
 Counts number of lines in a string.
@@ -28,9 +27,6 @@ Usage examples
 ::
 
     {v:count.lines(string: myString)}
-
-
-.. _fluidtypo3-vhs-count-lines_arguments:
 
 Arguments
 =========

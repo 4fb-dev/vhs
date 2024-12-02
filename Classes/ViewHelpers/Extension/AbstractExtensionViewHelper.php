@@ -24,12 +24,20 @@ abstract class AbstractExtensionViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function initializeArguments(): void
+    /**
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument('extensionName', 'string', 'Name, in UpperCamelCase, of the extension to be checked');
     }
 
-    protected static function getExtensionKey(array $arguments, RenderingContextInterface $renderingContext): string
+    /**
+     * @param array $arguments
+     * @param RenderingContextInterface $renderingContext
+     * @return string
+     */
+    protected static function getExtensionKey(array $arguments, RenderingContextInterface $renderingContext)
     {
         /** @var string $extensionName */
         $extensionName = static::getExtensionName($arguments, $renderingContext);
@@ -37,6 +45,9 @@ abstract class AbstractExtensionViewHelper extends AbstractViewHelper
     }
 
     /**
+     * @param array $arguments
+     * @param RenderingContextInterface $renderingContext
+     * @throws \RuntimeException
      * @return mixed
      */
     protected static function getExtensionName(array $arguments, RenderingContextInterface $renderingContext)
@@ -45,7 +56,8 @@ abstract class AbstractExtensionViewHelper extends AbstractViewHelper
         if (isset($arguments['extensionName']) && !empty($arguments['extensionName'])) {
             return $arguments['extensionName'];
         }
-        $extensionName = RequestResolver::resolveControllerExtensionNameFromRenderingContext($renderingContext);
+        $extensionName = RequestResolver::resolveRequestFromRenderingContext($renderingContext)
+            ->getControllerExtensionName();
         if (empty($extensionName)) {
             throw new \RuntimeException(
                 'Unable to read extension name from ControllerContext and value not manually specified',

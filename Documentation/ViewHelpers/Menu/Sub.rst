@@ -1,11 +1,10 @@
-:navigation-title: menu.sub
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-menu-sub:
 
-====================================
-menu.sub ViewHelper `<vhs:menu.sub>`
-====================================
+========
+menu.sub
+========
 
 
 Page: Auto Sub Menu ViewHelper
@@ -20,9 +19,6 @@ to be rendered; accepts only a single argument called `pageUid`
 which defines the new starting page UID that is used in the
 recycled parent menu instance.
 
-
-.. _fluidtypo3-vhs-menu-sub_arguments:
-
 Arguments
 =========
 
@@ -36,6 +32,6 @@ pageUid
    mixed
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    Page UID to be overridden in the recycled rendering of the parent instance, if one exists

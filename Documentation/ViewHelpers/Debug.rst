@@ -1,11 +1,10 @@
-:navigation-title: debug
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-debug:
 
-==============================
-debug ViewHelper `<vhs:debug>`
-==============================
+=====
+debug
+=====
 
 
 ViewHelper Debug ViewHelper (sic)
@@ -59,9 +58,6 @@ The class itself can contain any number of protected
 properties, but only those which have a getter method
 can be accessed by Fluid and as therefore we only dump
 those properties which you **can in fact access**.
-
-
-.. _fluidtypo3-vhs-debug_arguments:
 
 Arguments
 =========

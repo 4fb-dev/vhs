@@ -33,15 +33,15 @@ class DivisionViewHelper extends AbstractMultipleMathViewHelper
     {
         $aIsIterable = static::assertIsArrayOrIterator($a);
         $bIsIterable = static::assertIsArrayOrIterator($b);
-        if (!$aIsIterable && $b === null && $arguments['fail']) {
+        if (false === $aIsIterable && $b === null && (boolean) $arguments['fail']) {
             ErrorUtility::throwViewHelperException('Required argument "b" was not supplied', 1237823699);
         }
-        if ($aIsIterable && null === $b) {
+        if (true === $aIsIterable && null === $b) {
             $a = static::arrayFromArrayOrTraversableOrCSVStatic($a);
             $sum = array_sum($a);
             $distribution = count($a);
             return $sum / $distribution;
-        } elseif ($aIsIterable && $b !== null) {
+        } elseif (true === $aIsIterable && $b !== null) {
             $a = static::arrayFromArrayOrTraversableOrCSVStatic($a);
             if ($bIsIterable) {
                 $b = static::arrayFromArrayOrTraversableOrCSVStatic($b);

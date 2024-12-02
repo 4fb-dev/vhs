@@ -46,7 +46,12 @@ class LViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function initializeArguments(): void
+    /**
+     * Initialize arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument('key', 'string', 'Translation Key');
         $this->registerArgument(
@@ -73,30 +78,26 @@ class LViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         /** @var RenderingContext $renderingContext */
-        /** @var string|null $default */
         $default = $arguments['default'];
         $htmlEscape = (boolean) $arguments['htmlEscape'];
-        /** @var string|null $extensionName */
         $extensionName = $arguments['extensionName'];
-        /** @var array|null $translationArguments */
         $translationArguments = $arguments['arguments'];
-        /** @var string $id */
         $id = $renderChildrenClosure();
-        if (empty($default)) {
+        if (true === empty($default)) {
             $default = $id;
         }
-        if (empty($extensionName)) {
-            $extensionName = RequestResolver::resolveControllerExtensionNameFromRenderingContext($renderingContext);
+        if (true === empty($extensionName)) {
+            $extensionName = RequestResolver::resolveRequestFromRenderingContext($renderingContext)
+                ->getControllerExtensionName();
         }
-        /** @var string|null $value */
-        $value = LocalizationUtility::translate((string) $id, $extensionName, $translationArguments);
-        if (empty($value)) {
+        $value = LocalizationUtility::translate($id, $extensionName, $translationArguments);
+        if (true === empty($value)) {
             $value = $default;
-            if (!empty($translationArguments)) {
+            if (true === is_array($translationArguments)) {
                 $value = vsprintf($value, $translationArguments);
             }
-        } elseif ($htmlEscape) {
-            $value = htmlspecialchars((string) $value);
+        } elseif (true === $htmlEscape) {
+            $value = htmlspecialchars($value);
         }
         return $value;
     }

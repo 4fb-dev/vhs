@@ -1,11 +1,10 @@
-:navigation-title: resource.language
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-resource-language:
 
-======================================================
-resource.language ViewHelper `<vhs:resource.language>`
-======================================================
+=================
+resource.language
+=================
 
 
 Resource: Language
@@ -25,9 +24,6 @@ Examples
 
     <!-- Tag usage for getting labels of current language -->
     <v:resource.language extensionName="myext" path="Path/To/Locallang.xlf"/>
-
-
-.. _fluidtypo3-vhs-resource-language_arguments:
 
 Arguments
 =========

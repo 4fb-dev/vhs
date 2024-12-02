@@ -1,11 +1,10 @@
-:navigation-title: asset
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-asset:
 
-==============================
-asset ViewHelper `<vhs:asset>`
-==============================
+=====
+asset
+=====
 
 
 Basic Asset ViewHelper
@@ -44,9 +43,6 @@ features shared by every Asset type:
     Note: there are no static TypoScript templates for VHS but
     you will find a complete list in the README.md file in the
     root of the extension folder.
-
-
-.. _fluidtypo3-vhs-asset_arguments:
 
 Arguments
 =========

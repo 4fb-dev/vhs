@@ -1,11 +1,10 @@
-:navigation-title: condition.type.isInstanceOf
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-condition-type-isinstanceof:
 
-==========================================================================
-condition.type.isInstanceOf ViewHelper `<vhs:condition.type.isInstanceOf>`
-==========================================================================
+===========================
+condition.type.isInstanceOf
+===========================
 
 
 Condition: Value is an instance of a class
@@ -13,9 +12,6 @@ Condition: Value is an instance of a class
 
 Condition ViewHelper which renders the `then` child if provided
 value is an instance of provided class name.
-
-
-.. _fluidtypo3-vhs-condition-type-isinstanceof_arguments:
 
 Arguments
 =========
@@ -56,7 +52,7 @@ value
    mixed
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    Value to check
 
@@ -69,6 +65,6 @@ class
    mixed
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    ClassName to check against

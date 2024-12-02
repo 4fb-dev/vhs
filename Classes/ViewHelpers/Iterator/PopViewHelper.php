@@ -31,13 +31,19 @@ class PopViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function initializeArguments(): void
+    /**
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument('subject', 'mixed', 'Input to work on - Array/Traversable/...');
         $this->registerAsArgument();
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -45,14 +51,12 @@ class PopViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        /** @var string|null $as */
-        $as = $arguments['as'];
         $subject = static::arrayFromArrayOrTraversableOrCSVStatic(
-            empty($as) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject']
+            empty($arguments['as']) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject']
         );
         return static::renderChildrenWithVariableOrReturnInputStatic(
             array_pop($subject),
-            $as,
+            $arguments['as'],
             $renderingContext,
             $renderChildrenClosure
         );

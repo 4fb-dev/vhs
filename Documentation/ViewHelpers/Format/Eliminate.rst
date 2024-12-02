@@ -1,20 +1,16 @@
-:navigation-title: format.eliminate
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-format-eliminate:
 
-====================================================
-format.eliminate ViewHelper `<vhs:format.eliminate>`
-====================================================
+================
+format.eliminate
+================
 
 
 Character/string/whitespace elimination ViewHelper
 
 There is no example - each argument describes how it should be
 used and arguments can be used individually or in any combination.
-
-
-.. _fluidtypo3-vhs-format-eliminate_arguments:
 
 Arguments
 =========

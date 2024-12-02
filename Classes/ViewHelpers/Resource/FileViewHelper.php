@@ -15,9 +15,16 @@ use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
  */
 class FileViewHelper extends AbstractResourceViewHelper
 {
+
     use TemplateVariableViewHelperTrait;
 
-    public function initializeArguments(): void
+    /**
+     * Initialize arguments.
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
         $this->registerAsArgument();
@@ -35,9 +42,7 @@ class FileViewHelper extends AbstractResourceViewHelper
      */
     public function render()
     {
-        /** @var boolean $onlyProperties */
-        $onlyProperties = $this->arguments['onlyProperties'];
-        $files = (array) $this->getFiles($onlyProperties);
+        $files = (array) $this->getFiles($this->arguments['onlyProperties']);
         if (1 === count($files)) {
             $files = array_shift($files);
         }

@@ -1,11 +1,10 @@
-:navigation-title: math.modulo
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-math-modulo:
 
-==========================================
-math.modulo ViewHelper `<vhs:math.modulo>`
-==========================================
+===========
+math.modulo
+===========
 
 
 Math: Modulo
@@ -22,9 +21,6 @@ If $a is an array and $b is a number then modulo is performed
 on $a using $b for each calculation.
 
 If $a and $b are both numbers simple modulo is performed.
-
-
-.. _fluidtypo3-vhs-math-modulo_arguments:
 
 Arguments
 =========
@@ -52,7 +48,7 @@ b
    mixed
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    Second number or Iterator/Traversable/Array for calculation
 

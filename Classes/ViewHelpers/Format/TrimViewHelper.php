@@ -20,7 +20,10 @@ class TrimViewHelper extends AbstractViewHelper
 {
     use CompileWithContentArgumentAndRenderStatic;
 
-    public function initializeArguments(): void
+    /**
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument('content', 'string', 'String to trim');
         $this->registerArgument('characters', 'string', 'List of characters to trim, no separators, e.g. "abc123"');
@@ -29,6 +32,9 @@ class TrimViewHelper extends AbstractViewHelper
     /**
      * Trims content by stripping off $characters
      *
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -36,10 +42,9 @@ class TrimViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        /** @var string $characters */
         $characters = $arguments['characters'];
         $content = $renderChildrenClosure();
-        if (!empty($characters)) {
+        if (false === empty($characters)) {
             $content = trim($content, $characters);
         } else {
             $content = trim($content);

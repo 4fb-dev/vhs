@@ -61,7 +61,12 @@ class SortViewHelper extends AbstractViewHelper
         'SORT_FLAG_CASE'
     ];
 
-    public function initializeArguments(): void
+    /**
+     * Initialize arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument('subject', 'mixed', 'The array/Traversable instance to sort');
         $this->registerArgument(
@@ -95,6 +100,9 @@ class SortViewHelper extends AbstractViewHelper
      * Returns the same type as $subject. Ignores NULL values which would be
      * OK to use in an f:for (empty loop as result)
      *
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -102,16 +110,9 @@ class SortViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        /** @var string|null $as */
-        $as = $arguments['as'] ?? null;
-        $candidate = $arguments['subject'] ?? $renderChildrenClosure();
+        $candidate = !empty($arguments['as']) ? $arguments['subject'] : $renderChildrenClosure();
         if ($candidate instanceof ObjectStorage) {
             $sorted = static::sortObjectStorage($candidate, $arguments);
-        } elseif (!is_iterable($candidate)) {
-            throw new Exception(
-                'v:iterator.sort requires an "iterable" object or array, as "subject" argument or as child node.',
-                1690469444
-            );
         } else {
             $subject = static::arrayFromArrayOrTraversableOrCSVStatic($candidate);
             $sorted = static::sortArray($subject, $arguments);
@@ -119,7 +120,7 @@ class SortViewHelper extends AbstractViewHelper
 
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $sorted,
-            $as,
+            $arguments['as'],
             $renderingContext,
             $renderChildrenClosure
         );
@@ -136,7 +137,7 @@ class SortViewHelper extends AbstractViewHelper
     {
         $sorted = [];
         foreach ($array as $index => $object) {
-            if (isset($arguments['sortBy'])) {
+            if (true === isset($arguments['sortBy'])) {
                 $index = static::getSortValue($object, $arguments);
             }
             while (isset($sorted[$index])) {
@@ -165,7 +166,7 @@ class SortViewHelper extends AbstractViewHelper
     /**
      * Sort an ObjectStorage instance
      *
-     * @param ObjectStorage<object> $storage
+     * @param ObjectStorage $storage
      * @param array $arguments
      * @return ObjectStorage
      */
@@ -196,9 +197,9 @@ class SortViewHelper extends AbstractViewHelper
     {
         $field = $arguments['sortBy'];
         $value = ObjectAccess::getPropertyPath($object, $field);
-        if ($value instanceof \DateTimeInterface) {
+        if (true === $value instanceof \DateTimeInterface) {
             $value = (integer) $value->format('U');
-        } elseif ($value instanceof ObjectStorage || $value instanceof LazyObjectStorage) {
+        } elseif (true === $value instanceof ObjectStorage || true === $value instanceof LazyObjectStorage) {
             $value = $value->count();
         } elseif (is_array($value)) {
             $value = count($value);
@@ -219,7 +220,7 @@ class SortViewHelper extends AbstractViewHelper
         $constants = static::arrayFromArrayOrTraversableOrCSVStatic($arguments['sortFlags']);
         $flags = 0;
         foreach ($constants as $constant) {
-            if (!in_array($constant, static::$allowedSortFlags)) {
+            if (false === in_array($constant, static::$allowedSortFlags)) {
                 ErrorUtility::throwViewHelperException(
                     'The constant "' . $constant . '" you\'re trying to use as a sortFlag is not allowed. Allowed ' .
                     'constants are: ' . implode(', ', static::$allowedSortFlags) . '.',

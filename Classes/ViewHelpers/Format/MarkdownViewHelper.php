@@ -10,11 +10,12 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
 
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
@@ -44,7 +45,10 @@ class MarkdownViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function initializeArguments(): void
+    /**
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument('text', 'string', 'Markdown to convert to HTML');
         $this->registerArgument('trim', 'boolean', 'Trim content before converting', false, true);
@@ -52,7 +56,11 @@ class MarkdownViewHelper extends AbstractViewHelper
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed|null|string
+     * @throws Exception
      */
     public static function renderStatic(
         array $arguments,
@@ -81,10 +89,10 @@ class MarkdownViewHelper extends AbstractViewHelper
                 1350511561
             );
         }
-        if ($trim) {
+        if (true === (boolean) $trim) {
             $text = trim($text);
         }
-        if ($htmlentities) {
+        if (true === (boolean) $htmlentities) {
             $text = htmlentities($text);
         }
         $transformed = static::transform($text, $markdownExecutablePath);
@@ -92,7 +100,12 @@ class MarkdownViewHelper extends AbstractViewHelper
         return $transformed;
     }
 
-    public static function transform(string $text, string $markdownExecutablePath): string
+    /**
+     * @param string $text
+     * @param string $markdownExecutablePath
+     * @return string
+     */
+    public static function transform($text, $markdownExecutablePath)
     {
         $descriptorspec = [
             0 => ['pipe', 'r'],
@@ -131,11 +144,18 @@ class MarkdownViewHelper extends AbstractViewHelper
         return (string) $transformed;
     }
 
-    protected static function getCache(): FrontendInterface
+    /**
+     * @return VariableFrontend
+     */
+    protected static function getCache()
     {
         static $cache;
         if (!isset($cache)) {
-            $cacheManager = $GLOBALS['typo3CacheManager'] ?? GeneralUtility::makeInstance(CacheManager::class);
+            if (isset($GLOBALS['typo3CacheManager'])) {
+                $cacheManager = $GLOBALS['typo3CacheManager'];
+            } else {
+                $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
+            }
             $cache = $cacheManager->getCache('vhs_markdown');
         }
         return $cache;

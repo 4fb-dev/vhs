@@ -31,7 +31,10 @@ class RandomViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function initializeArguments(): void
+    /**
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument(
             'subject',
@@ -42,6 +45,9 @@ class RandomViewHelper extends AbstractViewHelper
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -49,17 +55,15 @@ class RandomViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        /** @var string|null $as */
-        $as = $arguments['as'];
         $subject = static::arrayFromArrayOrTraversableOrCSVStatic(
-            empty($as) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject']
+            empty($arguments['as']) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject']
         );
         if (empty($subject)) {
             return null;
         }
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $subject[array_rand($subject)],
-            $as,
+            $arguments['as'],
             $renderingContext,
             $renderChildrenClosure
         );

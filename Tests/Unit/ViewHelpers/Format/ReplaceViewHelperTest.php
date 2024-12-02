@@ -10,51 +10,24 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
-use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\TextNode;
 
+/**
+ * Class ReplaceViewHelperTest
+ */
 class ReplaceViewHelperTest extends AbstractViewHelperTestCase
 {
-    public function testCanReplace(): void
+    /**
+     * @test
+     */
+    public function canReplace()
     {
         $arguments = [
             'content' => 'foobar',
             'substring' => 'foo',
-            'replacement' => '',
+            'replacement' => ''
         ];
         $test = $this->executeViewHelper($arguments);
         $this->assertSame('bar', $test);
     }
 
-    public function testCanReplaceWithChildContent(): void
-    {
-        $arguments = [
-            'substring' => 'foo',
-            'replacement' => '',
-        ];
-        $test = $this->executeViewHelper($arguments, [], new TextNode('foobar'));
-        $this->assertSame('bar', $test);
-    }
-
-    public function testCanReplaceWithArrays(): void
-    {
-        $arguments = [
-            'content' => ['foobar', 'foobaz', 'fizbaz'],
-            'substring' => ['foo', 'baz'],
-            'replacement' => ['x', 'x'],
-        ];
-        $test = $this->executeViewHelper($arguments);
-        $this->assertSame(['xbar', 'xx', 'fizx'], $test);
-    }
-
-    public function testReturnsCountWhenAsked(): void
-    {
-        $arguments = [
-            'content' => 'foobar',
-            'substring' => 'foo',
-            'replacement' => '',
-            'returnCount' => true,
-        ];
-        $test = $this->executeViewHelper($arguments);
-        $this->assertSame(1, $test);
-    }
 }

@@ -1,17 +1,13 @@
-:navigation-title: iterator.diff
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-iterator-diff:
 
-==============================================
-iterator.diff ViewHelper `<vhs:iterator.diff>`
-==============================================
+=============
+iterator.diff
+=============
 
 
 Computes the difference of arrays.
-
-
-.. _fluidtypo3-vhs-iterator-diff_arguments:
 
 Arguments
 =========
@@ -39,6 +35,6 @@ b
    mixed
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    Second Array/Traversable/CSV

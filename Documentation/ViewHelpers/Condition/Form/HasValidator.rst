@@ -1,11 +1,10 @@
-:navigation-title: condition.form.hasValidator
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-condition-form-hasvalidator:
 
-==========================================================================
-condition.form.hasValidator ViewHelper `<vhs:condition.form.hasValidator>`
-==========================================================================
+===========================
+condition.form.hasValidator
+===========================
 
 
 Form: Field Has Validator?
@@ -13,9 +12,6 @@ Form: Field Has Validator?
 
 Takes a property (dotted path supported) and renders the
 then-child if the property at the given path has any
-
-
-.. _fluidtypo3-vhs-condition-form-hasvalidator_arguments:
 
 Arguments
 =========
@@ -56,7 +52,7 @@ property
    string
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    The property name, dotted path supported, to determine required.
 
@@ -69,7 +65,7 @@ validatorName
    string
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    The name of the validator that must exist for the condition to be true.
 
@@ -82,6 +78,6 @@ object
    mixed
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    Optional object - if not specified, grabs the associated form object.

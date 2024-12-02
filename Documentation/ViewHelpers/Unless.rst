@@ -1,11 +1,10 @@
-:navigation-title: unless
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-unless:
 
-================================
-unless ViewHelper `<vhs:unless>`
-================================
+======
+unless
+======
 
 
 Unless
@@ -46,9 +45,6 @@ Example, inline mode illustrating `v:or` likeness
         // ...but the "unless" counterpart supports anything as
         // condition instead of only checking "is content empty?"
 
-
-.. _fluidtypo3-vhs-unless_arguments:
-
 Arguments
 =========
 
@@ -88,6 +84,6 @@ condition
    boolean
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    Condition which must be true, or then is rendered

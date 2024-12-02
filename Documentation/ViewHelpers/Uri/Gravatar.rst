@@ -1,17 +1,13 @@
-:navigation-title: uri.gravatar
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-uri-gravatar:
 
-============================================
-uri.gravatar ViewHelper `<vhs:uri.gravatar>`
-============================================
+============
+uri.gravatar
+============
 
 
 Renders Gravatar URI.
-
-
-.. _fluidtypo3-vhs-uri-gravatar_arguments:
 
 Arguments
 =========
@@ -26,7 +22,7 @@ email
    string
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    Email address
 

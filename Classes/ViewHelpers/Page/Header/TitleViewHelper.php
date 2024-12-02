@@ -49,7 +49,12 @@ class TitleViewHelper extends AbstractViewHelper
     use CompileWithRenderStatic;
     use PageRendererTrait;
 
-    public function initializeArguments(): void
+    /**
+     * Arguments initialization
+     *
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument('title', 'string', 'Title tag content');
         $this->registerArgument(
@@ -63,6 +68,9 @@ class TitleViewHelper extends AbstractViewHelper
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -73,18 +81,14 @@ class TitleViewHelper extends AbstractViewHelper
         if (ContextUtility::isBackend()) {
             return;
         }
-        if (!empty($arguments['title'])) {
-            /** @var string $title */
+        if (false === empty($arguments['title'])) {
             $title = $arguments['title'];
         } else {
-            /** @var string $title */
             $title = $renderChildrenClosure();
         }
-        /** @var string $whitespace */
-        $whitespace = $arguments['whitespaceString'];
-        $title = trim((string) preg_replace('/\s+/u', $whitespace, $title), $whitespace);
+        $title = trim(preg_replace('/\s+/', $arguments['whitespaceString'], $title), $arguments['whitespaceString']);
         static::getPageRenderer()->setTitle($title);
-        if ($arguments['setIndexedDocTitle']) {
+        if (true === $arguments['setIndexedDocTitle']) {
             $GLOBALS['TSFE']->indexedDocTitle = $title;
         }
     }

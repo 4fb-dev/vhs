@@ -10,9 +10,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Security;
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
-use FluidTYPO3\Vhs\ViewHelpers\Security\AbstractSecurityViewHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\Domain\Model\BackendUser;
 use TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup;
 use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
@@ -24,6 +22,9 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ArgumentDefinition;
 
+/**
+ * Class AbstractSecurityViewHelperTest
+ */
 class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
 {
     /**
@@ -37,7 +38,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         $this->assertInstanceOf($this->getViewHelperClassName(), $instance);
     }
 
-    protected function createInstance(): AbstractSecurityViewHelper
+    protected function createInstance()
     {
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
             ->setMethods(['dummy'])
@@ -48,8 +49,11 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
 
     /**
      * @dataProvider getEvaluateArgumentsTestValues
+     * @param array $arguments
+     * @param array $expectedMethods
+     * @param boolean $expectedReturn
      */
-    public function testEvaluateArguments(array $arguments, array $expectedMethods, bool $expectedReturn): void
+    public function testEvaluateArguments(array $arguments, array $expectedMethods, $expectedReturn)
     {
         $node = $this->getMockBuilder(ViewHelperNode::class)
             ->setMethods(['getChildNodes'])
@@ -78,100 +82,98 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals($expectedReturn, $result);
     }
 
-    public function getEvaluateArgumentsTestValues(): array
+    /**
+     * @return array
+     */
+    public function getEvaluateArgumentsTestValues()
     {
         if (!class_exists(FrontendUser::class)) {
             self::markTestSkipped('Skipping test with FrontendUser dependency');
         }
         $frontendUser = new FrontendUser();
-        $frontendUser->_setProperty('uid', 1);
         $frontendUsers = new ObjectStorage();
         $frontendUsers->attach($frontendUser);
         $frontendUserGroup = new FrontendUserGroup();
-        $frontendUserGroup->_setProperty('uid', 2);
         $frontendUserGroups = new ObjectStorage();
         $frontendUserGroups->attach($frontendUserGroup);
         $backendUser = new BackendUser();
-        $backendUser->_setProperty('uid', 3);
         $backendUsers = new ObjectStorage();
         $backendUsers->attach($backendUser);
         $backendUserGroup = new BackendUserGroup();
-        $backendUserGroup->_setProperty('uid', 4);
         $backendUserGroups = new ObjectStorage();
         $backendUserGroups->attach($backendUserGroup);
         return [
-            'any frontend user' => [
+            [
                 ['anyFrontendUser' => true],
                 ['assertFrontendUserLoggedIn'],
                 true
             ],
-            'any frontend user group' => [
+            [
                 ['anyFrontendUserGroup' => true],
                 ['assertFrontendUserGroupLoggedIn'],
                 true
             ],
-            'specific frontend user' => [
+            [
                 ['frontendUser' => $frontendUser],
                 ['assertFrontendUserLoggedIn'],
                 true
             ],
-            'one of provided frontend users' =>
-                [
+            [
                 ['frontendUsers' => $frontendUsers],
                 ['assertFrontendUsersLoggedIn'],
                 true
             ],
-            'specific frontend uer group' => [
+            [
                 ['frontendUserGroup' => true],
                 ['assertFrontendUserGroupLoggedIn'],
                 true
             ],
-            'one of provided frontend user groups' => [
+            [
                 ['frontendUserGroups' => true],
                 ['assertFrontendUserGroupLoggedIn'],
                 true
             ],
-            'any backend user' => [
+            [
                 ['anyBackendUser' => true],
                 ['assertBackendUserLoggedIn'],
                 true
             ],
-            'any backend user group' => [
+            [
                 ['anyBackendUserGroup' => true],
                 ['assertBackendUserGroupLoggedIn'],
                 true
             ],
-            'specific backend user' => [
+            [
                 ['backendUser' => $backendUser],
                 ['assertBackendUserLoggedIn'],
                 true
             ],
-            'one of provided backend users' => [
+            [
                 ['backendUsers' => $backendUsers],
                 ['assertBackendUserLoggedIn'],
                 true
             ],
-            'specific backend user group' => [
+            [
                 ['backendUserGroup' => $backendUserGroup],
                 ['assertBackendUserGroupLoggedIn'],
                 true
             ],
-            'one of provided backend user groups' => [
+            [
                 ['backendUserGroups' => $backendUserGroups],
                 ['assertBackendUserGroupLoggedIn'],
                 true
             ],
-            'admin' => [
+            [
                 ['admin' => true],
                 ['assertAdminLoggedIn'],
                 true
             ],
-            'frontend user and admin' => [
+            [
                 ['admin' => true, 'anyFrontendUser' => true, 'evaluationMode' => 'AND'],
                 ['assertAdminLoggedIn', 'assertFrontendUserLoggedIn'],
                 true
             ],
-            'frontned user or admin' => [
+            [
                 ['admin' => true, 'anyFrontendUser' => true, 'evaluationMode' => 'OR'],
                 ['assertAdminLoggedIn', 'assertFrontendUserLoggedIn'],
                 true
@@ -181,12 +183,12 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
 
     /**
      * @dataProvider getAssertFrontendUserLoggedInTestValues
+     * @param FrontendUser|NULL $user
+     * @param FrontendUser|NULL $resolvedUser
+     * @param boolean $expected
      */
-    public function testAssertFrontendUserLoggedIn(
-        ?FrontendUser $user,
-        ?FrontendUser $resolvedUser,
-        bool $expected
-    ): void {
+    public function testAssertFrontendUserLoggedIn($user, $resolvedUser, $expected)
+    {
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
             ->setMethods(['getCurrentFrontendUser'])
             ->disableOriginalConstructor()
@@ -196,7 +198,10 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function getAssertFrontendUserLoggedInTestValues(): array
+    /**
+     * @return array
+     */
+    public function getAssertFrontendUserLoggedInTestValues()
     {
         if (!class_exists(FrontendUser::class)) {
             self::markTestSkipped('Skipping test with FrontendUser dependency');
@@ -221,13 +226,12 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
 
     /**
      * @dataProvider getAssertFrontendUserGroupLoggedInTestValues
-     * @param FrontendUserGroup|ObjectStorage
+     * @param FrontendUserGroup|NULL $group
+     * @param FrontendUser|NULL $resolvedUser
+     * @param boolean $expected
      */
-    public function testAssertFrontendUserGroupLoggedIn(
-        $group,
-        ?FrontendUser $resolvedUser,
-        bool $expected
-    ): void {
+    public function testAssertFrontendUserGroupLoggedIn($group, $resolvedUser, $expected)
+    {
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
             ->setMethods(['getCurrentFrontendUser'])
             ->disableOriginalConstructor()
@@ -237,7 +241,10 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function getAssertFrontendUserGroupLoggedInTestValues(): array
+    /**
+     * @return array
+     */
+    public function getAssertFrontendUserGroupLoggedInTestValues()
     {
         if (!class_exists(FrontendUser::class)) {
             self::markTestSkipped('Skipping test with FrontendUser dependency');
@@ -264,12 +271,12 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
 
     /**
      * @dataProvider getAssertFrontendUsersLoggedInTestValues
+     * @param ObjectStorage $users
+     * @param FrontendUser $currentUser
+     * @param boolean $expected
      */
-    public function testAssertFrontendUsersLoggedIn(
-        ObjectStorage $users,
-        FrontendUser $currentUser,
-        bool $expected
-    ): void {
+    public function testAssertFrontendUsersLoggedIn(ObjectStorage $users, FrontendUser $currentUser, $expected)
+    {
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
             ->setMethods(['getCurrentFrontendUser'])
             ->disableOriginalConstructor()
@@ -279,7 +286,10 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function getAssertFrontendUsersLoggedInTestValues(): array
+    /**
+     * @return array
+     */
+    public function getAssertFrontendUsersLoggedInTestValues()
     {
         if (!class_exists(FrontendUser::class)) {
             self::markTestSkipped('Skipping test with FrontendUser dependency');
@@ -304,8 +314,11 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
 
     /**
      * @dataProvider getAssertBackendUserLoggedInTestValues
+     * @param ingeger $user
+     * @param integer $currentUser
+     * @param boolean $expected
      */
-    public function testAssertBackendUserLoggedIn(?int $user, ?int $currentUser, bool $expected): void
+    public function testAssertBackendUserLoggedIn($user, $currentUser, $expected)
     {
         $GLOBALS['BE_USER'] = (object) ['user' => ['uid' => $currentUser]];
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
@@ -317,7 +330,10 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function getAssertBackendUserLoggedInTestValues(): array
+    /**
+     * @return array
+     */
+    public function getAssertBackendUserLoggedInTestValues()
     {
         return [
             [1, 0, false],
@@ -331,9 +347,11 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
 
     /**
      * @dataProvider getAssertBackendUserGroupLoggedInTestValues
-     * @param null|string|array $group
+     * @param ingeger $group
+     * @param array|NULL $currentUser
+     * @param boolean $expected
      */
-    public function testAssertBackendUserGroupLoggedIn($group, ?array $currentUser, bool $expected): void
+    public function testAssertBackendUserGroupLoggedIn($group, $currentUser, $expected)
     {
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
             ->setMethods(['getCurrentBackendUser'])
@@ -344,7 +362,10 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function getAssertBackendUserGroupLoggedInTestValues(): array
+    /**
+     * @return array
+     */
+    public function getAssertBackendUserGroupLoggedInTestValues()
     {
         return [
             [null, null, false],
@@ -362,23 +383,24 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
 
     /**
      * @dataProvider getAssertAdminLoggedInTestValues
+     * @param array|NULL $currentUser
+     * @param boolean $expected
      */
-    public function testAssertAdminLoggedIn(?array $currentUser, bool $expected): void
+    public function testAssertAdminLoggedIn($currentUser, $expected)
     {
-        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '11.5', '>=')) {
-            $this->markTestSkipped('Aspects implementation is tested by the core');
-        }
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
             ->setMethods(['getCurrentBackendUser'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
-
         $instance->expects($this->atLeastOnce())->method('getCurrentBackendUser')->willReturn($currentUser);
         $result = $instance->assertAdminLoggedIn();
         $this->assertEquals($expected, $result);
     }
 
-    public function getAssertAdminLoggedInTestValues(): array
+    /**
+     * @return array
+     */
+    public function getAssertAdminLoggedInTestValues()
     {
         return [
             [null, false],
@@ -387,7 +409,10 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         ];
     }
 
-    public function testGetCurrentFrontendUserReturnsNullIfNoFrontendUserRecordIsSetInFrontendController(): void
+    /**
+     * @return void
+     */
+    public function testGetCurrentFrontendUserReturnsNullIfNoFrontendUserRecordIsSetInFrontendController()
     {
         $GLOBALS['TSFE'] = (object) ['loginUser' => ''];
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
@@ -396,16 +421,18 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
             ->getMockForAbstractClass();
         $result = $instance->getCurrentFrontendUser();
         $this->assertNull($result);
+        unset($GLOBALS['TSFE']);
     }
 
-    public function testGetCurrentFrontendUserFetchesFromFrontendUserRepository(): void
+    /**
+     * @return void
+     */
+    public function testGetCurrentFrontendUserFetchesFromFrontendUserRepository()
     {
         if (!class_exists(FrontendUser::class)) {
             self::markTestSkipped('Skipping test with FrontendUser dependency');
         }
         $GLOBALS['TSFE'] = (object) ['loginUser' => 1, 'fe_user' => (object) ['user' => ['uid' => 1]]];
-
-        $frontendUser = new FrontendUser();
 
         $querySettings = $this->getMockBuilder(Typo3QuerySettings::class)->disableOriginalConstructor()->getMock();
 
@@ -421,7 +448,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
             ->getMock();
         $repository->expects($this->once())->method('setDefaultQuerySettings')->with($querySettings);
         $repository->expects($this->once())->method('createQuery')->willReturn($query);
-        $repository->expects($this->once())->method('findByUid')->with(1)->willReturn($frontendUser);
+        $repository->expects($this->once())->method('findByUid')->with(1)->willReturn('test');
         GeneralUtility::setSingletonInstance(FrontendUserRepository::class, $repository);
 
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
@@ -429,10 +456,13 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
             ->getMockForAbstractClass();
 
         $result = $instance->getCurrentFrontendUser();
-        $this->assertEquals($frontendUser, $result);
+        $this->assertEquals('test', $result);
     }
 
-    public function testRenderThenChildDisablesCacheInFrontendContext(): void
+    /**
+     * @return void
+     */
+    public function testRenderThenChildDisablesCacheInFrontendContext()
     {
         $GLOBALS['TSFE'] = (object) ['no_cache' => 0];
         $node = $this->getMockBuilder(ViewHelperNode::class)
@@ -449,5 +479,6 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         $instance->expects($this->once())->method('isFrontendContext')->willReturn(true);
         $this->callInaccessibleMethod($instance, 'renderThenChild');
         $this->assertEquals(1, $GLOBALS['TSFE']->no_cache);
+        unset($GLOBALS['TSFE']);
     }
 }

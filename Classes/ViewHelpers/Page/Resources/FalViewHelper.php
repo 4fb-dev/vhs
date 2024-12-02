@@ -26,15 +26,29 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class FalViewHelper extends ResourcesFalViewHelper
 {
+
     use SlideViewHelperTrait;
 
     const DEFAULT_TABLE = 'pages';
     const DEFAULT_FIELD = 'media';
 
-    protected string $table = self::DEFAULT_TABLE;
-    protected string $field = self::DEFAULT_FIELD;
+    /**
+     * @var string
+     */
+    protected $table = self::DEFAULT_TABLE;
 
-    public function initializeArguments(): void
+    /**
+     * @var string
+     */
+    protected $field = self::DEFAULT_FIELD;
+
+    /**
+     * Initialize arguments.
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
 
@@ -49,7 +63,11 @@ class FalViewHelper extends ResourcesFalViewHelper
         $this->registerSlideArguments();
     }
 
-    public function getRecord(int $id): ?array
+    /**
+     * @param integer $id
+     * @return array|null
+     */
+    public function getRecord($id)
     {
         $record = parent::getRecord($id);
         if (!$this->isDefaultLanguage()) {
@@ -64,12 +82,22 @@ class FalViewHelper extends ResourcesFalViewHelper
         return $record;
     }
 
-    public function getResources(array $record): array
+    /**
+     * @param array $record
+     * @return array
+     * @throws \Exception
+     */
+    public function getResources($record)
     {
         return $this->getSlideRecords($record['uid']);
     }
 
-    protected function getSlideRecordsFromPage(int $pageUid, ?int $limit): array
+    /**
+     * @param integer $pageUid
+     * @param integer $limit
+     * @return array
+     */
+    protected function getSlideRecordsFromPage($pageUid, $limit)
     {
         $pageRecord = $this->getRecord($pageUid);
         if ($pageRecord === null) {
@@ -85,12 +113,18 @@ class FalViewHelper extends ResourcesFalViewHelper
         return $resources;
     }
 
-    protected function isDefaultLanguage(): bool
+    /**
+     * @return boolean
+     */
+    protected function isDefaultLanguage()
     {
         return $this->getCurrentLanguageUid() === 0;
     }
 
-    protected function getCurrentLanguageUid(): int
+    /**
+     * @return integer
+     */
+    protected function getCurrentLanguageUid()
     {
         if (class_exists(LanguageAspect::class)) {
             /** @var Context $context */
@@ -108,8 +142,10 @@ class FalViewHelper extends ResourcesFalViewHelper
     /**
      * AbstractRecordResource usually uses the current cObj as reference,
      * but the page is needed here
+     *
+     * @return array
      */
-    public function getActiveRecord(): array
+    public function getActiveRecord()
     {
         return $GLOBALS['TSFE']->page;
     }

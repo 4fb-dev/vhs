@@ -1,11 +1,10 @@
-:navigation-title: condition.type.isBoolean
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-condition-type-isboolean:
 
-====================================================================
-condition.type.isBoolean ViewHelper `<vhs:condition.type.isBoolean>`
-====================================================================
+========================
+condition.type.isBoolean
+========================
 
 
 Condition: Type of value is a boolean
@@ -13,9 +12,6 @@ Condition: Type of value is a boolean
 
 Condition ViewHelper which renders the `then` child if type of
 provided value is a boolean.
-
-
-.. _fluidtypo3-vhs-condition-type-isboolean_arguments:
 
 Arguments
 =========
@@ -56,6 +52,6 @@ value
    mixed
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    Value to check

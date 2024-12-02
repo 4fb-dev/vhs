@@ -10,11 +10,36 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
 
 use FluidTYPO3\Vhs\ViewHelpers\Resource\ResourceViewHelperInterface;
 
+/**
+ * Interface for Record Resource ViewHelpers
+ */
 interface RecordResourceViewHelperInterface extends ResourceViewHelperInterface
 {
-    public function getResources(array $record): array;
-    public function getTable(): string;
-    public function getField(): string;
-    public function getRecord(int $id): ?array;
-    public function getActiveRecord(): array;
+
+    /**
+     * @param array $record
+     * @return array
+     */
+    public function getResources($record);
+
+    /**
+     * @return string
+     */
+    public function getTable();
+
+    /**
+     * @return string
+     */
+    public function getField();
+
+    /**
+     * @param mixed $id
+     * @return array
+     */
+    public function getRecord($id);
+
+    /**
+     * @return array
+     */
+    public function getActiveRecord();
 }

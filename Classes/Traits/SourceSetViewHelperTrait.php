@@ -21,38 +21,33 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 trait SourceSetViewHelperTrait
 {
     /**
-     * Used to attach srcset variants of a given image to the specified tag.
+     * used to attach srcset variants of a given image to the specified tag
+     *
+     * @param TagBuilder $tag the tag to add the srcset as argument
+     * @param string $src image path to render srcsets for
+     * @return array
      */
-    public function addSourceSet(TagBuilder $tag, string $src): array
+    public function addSourceSet($tag, $src)
     {
         $srcsets = $this->getSourceSetWidths();
 
         $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
 
-        /** @var string|null $format */
         $format = $this->arguments['format'];
-        /** @var int $quality */
         $quality = $this->arguments['quality'];
-        /** @var string|null $crop */
         $crop = $this->arguments['crop'];
         $treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
-        if ($treatIdAsReference) {
-            /** @var string $src */
+        if (true === $treatIdAsReference) {
             $src = $this->arguments['src'];
         }
 
         $imageSources = [];
         $srcsetVariants = [];
 
-        foreach ($srcsets as $width) {
+        foreach ($srcsets as $key => $width) {
             $srcsetVariant = $this->getImgResource($src, $width, $format, $quality, $treatIdAsReference, null, $crop);
 
-            if ($srcsetVariant['processedFile'] ?? false) {
-                $imageUrl = $srcsetVariant['processedFile']->getPublicUrl();
-            } else {
-                $imageUrl = $srcsetVariant[3] ?? '';
-            }
-            $srcsetVariantSrc = rawurldecode($imageUrl);
+            $srcsetVariantSrc = rawurldecode($srcsetVariant[3]);
             $srcsetVariantSrc = static::preprocessSourceUri(
                 str_replace('%2F', '/', rawurlencode($srcsetVariantSrc)),
                 $this->arguments
@@ -74,36 +69,29 @@ trait SourceSetViewHelperTrait
     }
 
     /**
-     * Generates a copy of a give image with a specific width
+     * generates a copy of a give image with a specific width
      *
      * @param string $src path of the image to convert
      * @param integer $width width to convert the image to
      * @param string $format format of the resulting copy
      * @param integer $quality quality of the resulting copy
      * @param bool $treatIdAsReference given src argument is a sys_file_reference record
-     * @param string|null $params additional params for the image rendering
-     * @param string|null $crop image editor cropping configuration
+     * @param array $params additional params for the image rendering
+     * @param string $crop image editor cropping configuration
      * @return array
      */
-    public function getImgResource(
-        string $src,
-        int $width,
-        ?string $format,
-        int $quality,
-        bool $treatIdAsReference,
-        ?string $params = null,
-        ?string $crop = null
-    ): array {
+    public function getImgResource($src, $width, $format, $quality, $treatIdAsReference, $params = null, $crop = null)
+    {
         $setup = [
             'width' => $width,
             'treatIdAsReference' => $treatIdAsReference,
             'crop' => $crop,
-            'params' => $params,
+            'params' => '',
         ];
-        if (!empty($format)) {
+        if (false === empty($format)) {
             $setup['ext'] = $format;
         }
-        if (0 < $quality) {
+        if (0 < intval($quality)) {
             $quality = MathUtility::forceIntegerInRange($quality, 10, 100, 75);
             $setup['params'] .= ' -quality ' . $quality;
         }
@@ -115,15 +103,17 @@ trait SourceSetViewHelperTrait
     }
 
     /**
-     * Returns an array of srcsets based on the mixed ViewHelper
-     * input (list, csv, array, iterator).
+     * returns an array of srcsets based on the mixed ViewHelper
+     * input (list, csv, array, iterator)
+     *
+     * @return array
      */
-    public function getSourceSetWidths(): array
+    public function getSourceSetWidths()
     {
         $srcsets = $this->arguments['srcset'];
-        if ($srcsets instanceof \Traversable) {
+        if (true === $srcsets instanceof \Traversable) {
             $srcsets = iterator_to_array($srcsets);
-        } elseif (is_string($srcsets)) {
+        } elseif (true === is_string($srcsets)) {
             $srcsets = GeneralUtility::trimExplode(',', $srcsets, true);
         } else {
             $srcsets = (array) $srcsets;

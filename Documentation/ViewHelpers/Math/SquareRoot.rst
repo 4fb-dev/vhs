@@ -1,19 +1,15 @@
-:navigation-title: math.squareRoot
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-math-squareroot:
 
-==================================================
-math.squareRoot ViewHelper `<vhs:math.squareRoot>`
-==================================================
+===============
+math.squareRoot
+===============
 
 
 Math: SquareRoot
 
 Performs sqrt($a).
-
-
-.. _fluidtypo3-vhs-math-squareroot_arguments:
 
 Arguments
 =========

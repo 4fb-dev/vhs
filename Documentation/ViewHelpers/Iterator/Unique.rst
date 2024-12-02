@@ -1,11 +1,10 @@
-:navigation-title: iterator.unique
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-iterator-unique:
 
-==================================================
-iterator.unique ViewHelper `<vhs:iterator.unique>`
-==================================================
+===============
+iterator.unique
+===============
 
 
 Iterator Unique Values ViewHelper
@@ -52,9 +51,6 @@ Output:
 ::
 
     Countries of our users: Denmark - Germany - USA
-
-
-.. _fluidtypo3-vhs-iterator-unique_arguments:
 
 Arguments
 =========

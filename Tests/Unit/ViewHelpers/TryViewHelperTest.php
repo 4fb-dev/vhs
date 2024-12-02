@@ -8,8 +8,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\ViewHelpers\TryViewHelper;
-
 /**
  * Class TryViewHelperTest
  */
@@ -20,23 +18,7 @@ class TryViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEmpty($this->executeViewHelper());
     }
 
-    public function testRenderStaticWithException(): void
-    {
-        $arguments['__then'] = function() { throw new \Exception('test'); };
-        $arguments['__else'] = function() { return 'else case'; };
-        $output = TryViewHelper::renderStatic($arguments, function() { return ''; }, $this->renderingContext);
-        self::assertSame('else case', $output);
-    }
-
-    public function testRenderStaticWithExceptionAndElseArgument(): void
-    {
-        $arguments['__then'] = function() { throw new \Exception('test'); };
-        $arguments['else'] = 'else case';
-        $output = TryViewHelper::renderStatic($arguments, function() { return ''; }, $this->renderingContext);
-        self::assertSame('else case', $output);
-    }
-
-    public function testRenderWithException(): void
+    public function testRenderWithException()
     {
         $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderElseChild', 'renderChildren'])->getMock();
         $instance->setRenderingContext($this->renderingContext);
@@ -45,15 +27,5 @@ class TryViewHelperTest extends AbstractViewHelperTestCase
         $instance->expects($this->once())->method('renderElseChild')->willReturn('testerror');
         $result = $instance->render();
         $this->assertEquals('testerror', $result);
-    }
-
-    public function testRenderWithExceptionAndElseArgument(): void
-    {
-        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
-        $instance->setRenderingContext($this->renderingContext);
-        $instance->setArguments(['else' => 'else']);
-        $instance->expects($this->once())->method('renderChildren')->willThrowException(new \RuntimeException('testerror'));
-        $result = $instance->render();
-        $this->assertEquals('else', $result);
     }
 }

@@ -29,7 +29,10 @@ class UniqIdViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function initializeArguments(): void
+    /**
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument(
             'prefix',
@@ -55,11 +58,7 @@ class UniqIdViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        /** @var string $prefix */
-        $prefix = $arguments['prefix'];
-        /** @var boolean $moreEntropy */
-        $moreEntropy = $arguments['moreEntropy'];
-        $uniqueId = uniqid($prefix, $moreEntropy);
+        $uniqueId = uniqid($arguments['prefix'], $arguments['moreEntropy']);
         return $uniqueId;
     }
 }

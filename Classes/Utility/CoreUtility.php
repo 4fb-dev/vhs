@@ -15,13 +15,22 @@ use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 /**
  * Core Utility
  *
- * Utility to get core information.
+ * Utility to get core informations.
  */
 class CoreUtility
 {
-    public static function getLanguageFlagIconPath(): string
+    /**
+     * Returns the flag icons path depending on the current core version
+     *
+     * @return string
+     */
+    public static function getLanguageFlagIconPath()
     {
-        return ExtensionManagementUtility::extPath('core', 'Resources/Public/Icons/Flags/');
+        $coreExtensionPath = ExtensionManagementUtility::extPath('core');
+        if (version_compare(static::getCurrentCoreVersion(), '9.0', '<')) {
+            return $coreExtensionPath . 'Resources/Public/Icons/Flags/PNG/';
+        }
+        return $coreExtensionPath . 'Resources/Public/Icons/Flags/';
     }
 
     public static function getSitePath(): string
@@ -34,9 +43,12 @@ class CoreUtility
     }
 
     /**
-     * Returns the current core minor version.
+     * Returns the current core minor version
+     *
+     * @return string
+     * @throws \TYPO3\CMS\Core\Package\Exception
      */
-    public static function getCurrentCoreVersion(): string
+    public static function getCurrentCoreVersion()
     {
         return VersionNumberUtility::getCurrentTypo3Version();
     }

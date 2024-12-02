@@ -12,6 +12,7 @@ use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Class ArrayConsumingViewHelperTrait
@@ -27,11 +28,15 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
  */
 trait ArrayConsumingViewHelperTrait
 {
+
     /**
      * Override of VhsViewHelperTrait equivalent. Does what
      * that function does, but also ensures an array return.
+     *
+     * @param string $argumentName
+     * @return mixed
      */
-    protected function getArgumentFromArgumentsOrTagContentAndConvertToArray(string $argumentName): array
+    protected function getArgumentFromArgumentsOrTagContentAndConvertToArray($argumentName)
     {
         return static::getArgumentFromArgumentsOrTagContentAndConvertToArrayStatic(
             $this->arguments,
@@ -43,12 +48,18 @@ trait ArrayConsumingViewHelperTrait
     /**
      * Override of VhsViewHelperTrait equivalent. Does what
      * that function does, but also ensures an array return.
+     *
+     * @param array $arguments
+     * @param string $argumentName
+     * @param \Closure $renderChildrenClosure
+     *
+     * @return mixed
      */
     protected static function getArgumentFromArgumentsOrTagContentAndConvertToArrayStatic(
         array $arguments,
-        string $argumentName,
+        $argumentName,
         \Closure $renderChildrenClosure
-    ): array {
+    ) {
         if (!isset($arguments[$argumentName])) {
             $value = $renderChildrenClosure();
         } else {
@@ -58,32 +69,58 @@ trait ArrayConsumingViewHelperTrait
     }
 
     /**
-     * @param mixed $candidate
+     * @param \Traversable|string $candidate
+     * @param boolean $useKeys
+     *
+     * @return array
+     * @throws Exception
      */
-    protected static function arrayFromArrayOrTraversableOrCSVStatic($candidate, bool $useKeys = true): array
+    protected function arrayFromArrayOrTraversableOrCSV($candidate, $useKeys = true)
+    {
+        return static::arrayFromArrayOrTraversableOrCSVStatic($candidate, $useKeys);
+    }
+
+    /**
+     * @param mixed $candidate
+     * @param boolean $useKeys
+     *
+     * @return array
+     * @throws Exception
+     */
+    protected static function arrayFromArrayOrTraversableOrCSVStatic($candidate, $useKeys = true)
     {
         if ($candidate instanceof QueryResultInterface) {
             return $candidate->toArray();
         }
-        if (is_array($candidate)) {
+        if (true === is_array($candidate)) {
             return $candidate;
         }
         if ($candidate instanceof \Traversable) {
             return iterator_to_array($candidate, $useKeys);
         }
-        if (is_string($candidate)) {
+        if (true === is_string($candidate)) {
             return GeneralUtility::trimExplode(',', $candidate, true);
         }
         ErrorUtility::throwViewHelperException('Unsupported input type; cannot convert to array!');
         return [];
     }
 
-    protected function mergeArrays(array $array1, array $array2): array
+    /**
+     * @param array $array1
+     * @param array $array2
+     * @return array
+     */
+    protected function mergeArrays($array1, $array2)
     {
         return static::mergeArraysStatic($array1, $array2);
     }
 
-    protected static function mergeArraysStatic(array $array1, array $array2): array
+    /**
+     * @param array $array1
+     * @param array $array2
+     * @return array
+     */
+    protected static function mergeArraysStatic($array1, $array2)
     {
         ArrayUtility::mergeRecursiveWithOverrule($array1, $array2);
         return $array1;
@@ -91,9 +128,10 @@ trait ArrayConsumingViewHelperTrait
 
     /**
      * @param mixed $subject
+     * @return boolean
      */
-    protected static function assertIsArrayOrIterator($subject): bool
+    protected static function assertIsArrayOrIterator($subject)
     {
-        return is_array($subject) || $subject instanceof \Traversable;
+        return (boolean) (true === is_array($subject) || true === $subject instanceof \Traversable);
     }
 }

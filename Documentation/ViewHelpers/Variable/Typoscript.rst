@@ -1,11 +1,10 @@
-:navigation-title: variable.typoscript
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-variable-typoscript:
 
-==========================================================
-variable.typoscript ViewHelper `<vhs:variable.typoscript>`
-==========================================================
+===================
+variable.typoscript
+===================
 
 
 Variable: TypoScript
@@ -43,9 +42,6 @@ into two variables usable for a menu item:
 
     <!-- An additional example to demonstrate very compact conditions which prevent wraps from being displayed -->
     {wrap.0 -> f:if(condition: settings.wrapBefore)}{menuItem.title}{wrap.1 -> f:if(condition: settings.wrapAfter)}
-
-
-.. _fluidtypo3-vhs-variable-typoscript_arguments:
 
 Arguments
 =========

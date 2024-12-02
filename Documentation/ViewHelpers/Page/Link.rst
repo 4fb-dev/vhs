@@ -1,11 +1,10 @@
-:navigation-title: page.link
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-page-link:
 
-======================================
-page.link ViewHelper `<vhs:page.link>`
-======================================
+=========
+page.link
+=========
 
 
 Page: Link ViewHelper
@@ -22,9 +21,6 @@ if the requested page is not translated in the current language.
 
     Automatic linktext: <v:page.link pageUid="UID" />
     Manual linktext:    <v:page.link pageUid="UID">linktext</v:page.link>
-
-
-.. _fluidtypo3-vhs-page-link_arguments:
 
 Arguments
 =========
@@ -376,6 +372,19 @@ section
    false
 :aspect:`Description`
    The anchor to be added to the URI
+
+.. _page.link_linkaccessrestrictedpages:
+
+linkAccessRestrictedPages
+-------------------------
+
+:aspect:`DataType`
+   boolean
+
+:aspect:`Required`
+   false
+:aspect:`Description`
+   DEPRECATED: Use showAccessProtected instead.
 
 .. _page.link_absolute:
 

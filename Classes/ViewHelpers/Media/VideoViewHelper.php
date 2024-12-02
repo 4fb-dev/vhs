@@ -26,6 +26,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  */
 class VideoViewHelper extends AbstractMediaViewHelper
 {
+
     use TagViewHelperTrait;
 
     /**
@@ -33,16 +34,33 @@ class VideoViewHelper extends AbstractMediaViewHelper
      */
     protected $tagName = 'video';
 
-    protected array $validTypes = ['mp4', 'webm', 'ogg', 'ogv'];
-    protected array $mimeTypesMap = [
+    /**
+     * @var array
+     */
+    protected $validTypes = ['mp4', 'webm', 'ogg', 'ogv'];
+
+    /**
+     * @var array
+     */
+    protected $mimeTypesMap = [
         'mp4' => 'video/mp4',
         'webm' => 'video/webm',
         'ogg' => 'video/ogg',
         'ogv' => 'video/ogg'
     ];
-    protected array $validPreloadModes = ['auto', 'metadata', 'none'];
 
-    public function initializeArguments(): void
+    /**
+     * @var array
+     */
+    protected $validPreloadModes = ['auto', 'metadata', 'none'];
+
+    /**
+     * Initialize arguments.
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
@@ -109,7 +127,7 @@ class VideoViewHelper extends AbstractMediaViewHelper
             throw new Exception('No video sources provided.', 1359382189);
         }
         foreach ($sources as $source) {
-            if (is_string($source)) {
+            if (true === is_string($source)) {
                 if (false !== strpos($source, '//')) {
                     $src = $source;
                     $type = mb_substr($source, mb_strrpos($source, '.') + 1);
@@ -120,12 +138,12 @@ class VideoViewHelper extends AbstractMediaViewHelper
                     );
                     $type = pathinfo($src, PATHINFO_EXTENSION);
                 }
-            } elseif (is_array($source)) {
-                if (!isset($source['src'])) {
+            } elseif (true === is_array($source)) {
+                if (false === isset($source['src'])) {
                     throw new Exception('Missing value for "src" in sources array.', 1359381250);
                 }
                 $src = $source['src'];
-                if (!isset($source['type'])) {
+                if (false === isset($source['type'])) {
                     throw new Exception('Missing value for "type" in sources array.', 1359381255);
                 }
                 $type = $source['type'];
@@ -133,7 +151,7 @@ class VideoViewHelper extends AbstractMediaViewHelper
                 // skip invalid source
                 continue;
             }
-            if (!in_array(strtolower($type), $this->validTypes)) {
+            if (false === in_array(strtolower($type), $this->validTypes)) {
                     throw new Exception('Invalid video type "' . $type . '".', 1359381260);
             }
             $type = $this->mimeTypesMap[$type];
@@ -145,19 +163,19 @@ class VideoViewHelper extends AbstractMediaViewHelper
             'height'  => $this->arguments['height'],
             'preload' => 'auto',
         ];
-        if ($this->arguments['autoplay']) {
+        if (true === (boolean) $this->arguments['autoplay']) {
             $tagAttributes['autoplay'] = 'autoplay';
         }
-        if ($this->arguments['controls']) {
+        if (true === (boolean) $this->arguments['controls']) {
             $tagAttributes['controls'] = 'controls';
         }
-        if ($this->arguments['loop']) {
+        if (true === (boolean) $this->arguments['loop']) {
             $tagAttributes['loop'] = 'loop';
         }
-        if ($this->arguments['muted']) {
+        if (true === (boolean) $this->arguments['muted']) {
             $tagAttributes['muted'] = 'muted';
         }
-        if (in_array($this->arguments['preload'], $this->validPreloadModes)) {
+        if (true === in_array($this->arguments['preload'], $this->validPreloadModes)) {
             $tagAttributes['preload'] = $this->arguments['preload'];
         }
         if (null !== $this->arguments['poster']) {

@@ -1,11 +1,10 @@
-:navigation-title: condition.string.isLowercase
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-condition-string-islowercase:
 
-============================================================================
-condition.string.isLowercase ViewHelper `<vhs:condition.string.isLowercase>`
-============================================================================
+============================
+condition.string.isLowercase
+============================
 
 
 Condition: String is lowercase
@@ -14,9 +13,6 @@ Condition: String is lowercase
 Condition ViewHelper which renders the `then` child if provided
 string is lowercase. By default only the first letter is tested.
 To test the full string set $fullString to TRUE.
-
-
-.. _fluidtypo3-vhs-condition-string-islowercase_arguments:
 
 Arguments
 =========
@@ -57,7 +53,7 @@ string
    string
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    String to check
 

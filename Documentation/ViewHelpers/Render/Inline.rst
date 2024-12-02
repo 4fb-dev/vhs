@@ -1,11 +1,10 @@
-:navigation-title: render.inline
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-render-inline:
 
-==============================================
-render.inline ViewHelper `<vhs:render.inline>`
-==============================================
+=============
+render.inline
+=============
 
 
 Render: Inline
@@ -19,9 +18,6 @@ but not re-merged after rendering, which means that
 any and all changes in variables that happen while
 rendering this inline code will be destroyed after
 sub-rendering is finished.
-
-
-.. _fluidtypo3-vhs-render-inline_arguments:
 
 Arguments
 =========

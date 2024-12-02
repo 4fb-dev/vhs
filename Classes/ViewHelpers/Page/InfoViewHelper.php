@@ -30,7 +30,10 @@ class InfoViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function initializeArguments(): void
+    /**
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerAsArgument();
         $this->registerArgument(
@@ -48,6 +51,9 @@ class InfoViewHelper extends AbstractViewHelper
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -58,26 +64,22 @@ class InfoViewHelper extends AbstractViewHelper
         /** @var PageService $pageService */
         $pageService = GeneralUtility::makeInstance(PageService::class);
         $pageRepository = $pageService->getPageRepository();
-        /** @var int $pageUid */
-        $pageUid = $arguments['pageUid'];
+        $pageUid = (integer) $arguments['pageUid'];
         if (0 === $pageUid) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
-        $page = $pageRepository->getPage_noCheck((integer) $pageUid);
-        /** @var string|null $field */
+        $page = $pageRepository->getPage_noCheck($pageUid);
         $field = $arguments['field'];
         $content = null;
-        if (empty($field)) {
+        if (true === empty($field)) {
             $content = $page;
-        } elseif (is_array($page) && isset($page[$field])) {
+        } elseif (true === is_array($page) && true === isset($page[$field])) {
             $content = $page[$field];
         }
 
-        /** @var string|null $as */
-        $as = $arguments['as'];
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $content,
-            $as,
+            $arguments['as'],
             $renderingContext,
             $renderChildrenClosure
         );

@@ -23,7 +23,12 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  */
 class IsChildPageViewHelper extends AbstractConditionViewHelper
 {
-    public function initializeArguments(): void
+    /**
+     * Initialize arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
         $this->registerArgument('pageUid', 'integer', 'value to check');
@@ -31,16 +36,15 @@ class IsChildPageViewHelper extends AbstractConditionViewHelper
     }
 
     /**
+     * @param array $arguments
      * @return bool
      */
     public static function verdict(array $arguments, RenderingContextInterface $renderingContext)
     {
-        /** @var int $pageUid */
         $pageUid = $arguments['pageUid'];
-        $respectSiteRoot = (boolean) $arguments['respectSiteRoot'];
+        $respectSiteRoot = $arguments['respectSiteRoot'];
 
-        if (empty($pageUid)) {
-            /** @var int $pageUid */
+        if (null === $pageUid || empty($pageUid) || 0 === intval($pageUid)) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
         /** @var PageService $pageService */

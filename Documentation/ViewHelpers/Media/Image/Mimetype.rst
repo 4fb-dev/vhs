@@ -1,17 +1,13 @@
-:navigation-title: media.image.mimetype
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-media-image-mimetype:
 
-============================================================
-media.image.mimetype ViewHelper `<vhs:media.image.mimetype>`
-============================================================
+====================
+media.image.mimetype
+====================
 
 
 Returns the mimetype of the provided image file.
-
-
-.. _fluidtypo3-vhs-media-image-mimetype_arguments:
 
 Arguments
 =========
@@ -26,7 +22,7 @@ src
    mixed
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    Path to or id of the image file to determine info for. In case a FileReference is supplied, treatIdAsUid and treatIdAsReference will automatically be activated.
 

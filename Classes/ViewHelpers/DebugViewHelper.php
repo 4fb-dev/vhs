@@ -67,18 +67,21 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  * properties, but only those which have a getter method
  * can be accessed by Fluid and as therefore we only dump
  * those properties which you **can in fact access**.
+ *
+ * @package Vhs
+ * @subpackage ViewHelpers
  */
 class DebugViewHelper extends AbstractViewHelper
 {
     /**
      * @var ViewHelperNode[]
      */
-    protected array $childViewHelperNodes = [];
+    protected $childViewHelperNodes = [];
 
     /**
      * @var ObjectAccessorNode[]
      */
-    protected array $childObjectAccessorNodes = [];
+    protected $childObjectAccessorNodes = [];
 
     /**
      * @var boolean
@@ -141,7 +144,7 @@ class DebugViewHelper extends AbstractViewHelper
                     'Path: {' . $path . '}',
                     'Value type: ' . $type,
                 ];
-                if (is_object($value)) {
+                if (true === is_object($value)) {
                     $sections[] = 'Accessible properties on {' . $path . '}:';
                     $gettable = ObjectAccess::getGettablePropertyNames($value);
                     unset($gettable[0]);
@@ -159,7 +162,7 @@ class DebugViewHelper extends AbstractViewHelper
                         true
                     );
                 }
-                $nodes[] = implode(LF, $sections);
+                array_push($nodes, implode(LF, $sections));
             }
         }
         return '<pre>' . implode(LF . LF, $nodes) . '</pre>';
@@ -169,8 +172,9 @@ class DebugViewHelper extends AbstractViewHelper
      * Sets the direct child nodes of the current syntax tree node.
      *
      * @param NodeInterface[] $childNodes
+     * @return void
      */
-    public function setChildNodes(array $childNodes): void
+    public function setChildNodes(array $childNodes)
     {
         foreach ($childNodes as $childNode) {
             if ($childNode instanceof ViewHelperNode) {

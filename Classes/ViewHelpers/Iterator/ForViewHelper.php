@@ -16,7 +16,10 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class ForViewHelper extends AbstractLoopViewHelper
 {
-    public function initializeArguments(): void
+    /**
+     * @return void
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
         $this->registerArgument('to', 'integer', 'Number that the index needs to reach before stopping', true);
@@ -31,6 +34,9 @@ class ForViewHelper extends AbstractLoopViewHelper
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -38,20 +44,12 @@ class ForViewHelper extends AbstractLoopViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        /** @var int|string $to */
-        $to = $arguments['to'];
-        /** @var int|string $from */
-        $from = $arguments['from'];
-        /** @var int|string $step */
-        $step = $arguments['step'];
-        /** @var string|null $iteration */
+        $to = (integer) $arguments['to'];
+        $from = (integer) $arguments['from'];
+        $step = (integer) $arguments['step'];
         $iteration = $arguments['iteration'];
         $content = '';
         $variableProvider = $renderingContext->getVariableProvider();
-
-        $to = (integer) $to;
-        $from = (integer) $from;
-        $step = (integer) $step;
 
         if (0 === $step) {
             throw new \RuntimeException('"step" may not be 0.', 1383267698);
@@ -63,7 +61,7 @@ class ForViewHelper extends AbstractLoopViewHelper
             throw new \RuntimeException('"step" must be smaller than 0 if "from" is greater than "to".', 1383268415);
         }
 
-        if ($iteration !== null && $variableProvider->exists($iteration)) {
+        if (true === $variableProvider->exists($iteration)) {
             $backupVariable = $variableProvider->get($iteration);
             $variableProvider->remove($iteration);
         }
@@ -104,7 +102,7 @@ class ForViewHelper extends AbstractLoopViewHelper
             }
         }
 
-        if ($iteration !== null && isset($backupVariable)) {
+        if (true === isset($backupVariable)) {
             $variableProvider->add($iteration, $backupVariable);
         }
 

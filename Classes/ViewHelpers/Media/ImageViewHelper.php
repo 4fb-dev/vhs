@@ -10,7 +10,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 
 use FluidTYPO3\Vhs\Traits\SourceSetViewHelperTrait;
 use FluidTYPO3\Vhs\ViewHelpers\Media\Image\AbstractImageViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Renders an image tag for the given resource including all valid
@@ -48,7 +47,13 @@ class ImageViewHelper extends AbstractImageViewHelper
      */
     protected $tagName = 'img';
 
-    public function initializeArguments(): void
+    /**
+     * Initialize arguments.
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
@@ -86,7 +91,7 @@ class ImageViewHelper extends AbstractImageViewHelper
      * Render method
      *
      * @return string
-     * @throws Exception
+     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
      */
     public function render()
     {
@@ -94,9 +99,12 @@ class ImageViewHelper extends AbstractImageViewHelper
         return $this->renderTag();
     }
 
-    public function renderTag(): string
+    /**
+     * @return string
+     */
+    public function renderTag()
     {
-        if (!empty($this->arguments['srcset'])) {
+        if (false === empty($this->arguments['srcset'])) {
             $srcSetVariants = $this->addSourceSet($this->tag, $this->mediaSource);
         }
 
@@ -104,7 +112,7 @@ class ImageViewHelper extends AbstractImageViewHelper
             $width = $this->arguments['canvasWidth'];
             $height = $this->arguments['canvasHeight'];
             $src = $this->mediaSource;
-        } elseif (!empty($srcSetVariants) && !empty($this->arguments['srcsetDefault'])) {
+        } elseif (false === empty($srcSetVariants) && false === empty($this->arguments['srcsetDefault'])) {
             $srcSetVariantDefault = $srcSetVariants[$this->arguments['srcsetDefault']];
             $src = $srcSetVariantDefault['src'];
             $width = $srcSetVariantDefault['width'];
@@ -119,13 +127,12 @@ class ImageViewHelper extends AbstractImageViewHelper
         $this->tag->addAttribute('height', $height);
         $this->tag->addAttribute('src', $src);
 
-        /** @var string|null $alt */
-        $alt = $this->arguments['alt'];
         // The alt-attribute is mandatory to have valid html-code, therefore add it even if it is empty
-        $this->tag->addAttribute('alt', (string) $alt);
-
-        if (empty($this->arguments['title'])) {
-            $this->tag->addAttribute('title', $alt);
+        if (empty($this->arguments['alt'])) {
+            $this->tag->addAttribute('alt', '');
+        }
+        if (true === empty($this->arguments['title'])) {
+            $this->tag->addAttribute('title', $this->arguments['alt']);
         }
         return $this->tag->render();
     }

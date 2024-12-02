@@ -8,9 +8,7 @@ namespace FluidTYPO3\Vhs\View;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\RequestResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
@@ -19,35 +17,59 @@ use TYPO3\CMS\Fluid\Compatibility\TemplateParserBuilder;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Fluid\View\TemplateView;
+use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
+use TYPO3Fluid\Fluid\Core\Parser\TemplateParser;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
+/**
+ * Uncache Template View
+ */
 class UncacheTemplateView extends TemplateView
 {
-    public function callUserFunction(string $postUserFunc, array $conf): string
+    /**
+     * @var TemplateParser|\TYPO3Fluid\Fluid\Core\Parser\TemplateParser
+     */
+    protected $templateParser;
+
+    /**
+     * @var TemplateCompiler|\TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler
+     */
+    protected $templateCompiler;
+
+    /**
+     * @return array
+     */
+    public function __sleep()
+    {
+        return ['renderingStack'];
+    }
+
+    /**
+     * @param string $postUserFunc
+     * @param array $conf
+     * @param string $content
+     * @return string|null
+     */
+    public function callUserFunction($postUserFunc, $conf, $content)
     {
         $partial = $conf['partial'] ?? null;
         $section = $conf['section'] ?? null;
         $arguments = $conf['arguments'] ?? [];
         $parameters = $conf['controllerContext'] ?? null;
-        $extensionName = $parameters instanceof ExtbaseRequestParameters
-            ? $parameters->getControllerExtensionName()
-            : $parameters['extensionName'] ?? null;
 
         if (empty($partial)) {
             return '';
         }
 
-        if (class_exists(RenderingContextFactory::class)) {
-            $renderingContext = $this->createRenderingContextWithRenderingContextFactory();
+        if (class_exists(ExtbaseRequestParameters::class)) {
+            /** @var RenderingContextFactory $renderingContextFactory */
+            $renderingContextFactory = GeneralUtility::makeInstance(RenderingContextFactory::class);
+            /** @var RenderingContext $renderingContext */
+            $renderingContext = $renderingContextFactory->create();
+
             if (method_exists($renderingContext, 'setRequest')) {
-                $request = $parameters instanceof ExtbaseRequestParameters
-                    ? $GLOBALS['TYPO3_REQUEST']->withAttribute('extbase', $parameters)
-                    : $GLOBALS['TYPO3_REQUEST'];
                 $renderingContext->setRequest(
-                    // TYPO3 v11.x needs the ServerRequest wrapped in an Extbase Request.
-                    version_compare(VersionNumberUtility::getCurrentTypo3Version(), '12.0', '<')
-                        ? new Request($request)
-                        : $request
+                    new Request($GLOBALS['TYPO3_REQUEST']->withAttribute('extbase', $parameters))
                 );
             }
         } else {
@@ -94,10 +116,8 @@ class UncacheTemplateView extends TemplateView
 
         $this->prepareContextsForUncachedRendering($renderingContext);
         if (!empty($conf['partialRootPaths'])) {
-            $renderingContext->getTemplatePaths()->setPartialRootPaths($conf['partialRootPaths']);
-        } elseif ($extensionName) {
-            $extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
-            $renderingContext->getTemplatePaths()->fillDefaultsByPackageName($extensionKey);
+            $templatePaths = $renderingContext->getTemplatePaths();
+            $templatePaths->setPartialRootPaths($conf['partialRootPaths']);
         }
         return $this->renderPartialUncached($renderingContext, $partial, $section, $arguments);
     }
@@ -105,32 +125,30 @@ class UncacheTemplateView extends TemplateView
     protected function prepareContextsForUncachedRendering(RenderingContextInterface $renderingContext): void
     {
         $this->setRenderingContext($renderingContext);
+        $this->templateParser = $renderingContext->getTemplateParser();
+        $this->templateCompiler = $renderingContext->getTemplateCompiler();
     }
 
+    /**
+     * @param RenderingContextInterface $renderingContext
+     * @param string $partial
+     * @param string|null $section
+     * @param array $arguments
+     * @return string|null
+     */
     protected function renderPartialUncached(
         RenderingContextInterface $renderingContext,
-        string $partial,
-        ?string $section = null,
+        $partial,
+        $section = null,
         array $arguments = []
-    ): string {
+    ) {
         $this->renderingStack[] = [
             'type' => static::RENDERING_TEMPLATE,
             'parsedTemplate' => null,
             'renderingContext' => $renderingContext,
         ];
-        /** @var string $rendered */
         $rendered = $this->renderPartial($partial, $section, $arguments);
         array_pop($this->renderingStack);
         return $rendered;
-    }
-
-    /**
-     * @codeCoverageIgnore
-     */
-    protected function createRenderingContextWithRenderingContextFactory(): RenderingContextInterface
-    {
-        /** @var RenderingContextFactory $renderingContextFactory */
-        $renderingContextFactory = GeneralUtility::makeInstance(RenderingContextFactory::class);
-        return $renderingContextFactory->create();
     }
 }

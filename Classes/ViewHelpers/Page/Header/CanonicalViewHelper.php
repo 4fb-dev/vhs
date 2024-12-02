@@ -26,7 +26,10 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'link';
 
-    public function initializeArguments(): void
+    /**
+     * @return void
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
@@ -55,14 +58,11 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper
             return '';
         }
 
-        /** @var int $pageUid */
-        $pageUid = $this->arguments['pageUid'];
-        $pageUid = (integer) $pageUid;
+        $pageUid = (integer) $this->arguments['pageUid'];
         if (0 === $pageUid) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
 
-        /** @var string $queryStringMethod */
         $queryStringMethod = $this->arguments['queryStringMethod'];
         if (!in_array($queryStringMethod, ['GET', 'POST', 'GET,POST'], true)) {
             throw new \InvalidArgumentException(
@@ -88,7 +88,7 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper
 
         $uri = $uriBuilder->build();
 
-        if (empty($uri)) {
+        if (true === empty($uri)) {
             return '';
         }
 

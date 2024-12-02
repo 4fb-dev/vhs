@@ -30,11 +30,15 @@ class AlternateViewHelper extends AbstractViewHelper
     protected $pageService;
 
     /**
-     * @var TagBuilder
+     * @var \TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder
      */
     protected $tagBuilder;
 
-    public function injectPageService(PageService $pageService): void
+    /**
+     * @param PageService $pageService
+     * @return void
+     */
+    public function injectPageService(PageService $pageService)
     {
         $this->pageService = $pageService;
     }
@@ -46,7 +50,11 @@ class AlternateViewHelper extends AbstractViewHelper
         $this->tagBuilder = $tagBuilder;
     }
 
-    public function initializeArguments(): void
+
+    /**
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument(
             'languages',
@@ -80,26 +88,22 @@ class AlternateViewHelper extends AbstractViewHelper
             return '';
         }
 
-        /** @var array<int, string>|string $languages */
         $languages = $this->arguments['languages'];
-        if ($languages instanceof \Traversable) {
+        if (true === $languages instanceof \Traversable) {
             $languages = iterator_to_array($languages);
-        } elseif (is_string($languages)) {
+        } elseif (true === is_string($languages)) {
             $languages = GeneralUtility::trimExplode(',', $languages, true);
         } else {
             $languages = (array) $languages;
         }
 
-        /** @var int $pageUid */
-        $pageUid = $this->arguments['pageUid'];
-        $pageUid = (integer) $pageUid;
+        $pageUid = (integer) $this->arguments['pageUid'];
         if (0 === $pageUid) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
 
-        /** @var bool $normalWhenNoLanguage */
         $normalWhenNoLanguage = $this->arguments['normalWhenNoLanguage'];
-        $addQueryString = (boolean) $this->arguments['addQueryString'];
+        $addQueryString = $this->arguments['addQueryString'];
 
         /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
@@ -119,13 +123,13 @@ class AlternateViewHelper extends AbstractViewHelper
         $output = '';
 
         foreach ($languages as $languageUid => $languageName) {
-            if (!$this->pageService->hidePageForLanguageUid($pageUid, $languageUid, $normalWhenNoLanguage)) {
+            if (false === $this->pageService->hidePageForLanguageUid($pageUid, $languageUid, $normalWhenNoLanguage)) {
                 $uri = $uriBuilder->setArguments(['L' => $languageUid])->build();
                 $this->tagBuilder->addAttribute('href', $uri);
                 $this->tagBuilder->addAttribute('hreflang', $languageName);
 
                 $renderedTag = $this->tagBuilder->render();
-                if ($usePageRenderer) {
+                if (true === $usePageRenderer) {
                     if (method_exists($pageRenderer, 'addMetaTag')) {
                         $pageRenderer->addMetaTag($renderedTag);
                     } else {
@@ -137,7 +141,7 @@ class AlternateViewHelper extends AbstractViewHelper
             }
         }
 
-        if (!$usePageRenderer) {
+        if (false === $usePageRenderer) {
             return trim($output);
         }
 

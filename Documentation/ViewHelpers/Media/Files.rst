@@ -1,17 +1,13 @@
-:navigation-title: media.files
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-media-files:
 
-==========================================
-media.files ViewHelper `<vhs:media.files>`
-==========================================
+===========
+media.files
+===========
 
 
 Returns an array of files found in the provided path.
-
-
-.. _fluidtypo3-vhs-media-files_arguments:
 
 Arguments
 =========

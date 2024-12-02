@@ -25,13 +25,20 @@ class TidyViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function initializeArguments(): void
+    /**
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument('content', 'string', 'Content to tidy');
         $this->registerArgument('encoding', 'string', 'Encoding of string', false, 'utf8');
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @throws \RuntimeException
      * @return string|\tidy
      */
     public static function renderStatic(
@@ -40,15 +47,14 @@ class TidyViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         $content = $renderChildrenClosure();
-        /** @var string $encoding */
         $encoding = $arguments['encoding'];
-        if (class_exists('tidy')) {
+        if (true === class_exists('tidy')) {
             $tidy = tidy_parse_string($content, [], $encoding);
             if ($tidy === false) {
                 return $content;
             }
             $tidy->cleanRepair();
-            return $tidy->root()->value;
+            return $tidy;
         }
         throw new \RuntimeException(
             'TidyViewHelper requires the PHP extension "tidy" which is not installed or not loaded.',

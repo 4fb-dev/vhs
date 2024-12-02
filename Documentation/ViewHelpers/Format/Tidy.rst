@@ -1,18 +1,14 @@
-:navigation-title: format.tidy
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-format-tidy:
 
-==========================================
-format.tidy ViewHelper `<vhs:format.tidy>`
-==========================================
+===========
+format.tidy
+===========
 
 
 Tidy-processes a string (HTML source), applying proper
 indentation.
-
-
-.. _fluidtypo3-vhs-format-tidy_arguments:
 
 Arguments
 =========

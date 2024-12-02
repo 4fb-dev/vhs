@@ -36,7 +36,12 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
      */
     protected static $currentRenderingContext;
 
-    public function initializeArguments(): void
+    /**
+     * Initialize arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
         $this->registerArgument(
@@ -63,6 +68,9 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -85,25 +93,38 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
             return false;
         }
         static::removeIfExpired($arguments);
-        $shouldSkip = static::assertShouldSkip($arguments) === false;
-        static::storeIdentifier($arguments);
-        return $shouldSkip;
+        return static::assertShouldSkip($arguments) === false;
     }
 
-    protected static function getIdentifier(array $arguments): string
+    /**
+     * @param array $arguments
+     * @return string
+     */
+    protected static function getIdentifier(array $arguments)
     {
-        return $arguments['identifier'] ?? static::class;
+        if (true === isset($arguments['identifier'])) {
+            return $arguments['identifier'];
+        }
+        return static::class;
     }
 
-    protected static function storeIdentifier(array $arguments): void
+    /**
+     * @param array $arguments
+     * @return void
+     */
+    protected static function storeIdentifier(array $arguments)
     {
         $identifier = static::getIdentifier($arguments);
-        if (!isset(static::$identifiers[$identifier])) {
+        if (false === isset(static::$identifiers[$identifier])) {
             static::$identifiers[$identifier] = time();
         }
     }
 
-    protected static function removeIfExpired(array $arguments): void
+    /**
+     * @param array $arguments
+     * @return void
+     */
+    protected static function removeIfExpired(array $arguments)
     {
         $id = static::getIdentifier($arguments);
         if (isset(static::$identifiers[$id]) && static::$identifiers[$id] <= time() - $arguments['ttl']) {
@@ -111,10 +132,14 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
         }
     }
 
-    protected static function assertShouldSkip(array $arguments): bool
+    /**
+     * @param array $arguments
+     * @return boolean
+     */
+    protected static function assertShouldSkip(array $arguments)
     {
         $identifier = static::getIdentifier($arguments);
-        return isset(static::$identifiers[$identifier]);
+        return (true === isset(static::$identifiers[$identifier]));
     }
 
     /**
@@ -127,6 +152,7 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
      * If then attribute is not set and no ThenViewHelper and no ElseViewHelper is found, all child nodes are rendered
      *
      * @return mixed rendered ThenViewHelper or contents of <f:if> if no ThenViewHelper was found
+     * @api
      */
     protected function renderThenChild()
     {

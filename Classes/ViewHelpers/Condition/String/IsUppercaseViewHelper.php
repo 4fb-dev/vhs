@@ -19,7 +19,12 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  */
 class IsUppercaseViewHelper extends AbstractConditionViewHelper
 {
-    public function initializeArguments(): void
+    /**
+     * Initialize arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
         $this->registerArgument('string', 'string', 'string to check', true);
@@ -35,11 +40,11 @@ class IsUppercaseViewHelper extends AbstractConditionViewHelper
         if (!is_array($arguments)) {
             return false;
         }
-        if ($arguments['fullString']) {
+        if (true === $arguments['fullString']) {
             $result = ctype_upper($arguments['string']);
         } else {
             $result = ctype_upper(substr($arguments['string'], 0, 1));
         }
-        return $result;
+        return true === $result;
     }
 }

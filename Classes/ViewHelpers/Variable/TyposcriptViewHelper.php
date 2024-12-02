@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -64,7 +65,10 @@ class TyposcriptViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function initializeArguments(): void
+    /**
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument('path', 'string', 'Path to TypoScript value or configuration array');
     }
@@ -99,12 +103,12 @@ class TyposcriptViewHelper extends AbstractViewHelper
     /**
      * Returns instance of the configuration manager
      *
-     * @return ConfigurationManagerInterface
+     * @return \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
      */
     protected static function getConfigurationManager()
     {
         /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
+        $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
         return $configurationManager;
     }
 }

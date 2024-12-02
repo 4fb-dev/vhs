@@ -36,7 +36,12 @@ class ConvertViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function initializeArguments(): void
+    /**
+     * Initialize arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument('value', 'mixed', 'Value to convert into a different type');
         $this->registerArgument(
@@ -62,7 +67,7 @@ class ConvertViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         $value = $renderChildrenClosure();
-        $type = is_scalar($arguments['type']) ? (string) $arguments['type'] : null;
+        $type = $arguments['type'];
         if (gettype($value) === $type) {
             return $value;
         }
@@ -74,15 +79,15 @@ class ConvertViewHelper extends AbstractViewHelper
                     $storage->attach($item);
                 }
                 $value = $storage;
-            } elseif ('array' === $type && $value instanceof \Traversable) {
+            } elseif ('array' === $type && true === $value instanceof \Traversable) {
                 $value = iterator_to_array($value, false);
             } elseif ('array' === $type) {
                 $value = [$value];
-            } elseif (is_string($type)) {
+            } else {
                 settype($value, $type);
             }
         } else {
-            if (isset($arguments['default'])) {
+            if (true === isset($arguments['default'])) {
                 $default = $arguments['default'];
                 if (gettype($default) !== $type) {
                     throw new \RuntimeException(

@@ -1,11 +1,10 @@
-:navigation-title: format.wordWrap
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-format-wordwrap:
 
-==================================================
-format.wordWrap ViewHelper `<vhs:format.wordWrap>`
-==================================================
+===============
+format.wordWrap
+===============
 
 
 Wordwrap: Wrap a string at provided character count
@@ -15,9 +14,6 @@ Wraps a string to $limit characters and at $break character
 while maintaining complete words. Concatenates the resulting
 strings with $glue. Code is heavily inspired
 by Codeigniter's word_wrap helper.
-
-
-.. _fluidtypo3-vhs-format-wordwrap_arguments:
 
 Arguments
 =========

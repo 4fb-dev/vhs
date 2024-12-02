@@ -1,20 +1,16 @@
-:navigation-title: format.pregReplace
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-format-pregreplace:
 
-========================================================
-format.pregReplace ViewHelper `<vhs:format.pregReplace>`
-========================================================
+==================
+format.pregReplace
+==================
 
 
 PregReplace regular expression ViewHelper
 =========================================
 
 Implementation of `preg_replace` for Fluid.
-
-
-.. _fluidtypo3-vhs-format-pregreplace_arguments:
 
 Arguments
 =========
@@ -42,7 +38,7 @@ pattern
    string
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    Regex pattern to match against
 
@@ -55,7 +51,7 @@ replacement
    string
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    String to replace matches with
 

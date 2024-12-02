@@ -1,18 +1,14 @@
-:navigation-title: iterator.indexOf
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-iterator-indexof:
 
-====================================================
-iterator.indexOf ViewHelper `<vhs:iterator.indexOf>`
-====================================================
+================
+iterator.indexOf
+================
 
 
 Searches $haystack for index of $needle, returns -1 if $needle
 is not in $haystack.
-
-
-.. _fluidtypo3-vhs-iterator-indexof_arguments:
 
 Arguments
 =========
@@ -53,7 +49,7 @@ needle
    mixed
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    Needle to search for in haystack
 
@@ -66,7 +62,7 @@ haystack
    mixed
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    Haystack in which to look for needle
 

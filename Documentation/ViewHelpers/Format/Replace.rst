@@ -1,28 +1,13 @@
-:navigation-title: format.replace
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-format-replace:
 
-================================================
-format.replace ViewHelper `<vhs:format.replace>`
-================================================
+==============
+format.replace
+==============
 
 
 Replaces $substring in $content with $replacement.
-
-Supports array as input substring/replacements and content.
-
-When input substring/replacement is an array, both must be
-the same length and must contain only strings.
-
-When input content is an array, the search/replace is done
-on every value in the input content array and the return
-value will be an array of equal size as the input content
-array but with all values search/replaced. All values in the
-input content array must be strings.
-
-
-.. _fluidtypo3-vhs-format-replace_arguments:
 
 Arguments
 =========
@@ -39,7 +24,7 @@ content
 :aspect:`Required`
    false
 :aspect:`Description`
-   Content in which to perform replacement. Array supported.
+   Content in which to perform replacement
 
 .. _format.replace_substring:
 
@@ -50,9 +35,9 @@ substring
    string
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
-   Substring to replace. Array supported.
+   Substring to replace
 
 .. _format.replace_replacement:
 
@@ -65,20 +50,20 @@ replacement
 :aspect:`Required`
    false
 :aspect:`Description`
-   Replacement to insert. Array supported.
+   Replacement to insert
 
-.. _format.replace_returncount:
+.. _format.replace_count:
 
-returnCount
------------
+count
+-----
 
 :aspect:`DataType`
-   boolean
+   integer
 
 :aspect:`Required`
    false
 :aspect:`Description`
-   If TRUE, returns the number of replacements that were performed instead of returning output string. See also `v:count.substring`.
+   Maximum number of times to perform replacement
 
 .. _format.replace_casesensitive:
 

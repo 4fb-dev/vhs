@@ -30,7 +30,13 @@ class FilesViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function initializeArguments(): void
+    /**
+     * Initialize arguments.
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
     {
         $this->registerArgument('path', 'string', 'Path to the folder containing the files to be listed.');
         $this->registerArgument(
@@ -64,6 +70,9 @@ class FilesViewHelper extends AbstractViewHelper
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return array|string
      */
     public static function renderStatic(
@@ -73,12 +82,9 @@ class FilesViewHelper extends AbstractViewHelper
     ) {
         $path = (string) $renderChildrenClosure();
 
-        /** @var string $extensionList */
         $extensionList = $arguments['extensionList'];
-        $prependPath = (bool) $arguments['prependPath'];
-        /** @var string $order */
+        $prependPath = $arguments['prependPath'];
         $order = $arguments['order'];
-        /** @var string $excludePattern */
         $excludePattern = $arguments['excludePattern'];
 
         $files = GeneralUtility::getFilesInDir($path, $extensionList, $prependPath, $order, $excludePattern);

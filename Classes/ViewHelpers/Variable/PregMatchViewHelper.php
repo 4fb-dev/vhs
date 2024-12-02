@@ -33,11 +33,14 @@ class PregMatchViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function initializeArguments(): void
+    /**
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerAsArgument();
         $this->registerArgument('pattern', 'mixed', 'Regex pattern to match against', true);
-        $this->registerArgument('subject', 'mixed', 'String to match with the regex pattern');
+        $this->registerArgument('subject', 'mixed', 'String to match with the regex pattern', false);
         $this->registerArgument('global', 'boolean', 'Match global', false, false);
     }
 
@@ -50,22 +53,18 @@ class PregMatchViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         if (!isset($arguments['subject']) && !isset($arguments['as'])) {
-            $subject = (string) $renderChildrenClosure();
+            $subject = $renderChildrenClosure();
         } else {
-            $subject = is_scalar($arguments['subject']) ? (string) $arguments['subject'] : '';
+            $subject = $arguments['subject'];
         }
-        /** @var string $pattern */
-        $pattern = $arguments['pattern'];
-        if ($arguments['global']) {
-            preg_match_all($pattern, $subject, $matches, PREG_SET_ORDER);
+        if (true === (boolean) $arguments['global']) {
+            preg_match_all($arguments['pattern'], $subject, $matches, PREG_SET_ORDER);
         } else {
-            preg_match($pattern, $subject, $matches);
+            preg_match($arguments['pattern'], $subject, $matches);
         }
-        /** @var string|null $as */
-        $as = $arguments['as'];
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $matches,
-            $as,
+            $arguments['as'],
             $renderingContext,
             $renderChildrenClosure
         );

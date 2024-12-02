@@ -1,11 +1,10 @@
-:navigation-title: iterator.column
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-iterator-column:
 
-==================================================
-iterator.column ViewHelper `<vhs:iterator.column>`
-==================================================
+===============
+iterator.column
+===============
 
 
 Iterator Column Extraction ViewHelper
@@ -67,9 +66,6 @@ to extract sub-properties*. That means it *does not support Extbase
 enties as input unless you explicitly implemented `ArrayAccess` on
 the model of the entity and even then support is limited to first
 level properties' values without dots in their names*.
-
-
-.. _fluidtypo3-vhs-iterator-column_arguments:
 
 Arguments
 =========

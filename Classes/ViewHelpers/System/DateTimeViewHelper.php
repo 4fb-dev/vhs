@@ -26,7 +26,10 @@ class DateTimeViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    protected static function getTimestamp(): int
+    /**
+     * @return integer
+     */
+    protected static function getTimestamp()
     {
         return time();
     }

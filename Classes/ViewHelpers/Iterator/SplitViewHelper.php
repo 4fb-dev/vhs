@@ -30,7 +30,10 @@ class SplitViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function initializeArguments(): void
+    /**
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument('subject', 'string', 'The string that will be split into an array');
         $this->registerArgument('length', 'integer', 'Number of bytes per chunk in the new array', false, 1);
@@ -38,6 +41,9 @@ class SplitViewHelper extends AbstractViewHelper
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -45,21 +51,17 @@ class SplitViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        /** @var int<1, max> $length */
-        $length = $arguments['length'];
-        if ((integer) $length === 0) {
+        if ((integer) $arguments['length'] === 0) {
             // Difference from PHP str_split: return an empty array if (potentially dynamically defined) length
             // argument is zero for some reason. PHP would throw a warning; Fluid would logically just return empty.
             return [];
         }
-        /** @var string|null $as */
-        $as = $arguments['as'];
         return static::renderChildrenWithVariableOrReturnInputStatic(
             str_split(
-                empty($as) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject'],
-                $length
+                empty($arguments['as']) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject'],
+                $arguments['length']
             ),
-            $as,
+            $arguments['as'],
             $renderingContext,
             $renderChildrenClosure
         );

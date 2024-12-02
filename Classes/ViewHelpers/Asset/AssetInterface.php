@@ -33,49 +33,86 @@ interface AssetInterface
      * and RenderingContext and you should therefore also never call
      * renderChildren from within this function. Anything else goes; CLI
      * commands to build, caching implementations - you name it.
+     *
+     * @return string|null
      */
-    public function build(): ?string;
+    public function build();
 
-    public function getDependencies(): array;
-    public function getType(): string;
-    public function getName(): string;
-    public function getVariables(): array;
+    /**
+     * @return array
+     */
+    public function getDependencies();
+
+    /**
+     * @return string
+     */
+    public function getType();
+
+    /**
+     * @return string
+     */
+    public function getName();
+
+    /**
+     * @return array
+     */
+    public function getVariables();
 
     /**
      * Returns the settings used by this particular Asset
      * during inclusion. Public access allows later inspection
      * of the TypoScript values which were applied to the Asset.
+     *
+     * @return array
      */
-    public function getSettings(): array;
+    public function getSettings();
 
-    public function getAssetSettings(): array;
+    /**
+     * @return array
+     */
+    public function getAssetSettings();
 
     /**
      * Allows public access to debug this particular Asset
      * instance later, when including the Asset in the page.
+     *
+     * @return array
      */
-    public function getDebugInformation(): array;
+    public function getDebugInformation();
 
     /**
      * Returns TRUE if settings specify that the source of this
      * Asset should be rendered as if it were a Fluid template,
-     * using variables from the "arguments" attribute.
+     * using variables from the "arguments" attribute
+     *
+     * @return boolean
      */
-    public function assertFluidEnabled(): bool;
+    public function assertFluidEnabled();
 
     /**
      * Returns TRUE if settings specify that the name of each Asset
      * should be placed above the built content when placed in merged
      * Asset cache files.
+     *
+     * @return boolean
      */
-    public function assertAddNameCommentWithChunk(): bool;
+    public function assertAddNameCommentWithChunk();
 
     /**
      * Returns TRUE if the current Asset should be debugged as commanded
      * by settings in TypoScript and/or ViewHelper attributes.
+     *
+     * @return boolean
      */
-    public function assertDebugEnabled(): bool;
+    public function assertDebugEnabled();
 
-    public function assertAllowedInFooter(): bool;
-    public function assertHasBeenRemoved(): bool;
+    /**
+     * @return boolean
+     */
+    public function assertAllowedInFooter();
+
+    /**
+     * @return boolean
+     */
+    public function assertHasBeenRemoved();
 }

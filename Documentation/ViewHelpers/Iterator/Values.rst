@@ -1,17 +1,13 @@
-:navigation-title: iterator.values
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-iterator-values:
 
-==================================================
-iterator.values ViewHelper `<vhs:iterator.values>`
-==================================================
+===============
+iterator.values
+===============
 
 
 Gets values from an iterator, removing current keys (if any exist).
-
-
-.. _fluidtypo3-vhs-iterator-values_arguments:
 
 Arguments
 =========

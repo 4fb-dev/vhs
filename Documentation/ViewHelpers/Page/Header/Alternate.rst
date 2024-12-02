@@ -1,17 +1,13 @@
-:navigation-title: page.header.alternate
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-page-header-alternate:
 
-==============================================================
-page.header.alternate ViewHelper `<vhs:page.header.alternate>`
-==============================================================
+=====================
+page.header.alternate
+=====================
 
 
 Returns the all alternate urls.
-
-
-.. _fluidtypo3-vhs-page-header-alternate_arguments:
 
 Arguments
 =========
@@ -26,7 +22,7 @@ languages
    mixed
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    The languages (either CSV, array or implementing Traversable)
 

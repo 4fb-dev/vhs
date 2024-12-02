@@ -22,7 +22,12 @@ class EliminateViewHelper extends AbstractViewHelper
 {
     use CompileWithContentArgumentAndRenderStatic;
 
-    public function initializeArguments(): void
+    /**
+     * Initialize arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument('content', 'string', 'String in which to perform replacement');
         $this->registerArgument(
@@ -84,38 +89,38 @@ class EliminateViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         $content = $renderChildrenClosure();
-        if (isset($arguments['characters'])) {
+        if (true === isset($arguments['characters'])) {
             $content = static::eliminateCharacters(
                 $content,
                 $arguments['characters'],
                 (boolean) $arguments['caseSensitive']
             );
         }
-        if (isset($arguments['strings'])) {
+        if (true === isset($arguments['strings'])) {
             $content = static::eliminateStrings($content, $arguments['strings'], (boolean) $arguments['caseSensitive']);
         }
-        if ($arguments['whitespace']) {
+        if (true === $arguments['whitespace']) {
             $content = static::eliminateWhitespace($content);
         }
-        if ($arguments['whitespaceBetweenHtmlTags']) {
+        if (true === $arguments['whitespaceBetweenHtmlTags']) {
             $content = static::eliminateWhitespaceBetweenHtmlTags($content);
         }
-        if ($arguments['tabs']) {
+        if (true === $arguments['tabs']) {
             $content = static::eliminateTabs($content);
         }
-        if ($arguments['unixBreaks']) {
+        if (true === $arguments['unixBreaks']) {
             $content = static::eliminateUnixBreaks($content);
         }
-        if ($arguments['windowsBreaks']) {
+        if (true === $arguments['windowsBreaks']) {
             $content = static::eliminateWindowsCarriageReturns($content);
         }
-        if ($arguments['digits']) {
+        if (true === $arguments['digits']) {
             $content = static::eliminateDigits($content);
         }
-        if ($arguments['letters']) {
+        if (true === $arguments['letters']) {
             $content = static::eliminateLetters($content, (boolean) $arguments['caseSensitive']);
         }
-        if ($arguments['nonAscii']) {
+        if (true === $arguments['nonAscii']) {
             $content = static::eliminateNonAscii($content, (boolean) $arguments['caseSensitive']);
         }
         return $content;
@@ -135,7 +140,7 @@ class EliminateViewHelper extends AbstractViewHelper
             $subjects = (array) preg_split('//u', $characters, 0, PREG_SPLIT_NO_EMPTY);
         }
         foreach ($subjects as $subject) {
-            if ($caseSensitive) {
+            if (true === $caseSensitive) {
                 $content = str_replace($subject, '', $content);
             } else {
                 $content = str_ireplace($subject, '', $content);
@@ -158,7 +163,7 @@ class EliminateViewHelper extends AbstractViewHelper
             $subjects = explode(',', $strings);
         }
         foreach ($subjects as $subject) {
-            if ($caseSensitive) {
+            if (true === $caseSensitive) {
                 $content = str_replace($subject, '', $content);
             } else {
                 $content = str_ireplace($subject, '', $content);
@@ -234,7 +239,7 @@ class EliminateViewHelper extends AbstractViewHelper
      */
     protected static function eliminateLetters($content, $caseSensitive)
     {
-        if ($caseSensitive) {
+        if (true === $caseSensitive) {
             $content = preg_replace('#[a-z]#', '', $content);
         } else {
             $content = preg_replace('/[a-z]/i', '', $content);
@@ -249,7 +254,7 @@ class EliminateViewHelper extends AbstractViewHelper
      */
     protected static function eliminateNonAscii($content, $caseSensitive)
     {
-        $caseSensitiveIndicator = $caseSensitive ? 'i' : '';
+        $caseSensitiveIndicator = true === $caseSensitive ? 'i' : '';
         $content = preg_replace('/[^(\x20-\x7F)]*/' . $caseSensitiveIndicator, '', $content);
         return (string) $content;
     }

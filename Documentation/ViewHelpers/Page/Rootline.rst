@@ -1,17 +1,13 @@
-:navigation-title: page.rootline
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-page-rootline:
 
-==============================================
-page.rootline ViewHelper `<vhs:page.rootline>`
-==============================================
+=============
+page.rootline
+=============
 
 
 ViewHelper to get the rootline of a page.
-
-
-.. _fluidtypo3-vhs-page-rootline_arguments:
 
 Arguments
 =========

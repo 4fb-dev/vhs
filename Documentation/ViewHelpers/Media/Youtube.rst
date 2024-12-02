@@ -1,17 +1,13 @@
-:navigation-title: media.youtube
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-media-youtube:
 
-==============================================
-media.youtube ViewHelper `<vhs:media.youtube>`
-==============================================
+=============
+media.youtube
+=============
 
 
 Renders HTML code to embed a video from YouTube.
-
-
-.. _fluidtypo3-vhs-media-youtube_arguments:
 
 Arguments
 =========
@@ -182,7 +178,7 @@ videoId
    string
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    YouTube id of the video to embed.
 

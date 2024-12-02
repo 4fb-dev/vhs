@@ -41,7 +41,12 @@ class RangeViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function initializeArguments(): void
+    /**
+     * Initialize arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument('low', 'integer', 'The low number of the range to be generated', false, 1);
         $this->registerArgument('high', 'integer', 'The high number of the range to be generated', true);
@@ -50,6 +55,9 @@ class RangeViewHelper extends AbstractViewHelper
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -57,17 +65,9 @@ class RangeViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        /** @var int $low */
-        $low = $arguments['low'];
-        /** @var int $high */
-        $high = $arguments['high'];
-        /** @var int $step */
-        $step = $arguments['step'];
-        /** @var string|null $as */
-        $as = $arguments['as'];
         return static::renderChildrenWithVariableOrReturnInputStatic(
-            range($low, $high, $step),
-            $as,
+            range($arguments['low'], $arguments['high'], $arguments['step']),
+            $arguments['as'],
             $renderingContext,
             $renderChildrenClosure
         );

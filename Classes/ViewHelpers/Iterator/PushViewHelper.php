@@ -39,7 +39,10 @@ class PushViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function initializeArguments(): void
+    /**
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument('subject', 'mixed', 'Input to work on - Array/Traversable/...');
         $this->registerArgument('add', 'mixed', 'Member to add to end of array', true);
@@ -48,6 +51,9 @@ class PushViewHelper extends AbstractViewHelper
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -55,9 +61,7 @@ class PushViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        /** @var string|null $as */
-        $as = $arguments['as'];
-        $subject = empty($as)
+        $subject = empty($arguments['as'])
             ? ($arguments['subject'] ?? $renderChildrenClosure())
             : $arguments['subject'];
         $add = $arguments['add'];
@@ -69,7 +73,7 @@ class PushViewHelper extends AbstractViewHelper
         }
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $subject,
-            $as,
+            $arguments['as'],
             $renderingContext,
             $renderChildrenClosure
         );

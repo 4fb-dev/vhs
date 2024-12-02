@@ -1,17 +1,13 @@
-:navigation-title: media.vimeo
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-media-vimeo:
 
-==========================================
-media.vimeo ViewHelper `<vhs:media.vimeo>`
-==========================================
+===========
+media.vimeo
+===========
 
 
 Renders HTML code to embed a video from Vimeo.
-
-
-.. _fluidtypo3-vhs-media-vimeo_arguments:
 
 Arguments
 =========
@@ -185,7 +181,7 @@ videoId
    string
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    Vimeo ID of the video to embed.
 

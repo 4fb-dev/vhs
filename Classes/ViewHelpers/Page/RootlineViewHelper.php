@@ -28,7 +28,10 @@ class RootlineViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function initializeArguments(): void
+    /**
+     * @return void
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
         $this->registerAsArgument();
@@ -43,22 +46,22 @@ class RootlineViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        /** @var int $pageUid */
-        $pageUid = $arguments['pageUid'];
+        $pageUid = (integer) $arguments['pageUid'];
         if (0 === $pageUid) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
-        /** @var string $as */
-        $as = $arguments['as'];
         return static::renderChildrenWithVariableOrReturnInputStatic(
             static::getPageService()->getRootLine($pageUid),
-            $as,
+            $arguments['as'],
             $renderingContext,
             $renderChildrenClosure
         );
     }
 
-    protected static function getPageService(): PageService
+    /**
+     * @return PageService
+     */
+    protected static function getPageService()
     {
         /** @var PageService $pageService */
         $pageService = GeneralUtility::makeInstance(PageService::class);

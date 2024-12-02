@@ -34,7 +34,12 @@ class ReverseViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function initializeArguments(): void
+    /**
+     * Initialize arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument('subject', 'mixed', 'The input array/Traversable to reverse');
         $this->registerAsArgument();
@@ -47,6 +52,9 @@ class ReverseViewHelper extends AbstractViewHelper
      * Returns the same type as $subject. Ignores NULL values which would be
      * OK to use in an f:for (empty loop as result)
      *
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -54,15 +62,13 @@ class ReverseViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        /** @var string|null $as */
-        $as = $arguments['as'];
         $array = static::arrayFromArrayOrTraversableOrCSVStatic(
-            empty($as) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject']
+            empty($arguments['as']) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject']
         );
         $array = array_reverse($array, true);
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $array,
-            $as,
+            $arguments['as'],
             $renderingContext,
             $renderChildrenClosure
         );

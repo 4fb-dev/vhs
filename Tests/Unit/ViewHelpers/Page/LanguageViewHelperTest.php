@@ -32,6 +32,13 @@ class LanguageViewHelperTest extends AbstractViewHelperTestCase
         $GLOBALS['TSFE'] = new DummyTypoScriptFrontendController();
     }
 
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        unset($GLOBALS['TSFE']);
+    }
+
     public function testRender()
     {
         $this->pageService->method('hidePageForLanguageUid')->willReturn(false);

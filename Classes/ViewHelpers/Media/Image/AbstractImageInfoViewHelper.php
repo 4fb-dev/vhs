@@ -22,7 +22,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 abstract class AbstractImageInfoViewHelper extends AbstractViewHelper
 {
     /**
-     * @var ResourceFactory
+     * @var \TYPO3\CMS\Core\Resource\ResourceFactory
      */
     protected $resourceFactory;
 
@@ -41,7 +41,13 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper
         $this->resourceFactory = $resourceFactory;
     }
 
-    public function initializeArguments(): void
+    /**
+     * Initialize arguments.
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
     {
         $this->registerArgument(
             'src',
@@ -65,38 +71,40 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper
         );
     }
 
-    public function getInfo(): array
+    /**
+     * @throws Exception
+     * @return array
+     */
+    public function getInfo()
     {
-        /** @var string|int|CoreFileReference|ExtbaseFileReference|null $src */
         $src = $this->arguments['src'];
         $treatIdAsUid = (boolean) $this->arguments['treatIdAsUid'];
         $treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
 
         if (null === $src) {
-            /** @var string|int|CoreFileReference|ExtbaseFileReference|null $src */
             $src = $this->renderChildren();
             if (null === $src) {
                 return [];
             }
         }
 
-        if ($src instanceof CoreFileReference || $src instanceof ExtbaseFileReference) {
+        if (is_object($src) && ($src instanceof CoreFileReference || $src instanceof ExtbaseFileReference)) {
             $src = $src->getUid();
             $treatIdAsUid = false;
             $treatIdAsReference = true;
         }
 
-        if ($treatIdAsUid || $treatIdAsReference) {
+        if (true === $treatIdAsUid || true === $treatIdAsReference) {
             $id = (integer) $src;
             $info = [];
-            if ($treatIdAsUid) {
+            if (true === $treatIdAsUid) {
                 $info = $this->getInfoByUid($id);
-            } elseif ($treatIdAsReference) {
+            } elseif (true === $treatIdAsReference) {
                 $info = $this->getInfoByReference($id);
             }
         } else {
-            $file = GeneralUtility::getFileAbsFileName((string) $src);
-            if (!file_exists($file) || is_dir($file)) {
+            $file = GeneralUtility::getFileAbsFileName($src);
+            if (false === file_exists($file) || true === is_dir($file)) {
                 throw new Exception(
                     'Cannot determine info for "' . $file . '". File does not exist or is a directory.',
                     1357066532
@@ -113,14 +121,22 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper
         return $info;
     }
 
-    public function getInfoByReference(int $id): array
+    /**
+     * @param integer $id
+     * @return array
+     */
+    public function getInfoByReference($id)
     {
         $fileReference = $this->resourceFactory->getFileReferenceObject($id);
         $file = $fileReference->getOriginalFile();
         return ResourceUtility::getFileArray($file);
     }
 
-    public function getInfoByUid(int $uid): array
+    /**
+     * @param integer $uid
+     * @return array
+     */
+    public function getInfoByUid($uid)
     {
         $file = $this->resourceFactory->getFileObject($uid);
         return ResourceUtility::getFileArray($file);

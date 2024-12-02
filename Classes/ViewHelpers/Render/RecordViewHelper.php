@@ -22,7 +22,12 @@ class RecordViewHelper extends AbstractContentViewHelper
 {
     use CompileWithRenderStatic;
 
-    public function initializeArguments(): void
+    /**
+     * Initialize
+     *
+     * @return void
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
         $this->registerArgument('record', 'array', 'Record to render');
@@ -36,11 +41,9 @@ class RecordViewHelper extends AbstractContentViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        /** @var array $record */
-        $record = $arguments['record'];
-        if (!isset($record['uid'])) {
+        if (false === isset($arguments['record']['uid'])) {
             return null;
         }
-        return static::renderRecord($record);
+        return static::renderRecord($arguments['record']);
     }
 }

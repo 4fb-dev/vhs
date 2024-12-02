@@ -1,17 +1,13 @@
-:navigation-title: iterator.first
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-iterator-first:
 
-================================================
-iterator.first ViewHelper `<vhs:iterator.first>`
-================================================
+==============
+iterator.first
+==============
 
 
 Returns the first element of $haystack.
-
-
-.. _fluidtypo3-vhs-iterator-first_arguments:
 
 Arguments
 =========

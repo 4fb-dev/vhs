@@ -35,6 +35,13 @@ class RootlineViewHelperTest extends AbstractViewHelperTestCase
         $GLOBALS['TSFE']->id = 123;
     }
 
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        unset($GLOBALS['TSFE']);
+    }
+
     public function testRenderReturnsRootLine(): void
     {
         $rootLine = [['uid' => 1], ['uid' => 2]];

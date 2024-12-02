@@ -1,11 +1,10 @@
-:navigation-title: format.json.encode
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-format-json-encode:
 
-========================================================
-format.json.encode ViewHelper `<vhs:format.json.encode>`
-========================================================
+==================
+format.json.encode
+==================
 
 
 JSON Encoding ViewHelper
@@ -34,9 +33,6 @@ using the output of such conversion in JavaScript please make sure you
 check the type before assuming that every member of a converted 1:n
 or m:n recursive relation is in fact a JavaScript. Not doing so may
 result in fatal JavaScript errors in the client browser.
-
-
-.. _fluidtypo3-vhs-format-json-encode_arguments:
 
 Arguments
 =========
@@ -95,7 +91,7 @@ recursionMarker
 :aspect:`Required`
    false
 :aspect:`Description`
-   String or null - inserted instead of recursive instances of objects
+   Any value - string, integer, boolean, object or NULL - inserted instead of recursive instances of objects
 
 .. _format.json.encode_datetimeformat:
 
@@ -109,16 +105,3 @@ dateTimeFormat
    false
 :aspect:`Description`
    A date() format for DateTime values to JSON-compatible values. NULL means JS UNIXTIME (time()*1000)
-
-.. _format.json.encode_pretty:
-
-pretty
-------
-
-:aspect:`DataType`
-   boolean
-
-:aspect:`Required`
-   false
-:aspect:`Description`
-   If TRUE, outputs JSON with JSON_PRETTY_PRINT

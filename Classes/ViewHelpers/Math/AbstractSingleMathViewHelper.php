@@ -12,6 +12,7 @@ use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
@@ -33,7 +34,10 @@ abstract class AbstractSingleMathViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function initializeArguments(): void
+    /**
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument('a', 'mixed', 'First number for calculation');
         $this->registerArgument(
@@ -47,7 +51,11 @@ abstract class AbstractSingleMathViewHelper extends AbstractViewHelper
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
+     * @throws Exception
      */
     public static function renderStatic(
         array $arguments,
@@ -55,7 +63,7 @@ abstract class AbstractSingleMathViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         $value = $renderChildrenClosure();
-        if (null === $value && $arguments['fail']) {
+        if (null === $value && true === (boolean) $arguments['fail']) {
             ErrorUtility::throwViewHelperException('Required argument "a" was not supplied', 1237823699);
         }
         return static::calculateAction($value, $arguments);

@@ -12,17 +12,11 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
+/**
+ * Class SetViewHelperTest
+ */
 class SetViewHelperTest extends AbstractViewHelperTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-    }
-
     /**
      * @test
      */
@@ -37,6 +31,7 @@ class SetViewHelperTest extends AbstractViewHelperTestCase
      */
     public function canSetRegister()
     {
+        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
         $name = uniqid();
         $value = uniqid();
         $this->executeViewHelper(['name' => $name, 'value' => $value]);
@@ -48,6 +43,7 @@ class SetViewHelperTest extends AbstractViewHelperTestCase
      */
     public function canSetVariableWithValueFromTagContent()
     {
+        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
         $name = uniqid();
         $value = uniqid();
         $this->executeViewHelperUsingTagContent($value, ['name' => $name]);

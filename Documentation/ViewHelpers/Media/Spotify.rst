@@ -1,17 +1,13 @@
-:navigation-title: media.spotify
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-media-spotify:
 
-==============================================
-media.spotify ViewHelper `<vhs:media.spotify>`
-==============================================
+=============
+media.spotify
+=============
 
 
 Renders HTML code to embed a Spotify play button.
-
-
-.. _fluidtypo3-vhs-media-spotify_arguments:
 
 Arguments
 =========
@@ -182,7 +178,7 @@ spotifyUri
    string
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    Spotify URI to create the play button for. Right click any song, album or playlist in Spotify and select Copy Spotify URI.
 

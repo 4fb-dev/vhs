@@ -24,7 +24,10 @@ abstract class AbstractMultipleMathViewHelper extends AbstractViewHelper
     use CompileWithContentArgumentAndRenderStatic;
     use ArrayConsumingViewHelperTrait;
 
-    public function initializeArguments(): void
+    /**
+     * @return void
+     */
+    public function initializeArguments()
     {
         parent::initializeArguments();
         $this->registerArgument('a', 'mixed', 'First number for calculation');
@@ -40,6 +43,9 @@ abstract class AbstractMultipleMathViewHelper extends AbstractViewHelper
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -48,12 +54,10 @@ abstract class AbstractMultipleMathViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         $value = $renderChildrenClosure();
-        if (null === $value && $arguments['fail']) {
+        if (null === $value && true === (boolean) $arguments['fail']) {
             ErrorUtility::throwViewHelperException('Required argument "a" was not supplied', 1237823699);
         }
-        /** @var int|float|array|null $b */
-        $b = $arguments['b'];
-        return static::calculate($value, $b, $arguments);
+        return static::calculate($value, $arguments['b'], $arguments);
     }
 
     /**
@@ -67,7 +71,8 @@ abstract class AbstractMultipleMathViewHelper extends AbstractViewHelper
     {
         $aIsIterable = static::assertIsArrayOrIterator($a);
         $bIsIterable = static::assertIsArrayOrIterator($b);
-        if (!$aIsIterable && $bIsIterable) {
+        if (false === $aIsIterable && true === $bIsIterable) {
+            // condition matched if $a is not iterable but $b is.
             ErrorUtility::throwViewHelperException(
                 'Math operation attempted using an iterator $b against a numeric value $a. Either both $a and $b, ' .
                 'or only $a, must be array/Iterator',

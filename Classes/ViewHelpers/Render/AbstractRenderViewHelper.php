@@ -13,7 +13,6 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
  * ### Base class for all rendering ViewHelpers.
@@ -24,7 +23,7 @@ use TYPO3Fluid\Fluid\View\ViewInterface;
 abstract class AbstractRenderViewHelper extends AbstractViewHelper
 {
     /**
-     * @var ConfigurationManagerInterface
+     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
      */
     protected $configurationManager;
 
@@ -33,18 +32,29 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
+    /**
+     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+     * @return void
+     */
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
     {
         $this->configurationManager = $configurationManager;
     }
 
-    public function initializeArguments(): void
+    /**
+     * Initialize arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
     {
         $this->registerArgument(
             'onError',
             'string',
             'Optional error message to display if error occur while rendering. If NULL, lets the error Exception ' .
-            'pass trough (and break rendering)'
+            'pass trough (and break rendering)',
+            false,
+            null
         );
         $this->registerArgument(
             'graceful',
@@ -55,17 +65,25 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
         );
     }
 
-    protected static function getPreparedNamespaces(array $arguments): array
+    /**
+     * @param array $arguments
+     * @return array
+     */
+    protected static function getPreparedNamespaces(array $arguments)
     {
         $namespaces = [];
         foreach ((array) $arguments['namespaces'] as $namespaceIdentifier => $namespace) {
             $addedOverriddenNamespace = '{namespace ' . $namespaceIdentifier . '=' . $namespace . '}';
-            $namespaces[] = $addedOverriddenNamespace;
+            array_push($namespaces, $addedOverriddenNamespace);
         }
         return $namespaces;
     }
 
-    protected static function getPreparedClonedView(RenderingContextInterface $renderingContext): StandaloneView
+    /**
+     * @param RenderingContextInterface $renderingContext
+     * @return \TYPO3\CMS\Fluid\View\StandaloneView
+     */
+    protected static function getPreparedClonedView(RenderingContextInterface $renderingContext)
     {
         $view = static::getPreparedView();
         $newRenderingContext = $view->getRenderingContext();
@@ -88,22 +106,28 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface|ViewInterface $view
+     * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface|\TYPO3Fluid\Fluid\View\ViewInterface $view
+     * @param array $arguments
+     * @throws \Exception
+     * @return string
      */
-    protected static function renderView($view, array $arguments): string
+    protected static function renderView($view, array $arguments)
     {
         try {
             $content = $view->render();
         } catch (\Exception $error) {
-            if (!($arguments['graceful'] ?? false)) {
+            if (!$arguments['graceful']) {
                 throw $error;
             }
             $content = $error->getMessage() . ' (' . $error->getCode() . ')';
         }
-        return (string) $content;
+        return $content;
     }
 
-    protected static function getPreparedView(): StandaloneView
+    /**
+     * @return \TYPO3\CMS\Fluid\View\StandaloneView
+     */
+    protected static function getPreparedView()
     {
         /** @var StandaloneView $view */
         $view = GeneralUtility::makeInstance(StandaloneView::class);

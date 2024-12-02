@@ -1,11 +1,10 @@
-:navigation-title: call
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-call:
 
-============================
-call ViewHelper `<vhs:call>`
-============================
+====
+call
+====
 
 
 Call ViewHelper
@@ -25,9 +24,6 @@ Examples
     <v:call method="unconventionalGetter">{object}</v:call>
     <!-- arguments for the method -->
     <v:call object="{object}" method="doSomethingWithArguments" arguments="{0: 'foo', 1: 'bar'}" />
-
-
-.. _fluidtypo3-vhs-call_arguments:
 
 Arguments
 =========
@@ -55,7 +51,7 @@ method
    string
 
 :aspect:`Required`
-   true
+   false
 :aspect:`Description`
    Name of method to call on instance
 
